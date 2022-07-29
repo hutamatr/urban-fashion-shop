@@ -9,6 +9,7 @@ module.exports = {
       },
       backgroundImage: {
         "hero-image": "url('/src/assets/image/hero-image.webp')",
+        "home-image": "url('/src/assets/image/home-image.webp')",
       },
       colors: {
         "dark-brown": "#3F362F",

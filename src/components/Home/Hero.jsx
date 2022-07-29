@@ -1,14 +1,11 @@
 import React from "react";
 
-import Navigation from "./Navigation/Navigation";
-
-const Header = () => {
+const Hero = () => {
   return (
-    <header className="min-h-screen bg-hero-image bg-cover bg-center">
-      <Navigation />
+    <section className="min-h-screen bg-hero-image bg-cover bg-center">
       <div className="mx-auto flex min-h-screen flex-col items-center justify-center gap-y-3 divide-y-2 divide-dark-brown px-6 text-center text-dark-brown md:max-w-[50%]">
-        <h1 className="font-noto text-4xl font-medium uppercase lg:text-6xl">
-          Lorem ipsum dolor sit amet.
+        <h1 className="font-noto text-4xl font-medium uppercase lg:text-7xl">
+          Fashions fade, style is eternal.
         </h1>
 
         <div className="flex flex-col items-center justify-center gap-y-2">
@@ -22,8 +19,8 @@ const Header = () => {
           </p>
         </div>
       </div>
-    </header>
+    </section>
   );
 };
 
-export default Header;
+export default Hero;

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { CgMenuRight, CgClose } from "react-icons/cg";
+import { Link } from "react-router-dom";
+
+import { CgMenuRight, CgClose, CgShoppingCart } from "react-icons/cg";
 
 import NavigationLinks from "./NavigationLinks";
 
@@ -37,16 +39,21 @@ const Navigation = () => {
       >
         {LinksContent(4, "<")}
       </ul>
-      <h1 className="font-noto text-2xl font-semibold text-dark-brown">
+      <h1 className="font-noto text-2xl font-semibold text-dark-brown md:translate-x-1/3">
         !unknown
       </h1>
-      <button onClick={menuHandler}>
-        {!menuView ? (
-          <CgMenuRight className="text-2xl text-dark-brown md:hidden" />
-        ) : (
-          <CgClose className="text-2xl text-dark-brown md:hidden" />
-        )}
-      </button>
+      <div className="flex flex-row items-center justify-center gap-x-6">
+        <Link to={"/cart"}>
+          <CgShoppingCart className="text-2xl text-dark-brown md:hidden" />
+        </Link>
+        <button onClick={menuHandler}>
+          {!menuView ? (
+            <CgMenuRight className="text-2xl text-dark-brown md:hidden" />
+          ) : (
+            <CgClose className="text-2xl text-dark-brown md:hidden" />
+          )}
+        </button>
+      </div>
 
       <ul
         className={`absolute top-[45vh] right-0 flex min-w-[70%] flex-col-reverse items-center justify-center gap-y-8 py-4 duration-500 md:static md:min-w-fit md:flex-row md:gap-x-px md:py-0 md:px-0 ${
