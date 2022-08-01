@@ -42,7 +42,7 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <section className="flex min-h-screen flex-col p-6">
+      <section className="flex min-h-screen flex-col border-b border-dark-brown p-6">
         <div className="grid min-h-[50vh] grid-flow-row gap-8">
           <h1 className="font-noto text-4xl font-light uppercase italic">
             Care for your clothes like the good friends they are.

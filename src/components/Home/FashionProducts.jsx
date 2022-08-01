@@ -2,7 +2,7 @@ import React from "react";
 
 const FashionProducts = () => {
   return (
-    <section className="flex min-h-screen flex-col bg-home-image bg-cover md:flex-row">
+    <section className="flex min-h-screen flex-col border-b border-dark-brown bg-home-image bg-cover md:flex-row">
       <div className="grid min-h-screen grid-flow-row content-end gap-4 p-6">
         <h1 className="font-noto text-4xl uppercase text-white-bone">
           Fashion <br /> Products
@@ -13,7 +13,7 @@ const FashionProducts = () => {
           ea praesentium eveniet reprehenderit, necessitatibus cum. Aliquam
           molestias vel doloribus ad quisquam dolores.
         </p>
-        <button className="w-full py-4 text-xl font-light uppercase text-white-bone ring-[1px] ring-white-bone">
+        <button className="w-full border border-white-bone py-4 text-xl font-light uppercase text-white-bone">
           Shop Now
         </button>
       </div>

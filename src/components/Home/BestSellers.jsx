@@ -20,8 +20,8 @@ const BestSellers = () => {
   }, [requestHttp]);
 
   return (
-    <section className="grid grid-flow-row justify-items-center gap-y-4 p-6">
-      <h1 className="mb-2 font-noto text-4xl uppercase">Best Sellers</h1>
+    <section className="grid grid-flow-row justify-items-center gap-y-6 border-b border-dark-brown p-6">
+      <h1 className="mb-2 font-noto text-4xl uppercase">BestSellers</h1>
       {bestSellers.map((item) => {
         return <Figure {...item} key={item.id} />;
       })}

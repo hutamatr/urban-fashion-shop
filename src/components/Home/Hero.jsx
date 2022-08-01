@@ -2,7 +2,7 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <section className="min-h-screen bg-hero-image bg-cover bg-center">
+    <section className="min-h-screen border-b border-dark-brown bg-hero-image bg-cover bg-center">
       <div className="mx-auto flex min-h-screen flex-col items-center justify-center gap-y-3 divide-y-2 divide-dark-brown px-6 text-center text-dark-brown md:max-w-[50%]">
         <h1 className="font-noto text-4xl font-medium uppercase lg:text-7xl">
           Fashions fade, style is eternal.

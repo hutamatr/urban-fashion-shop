@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { CgMenuRight, CgClose, CgShoppingCart } from "react-icons/cg";
 
 import NavigationLinks from "./NavigationLinks";
 
-const links = [
+export const links = [
   { to: "/shop", name: "Shop" },
   { to: "/sale", name: "Sale" },
   { to: "/contact", name: "Contact" },
@@ -31,9 +31,9 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed top-0 flex w-full flex-row items-center justify-between border-[1.5px] border-dark-brown bg-white-bone p-4 font-manrope text-sm uppercase md:p-0 md:py-1">
+    <nav className="fixed top-0 flex w-full flex-row items-center justify-between border-b border-dark-brown bg-white-bone p-4 font-manrope text-sm uppercase md:p-0 md:py-1">
       <ul
-        className={`absolute top-full right-0 flex min-h-screen min-w-[70%] flex-col items-center gap-y-8 border-[1.5px] border-dark-brown bg-white-bone py-6 duration-500 md:static md:min-h-fit md:min-w-fit md:flex-row md:gap-x-px md:border-none md:bg-transparent md:py-0 md:px-0 ${
+        className={`absolute top-full right-0 flex min-h-screen min-w-[70%] flex-col items-center gap-y-8 border-l border-b border-dark-brown bg-white-bone py-6 duration-500 md:static md:min-h-fit md:min-w-fit md:flex-row md:gap-x-px md:border-none md:bg-transparent md:py-0 md:px-0 ${
           !menuView ? "-right-[100vw]" : ""
         }`}
       >

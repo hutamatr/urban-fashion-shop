@@ -8,17 +8,14 @@ const Figure = ({ image, title, price, id }) => {
   };
 
   return (
-    <figure
-      id={id}
-      className="divide grid grid-flow-row gap-3 divide-y-2 divide-y-reverse divide-dark-brown"
-    >
+    <figure id={id} className="grid grid-flow-row gap-3">
       <img
         src={image}
         alt={title}
-        className="h-full w-[250px] ring-[1.5px] ring-dark-brown"
+        className="h-full w-64 border border-dark-brown"
       />
       <figcaption className="max-w-fit text-xs uppercase">{title}</figcaption>
-      <span className="flex items-center text-lg">
+      <span className="flex items-center border-b border-b-dark-brown text-lg font-light">
         Rp. {formatToCurrency(price)}
       </span>
     </figure>
