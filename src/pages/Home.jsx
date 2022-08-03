@@ -22,18 +22,24 @@ const Home = () => {
     );
   }, [requestHttp]);
 
+  console.log(dataProduct);
+
   const imageContent = (
     <div className="flex flex-row justify-around gap-x-4">
       {dataProduct.map((product) => {
         return loading.isLoading ? (
           <p
             key={product.id}
-            className="mx-auto text-center font-semibold uppercase text-dark-brown"
+            className="mx-auto text-center font-manrope font-light uppercase text-dark-brown"
           >
             {loading.loadingMessage}
           </p>
         ) : (
-          <Figure {...product} key={product.id} />
+          <Figure
+            {...product}
+            key={product.id}
+            classImage="object-contain h-52 w-48 bg-white object-center p-4"
+          />
         );
       })}
     </div>
@@ -51,7 +57,13 @@ const Home = () => {
             -Joan Crawford
           </span>
         </div>
-        {imageContent}
+        {error.isError ? (
+          <p className="mx-auto text-center font-manrope font-medium uppercase text-red-700">
+            {error.errorMessage}
+          </p>
+        ) : (
+          imageContent
+        )}
       </section>
       <FashionProducts />
       <BestSellers />
