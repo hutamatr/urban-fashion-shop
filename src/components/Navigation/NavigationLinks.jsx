@@ -5,7 +5,7 @@ const NavigationLinks = ({ to, children }) => {
   return (
     <li>
       <Link
-        className="rounded-full py-2 px-4 font-semibold text-dark-brown ring-1 ring-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
+        className="rounded-full py-2 px-4 font-semibold ring-1 ring-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
         to={to}
       >
         {children}

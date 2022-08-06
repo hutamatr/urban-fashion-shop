@@ -31,7 +31,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="sticky top-0 flex w-full flex-row items-center justify-between border-b border-dark-brown bg-white-bone p-4 font-manrope text-sm uppercase md:p-0 md:py-1">
+    <nav className="fixed top-0 flex w-full flex-row items-center justify-between border-b border-dark-brown bg-white-bone p-4 text-sm uppercase md:p-0 md:py-1">
       <ul
         className={`absolute top-full right-0 flex min-h-screen min-w-[70%] flex-col items-center gap-y-8 border-l border-b border-dark-brown bg-white-bone py-6 duration-500 md:static md:min-h-fit md:min-w-fit md:flex-row md:gap-x-px md:border-none md:bg-transparent md:py-0 md:px-0 ${
           !menuView ? "-right-[100vw]" : ""
@@ -39,18 +39,20 @@ const Navigation = () => {
       >
         {LinksContent(4, "<")}
       </ul>
-      <h1 className="font-noto text-2xl font-semibold text-dark-brown md:translate-x-1/3">
-        !unknown
-      </h1>
+      <Link to={"/"} replace={true}>
+        <h1 className="font-noto text-2xl font-semibold md:translate-x-1/3">
+          !unknown
+        </h1>
+      </Link>
       <div className="flex flex-row items-center justify-center gap-x-6">
         <Link to={"/cart"}>
-          <CgShoppingCart className="text-2xl text-dark-brown md:hidden" />
+          <CgShoppingCart className="text-2xl md:hidden" />
         </Link>
         <button onClick={menuHandler}>
           {!menuView ? (
-            <CgMenuRight className="text-2xl text-dark-brown md:hidden" />
+            <CgMenuRight className="text-2xl md:hidden" />
           ) : (
-            <CgClose className="text-2xl text-dark-brown md:hidden" />
+            <CgClose className="text-2xl md:hidden" />
           )}
         </button>
       </div>

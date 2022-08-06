@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import Figure from "../components/UI/Figure";
 import Hero from "../components/Home/Hero";
@@ -22,47 +23,47 @@ const Home = () => {
     );
   }, [requestHttp]);
 
-  console.log(dataProduct);
-
-  const imageContent = (
-    <div className="flex flex-row justify-around gap-x-4">
+  const productContent = (
+    <ul className="grid min-h-fit grid-cols-2 content-center gap-3 md:content-center">
       {dataProduct.map((product) => {
-        return loading.isLoading ? (
-          <p
-            key={product.id}
-            className="mx-auto text-center font-manrope font-light uppercase text-dark-brown"
-          >
-            {loading.loadingMessage}
-          </p>
-        ) : (
-          <Figure
-            {...product}
-            key={product.id}
-            classImage="object-contain h-52 w-48 bg-white object-center p-4"
-          />
+        return (
+          <li key={product.id} className="">
+            {loading.isLoading ? (
+              <p className="mx-auto text-center font-manrope font-light uppercase text-dark-brown">
+                {loading.loadingMessage}
+              </p>
+            ) : (
+              <Link to={`shop/${product.id}`} className="flex justify-center">
+                <Figure
+                  {...product}
+                  classImage="object-contain h-52 w-48 bg-white object-center p-4"
+                />
+              </Link>
+            )}
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 
   return (
     <>
       <Hero />
-      <section className="flex min-h-screen flex-col border-b border-dark-brown p-6">
-        <div className="grid min-h-[50vh] grid-flow-row gap-8">
-          <h1 className="font-noto text-4xl font-light uppercase italic">
+      <section className="grid min-h-max grid-cols-1 gap-8 border-b border-dark-brown p-6 md:min-h-fit md:grid-cols-2 md:grid-rows-1 md:gap-10 md:p-10">
+        <div className="flex flex-col gap-y-8">
+          <h1 className="font-noto text-4xl font-light uppercase italic text-dark-brown md:text-5xl">
             Care for your clothes like the good friends they are.
           </h1>
-          <span className="flex justify-end text-end font-light uppercase italic">
+          <span className="block text-end font-light uppercase italic md:text-xl">
             -Joan Crawford
           </span>
         </div>
         {error.isError ? (
-          <p className="mx-auto text-center font-manrope font-medium uppercase text-red-700">
+          <p className="mx-auto text-center font-medium uppercase text-red-700">
             {error.errorMessage}
           </p>
         ) : (
-          imageContent
+          productContent
         )}
       </section>
       <FashionProducts />

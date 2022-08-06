@@ -20,10 +20,10 @@ const NavigationFooter = () => {
   }, [requestHttp]);
 
   return (
-    <section className="mx-auto grid grid-flow-row gap-y-5 border-b border-b-dark-brown p-6 text-center">
-      <div className="flex flex-col gap-y-3 uppercase">
+    <section className="flex flex-col border-b border-b-dark-brown p-6 text-center md:w-full md:flex-row md:justify-evenly md:border-none md:text-start">
+      <div className="flex flex-col gap-y-3 uppercase md:gap-y-2">
         <h3 className="font-manrope text-sm font-medium">Category</h3>
-        <ul className="flex flex-col gap-y-2">
+        <ul className="flex flex-col gap-y-2 md:gap-y-1">
           {categories.map((category, index) => {
             return index > 0 ? (
               <li key={category}>
@@ -35,9 +35,9 @@ const NavigationFooter = () => {
           })}
         </ul>
       </div>
-      <div className="flex flex-col gap-y-3 uppercase">
+      <div className="flex flex-col gap-y-3 uppercase md:gap-y-2">
         <h3 className="font-manrope text-sm font-medium">Menu</h3>
-        <ul className="flex flex-col gap-y-2">
+        <ul className="flex flex-col gap-y-2 md:gap-y-1">
           {links.map((link, index) => {
             return index < 4 || index > 4 ? (
               <li key={index}>
