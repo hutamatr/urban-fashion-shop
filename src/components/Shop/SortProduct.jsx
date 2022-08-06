@@ -6,7 +6,7 @@ const SortProduct = ({ onNavigate, onSortedProduct }) => {
   const sortProductHandler = (event) => {
     setSortProduct(event.target.value);
     onNavigate({
-      search: `?sort=${onSortedProduct ? "desc" : "asc"}`,
+      search: `?sort=${onSortedProduct ? "high-to-low" : "low-to-high"}`,
     });
   };
 
@@ -17,17 +17,17 @@ const SortProduct = ({ onNavigate, onSortedProduct }) => {
         id="sort"
         onChange={sortProductHandler}
         value={sortProduct}
-        className="text-md bg-white-bone font-manrope uppercase"
+        className="text-md cursor-pointer bg-white-bone uppercase"
       >
         {onSortedProduct ? (
           <>
-            <option value="asc">Price Low to High</option>
-            <option value="desc">Price High to Low</option>
+            <option value="low-to-high">Price Low to High</option>
+            <option value="high-to-low">Price High to Low</option>
           </>
         ) : (
           <>
-            <option value="desc">Price High to Low</option>
-            <option value="asc">Price Low to High</option>
+            <option value="high-to-low">Price High to Low</option>
+            <option value="low-to-high">Price Low to High</option>
           </>
         )}
       </select>

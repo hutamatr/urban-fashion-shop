@@ -7,10 +7,12 @@ import useAxios from "../../hooks/useAxios";
 
 const sortProductsByPrice = (products, ascending) => {
   return products.sort((productA, productB) => {
+    const { price: priceA } = productA;
+    const { price: priceB } = productB;
     if (ascending) {
-      return productA.price - productB.price;
+      return priceA - priceB;
     } else {
-      return productB.price - productA.price;
+      return priceB - priceA;
     }
   });
 };
@@ -29,7 +31,7 @@ const AllProduct = () => {
 
   const queryParams = new URLSearchParams(location.search);
 
-  const isSortedProductList = queryParams.get("sort") === "asc";
+  const isSortedProductList = queryParams.get("sort") === "low-to-high";
 
   const sortedQuotes = sortProductsByPrice(
     filteredProduct,
@@ -53,7 +55,7 @@ const AllProduct = () => {
         return (
           <li key={product.id}>
             {loading.isLoading ? (
-              <p className="mx-auto text-center font-manrope font-medium uppercase">
+              <p className="mx-auto text-center font-medium uppercase">
                 {loading.loadingMessage}
               </p>
             ) : (
@@ -77,7 +79,7 @@ const AllProduct = () => {
         onSortedProduct={isSortedProductList}
       />
       {error.isError ? (
-        <p className="mx-auto py-6 text-center font-manrope font-medium uppercase text-red-700">
+        <p className="mx-auto py-6 text-center font-medium uppercase text-red-700">
           {error.errorMessage}
         </p>
       ) : (

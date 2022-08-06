@@ -7,8 +7,10 @@ import SocialsMedia from "./SocialsMedia";
 const Footer = () => {
   return (
     <footer>
-      <NewsLetter />
-      <NavigationFooter />
+      <div className="md:flex md:border-b md:border-b-dark-brown">
+        <NewsLetter />
+        <NavigationFooter />
+      </div>
       <SocialsMedia />
     </footer>
   );

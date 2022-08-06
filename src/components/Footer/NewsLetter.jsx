@@ -10,8 +10,10 @@ const NewsLetter = () => {
   };
 
   return (
-    <section className="mx-auto flex min-h-[40vh] flex-col items-start justify-center gap-y-2 border-b border-b-dark-brown p-6">
-      <h2 className="font-noto text-2xl font-medium uppercase">NewsLetter</h2>
+    <section className="flex flex-col items-center gap-y-2 border-b border-b-dark-brown p-6 md:mx-0 md:min-h-fit md:min-w-[40%] md:border-r md:border-r-dark-brown md:border-b-transparent md:p-10">
+      <h2 className="font-noto text-2xl font-medium uppercase md:text-3xl">
+        NewsLetter
+      </h2>
       <p className="text-sm">Join our newsletter</p>
       <form
         onSubmit={emailSubmitHandler}
