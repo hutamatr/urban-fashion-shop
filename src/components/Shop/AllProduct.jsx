@@ -50,7 +50,7 @@ const AllProduct = () => {
   }, [requestHttp]);
 
   const productContent = (
-    <ul className="grid grid-cols-2 gap-3 p-6 sm:grid-cols-4 lg:grid-cols-6">
+    <ul className="grid grid-cols-2 gap-3 bg-white-bone p-6 sm:grid-cols-4 lg:grid-cols-6">
       {sortedQuotes.map((product) => {
         return (
           <li key={product.id}>
