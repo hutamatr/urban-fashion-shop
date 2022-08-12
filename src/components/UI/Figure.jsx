@@ -1,6 +1,6 @@
 import React from "react";
 
-import formatCurrency from "../../utils/formatCurrency";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 const Figure = ({ image, title, price, id, classImage }) => {
   return (

@@ -6,7 +6,7 @@ import ScrollTop from "../UI/ScrollTop";
 
 const Layout = ({ children }) => {
   return (
-    <div className="mx-auto max-w-6xl border-x border-x-dark-brown">
+    <div className="mx-auto max-w-6xl border-x border-x-dark-brown bg-white-bone">
       <header>
         <Navigation />
       </header>

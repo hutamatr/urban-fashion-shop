@@ -4,7 +4,7 @@ import { MdOutlineStar } from "react-icons/md";
 
 import Review from "../components/ProductDetails/Review";
 // import OtherProduct from "../components/ProductDetails/OtherProduct";
-import formatCurrency, { formatCurrencyOnly } from "../utils/formatCurrency";
+import { formatCurrencyOnly, formatCurrency } from "../utils/formatCurrency";
 import useAxios from "../hooks/useAxios";
 import CartContext from "../store/CartContext";
 
@@ -26,15 +26,17 @@ const ProductDetails = () => {
     );
   }, [requestHttp, productId]);
 
+  const { id, image, title, rating, price, description, category } = product;
+
   const decreaseAmountHandler = () => setAmount((prevState) => prevState - 1);
   const increaseAmountHandler = () => setAmount((prevState) => prevState + 1);
 
   const addToCartHandler = () => {
-    const { id, title, price } = product;
     const priceFormatted = formatCurrencyOnly(price);
     const itemToOrder = {
       id,
       title,
+      image,
       price: priceFormatted,
       amount: +amount,
     };
@@ -42,8 +44,6 @@ const ProductDetails = () => {
     cartContext.addItem(itemToOrder);
     console.log(itemToOrder);
   };
-
-  const { image, title, rating, price, description, category } = product;
 
   return (
     <>

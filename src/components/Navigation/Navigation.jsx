@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { CgMenuRight, CgClose, CgShoppingCart } from "react-icons/cg";
+import { CgMenuRight, CgClose } from "react-icons/cg";
 
 import NavigationLinks from "./NavigationLinks";
+import CartBadge from "../Cart/CartBadge";
 import CartContext from "../../store/CartContext";
 
 export const links = [
@@ -51,10 +52,7 @@ const Navigation = () => {
         </h1>
       </Link>
       <div className="flex flex-row items-center justify-center gap-x-6">
-        <Link to={"/cart"} className="flex flex-row items-center gap-x-1">
-          <span className="font-bold">({cartItemsTotal})</span>
-          <CgShoppingCart className="text-2xl md:hidden" />
-        </Link>
+        <CartBadge onCartItems={cartItemsTotal} />
         <button onClick={menuHandler}>
           {!menuView ? (
             <CgMenuRight className="text-2xl md:hidden" />
