@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { CgMenuRight, CgClose, CgShoppingCart } from "react-icons/cg";
+import { CgMenuRight, CgClose } from "react-icons/cg";
 
 import NavigationLinks from "./NavigationLinks";
+import CartBadge from "../Cart/CartBadge";
+import CartContext from "../../store/CartContext";
 
 export const links = [
   { to: "/shop", name: "Shop" },
@@ -15,6 +17,11 @@ export const links = [
 ];
 const Navigation = () => {
   const [menuView, setMenuView] = useState(false);
+  const { items } = useContext(CartContext);
+
+  const cartItemsTotal = items.reduce((curr, item) => {
+    return curr + item.amount;
+  }, 0);
 
   const menuHandler = () => setMenuView((prevState) => !prevState);
 
@@ -31,7 +38,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed top-0 flex w-full flex-row items-center justify-between border-b border-dark-brown bg-white-bone p-4 text-sm uppercase md:p-0 md:py-1">
+    <nav className="fixed top-0 flex w-full max-w-6xl flex-row items-center justify-between border-x border-b border-dark-brown border-x-dark-brown bg-white-bone p-4 text-sm uppercase md:p-0 md:py-1">
       <ul
         className={`absolute top-full right-0 flex min-h-screen min-w-[70%] flex-col items-center gap-y-8 border-l border-b border-dark-brown bg-white-bone py-6 duration-500 md:static md:min-h-fit md:min-w-fit md:flex-row md:gap-x-px md:border-none md:bg-transparent md:py-0 md:px-0 ${
           !menuView ? "-right-[100vw]" : ""
@@ -45,9 +52,7 @@ const Navigation = () => {
         </h1>
       </Link>
       <div className="flex flex-row items-center justify-center gap-x-6">
-        <Link to={"/cart"}>
-          <CgShoppingCart className="text-2xl md:hidden" />
-        </Link>
+        <CartBadge onCartItems={cartItemsTotal} />
         <button onClick={menuHandler}>
           {!menuView ? (
             <CgMenuRight className="text-2xl md:hidden" />

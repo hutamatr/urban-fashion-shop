@@ -4,6 +4,7 @@ import Layout from "./components/Layout/Layout";
 
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
+import Cart from "./pages/Cart";
 import ProductDetails from "./pages/ProductDetails";
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="shop" element={<Shop />} />
         <Route path="shop/:productId" element={<ProductDetails />} />
+        <Route path="cart" element={<Cart />} />
       </Routes>
     </Layout>
   );
