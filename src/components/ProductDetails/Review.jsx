@@ -60,15 +60,15 @@ const Review = () => {
     );
 
   return (
-    <section className="flex flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown p-6">
+    <section className="flex flex-col items-center justify-center gap-y-4 p-6">
       <h1 className="font-noto text-2xl uppercase">Review</h1>
       <Button
         className={
-          "w-full py-3 duration-300 hover:bg-dark-brown hover:text-white-bone"
+          "w-full py-3 px-4 duration-300 hover:bg-dark-brown hover:text-white-bone md:mx-auto md:max-w-fit "
         }
         onClick={showReviewInputHandler}
       >
-        Write a Review
+        {isReviewShow ? "Cancel Review" : "Write a Review"}
       </Button>
       {isReviewShow && (
         <form

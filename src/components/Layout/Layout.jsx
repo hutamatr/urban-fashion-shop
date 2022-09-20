@@ -6,14 +6,16 @@ import ScrollTop from "../UI/ScrollTop";
 
 const Layout = ({ children }) => {
   return (
-    <div className="mx-auto max-w-6xl border-x border-x-dark-brown bg-white-bone">
-      <header>
+    <>
+      <header className="fixed top-0 w-full bg-white-bone">
         <Navigation />
       </header>
-      <main>{children}</main>
+      <main className="mx-auto mt-16 flex min-h-screen max-w-6xl flex-col gap-y-5">
+        {children}
+      </main>
       <Footer />
       <ScrollTop />
-    </div>
+    </>
   );
 };
 

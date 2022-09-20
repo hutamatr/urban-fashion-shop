@@ -73,7 +73,7 @@ const AllProduct = () => {
   );
 
   return (
-    <section className="flex min-w-full flex-col border-b border-b-dark-brown">
+    <section className="flex min-w-full flex-col">
       <SortProduct
         onNavigate={navigate}
         onSortedProduct={isSortedProductList}

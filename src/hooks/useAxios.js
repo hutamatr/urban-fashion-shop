@@ -20,15 +20,14 @@ const useAxios = () => {
         isLoading: true,
         loadingMessage: "Loading...",
       });
+      const { method, url, dataReq } = requestConfig;
       const response = await axios({
-        method: requestConfig.method,
-        url: `${BASE_URL}${requestConfig.url}`,
-        data: requestConfig.data ? requestConfig.data : null,
-        headers: requestConfig.headers
-          ? {
-              "Content-Type": "application/json",
-            }
-          : {},
+        method: method,
+        url: `${BASE_URL}${url}`,
+        data: dataReq ? dataReq : null,
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       const data = await response.data;

@@ -4,7 +4,10 @@ import { formatCurrency } from "../../utils/formatCurrency";
 
 const Figure = ({ image, title, price, id, classImage }) => {
   return (
-    <figure id={id} className="grid min-h-full max-w-max grid-cols-1 gap-3">
+    <figure
+      id={id}
+      className="mx-auto grid min-h-full max-w-max grid-cols-1 gap-3"
+    >
       <img
         src={image}
         alt={title}

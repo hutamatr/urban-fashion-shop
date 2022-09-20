@@ -47,11 +47,11 @@ const ProductDetails = () => {
 
   return (
     <>
-      <section className="mt-16 grid grid-cols-1 md:mt-10">
+      <section className="grid grid-cols-1 md:grid-cols-2 md:items-center">
         <img
           src={image}
           alt=""
-          className="h-52 w-full border-x border-b border-dark-brown bg-white object-contain object-center p-4"
+          className="md: h-52 w-full bg-white object-contain object-center p-4 md:h-72"
         />
         <div className="flex flex-col items-start justify-center gap-y-6 border-b border-b-dark-brown p-5 text-dark-brown">
           <div className="flex flex-col gap-y-2">

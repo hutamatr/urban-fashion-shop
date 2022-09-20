@@ -20,7 +20,7 @@ const NavigationFooter = () => {
   }, [requestHttp]);
 
   return (
-    <section className="flex flex-col border-b border-b-dark-brown p-6 text-center md:w-full md:flex-row md:justify-evenly md:border-none md:text-start">
+    <section className="flex flex-col border-t border-t-dark-brown p-6 text-center md:w-full md:flex-row md:justify-evenly md:text-start">
       <div className="flex flex-col gap-y-3 uppercase md:gap-y-2">
         <h3 className="font-manrope text-sm font-medium">Category</h3>
         <ul className="flex flex-col gap-y-2 md:gap-y-1">
