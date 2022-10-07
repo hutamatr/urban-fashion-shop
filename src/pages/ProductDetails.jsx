@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { MdOutlineStar } from "react-icons/md";
 
 import Review from "../components/ProductDetails/Review";
-// import OtherProduct from "../components/ProductDetails/OtherProduct";
+import OtherProduct from "../components/ProductDetails/OtherProduct";
 import { formatCurrencyOnly, formatCurrency } from "../utils/formatCurrency";
 import useAxios from "../hooks/useAxios";
 import CartContext from "../store/CartContext";
@@ -13,7 +13,7 @@ const ProductDetails = () => {
   const [amount, setAmount] = useState(1);
   const { productId } = useParams();
   const { requestHttp } = useAxios();
-  const cartContext = useContext(CartContext);
+  const { addItem } = useContext(CartContext);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -31,7 +31,7 @@ const ProductDetails = () => {
   const decreaseAmountHandler = () => setAmount((prevState) => prevState - 1);
   const increaseAmountHandler = () => setAmount((prevState) => prevState + 1);
 
-  const addToCartHandler = () => {
+  const addToCartHandler = useCallback(() => {
     const priceFormatted = formatCurrencyOnly(price);
     const itemToOrder = {
       id,
@@ -41,19 +41,19 @@ const ProductDetails = () => {
       amount: +amount,
     };
 
-    cartContext.addItem(itemToOrder);
+    addItem(itemToOrder);
     console.log(itemToOrder);
-  };
+  }, [addItem, amount, id, image, price, title]);
 
   return (
     <>
-      <section className="grid grid-cols-1 md:grid-cols-2 md:items-center">
+      <section className="grid grid-cols-1 border-b border-b-dark-brown md:grid-cols-2 md:items-center">
         <img
           src={image}
           alt=""
           className="md: h-52 w-full bg-white object-contain object-center p-4 md:h-72"
         />
-        <div className="flex flex-col items-start justify-center gap-y-6 border-b border-b-dark-brown p-5 text-dark-brown">
+        <div className="flex flex-col items-start justify-center gap-y-6 p-5 text-dark-brown">
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-semibold uppercase">{title}</h1>
             <span className="flex items-center">
@@ -100,6 +100,7 @@ const ProductDetails = () => {
         </div>
       </section>
       <Review />
+      <OtherProduct />
     </>
   );
 };

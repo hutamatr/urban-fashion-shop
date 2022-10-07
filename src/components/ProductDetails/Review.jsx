@@ -29,7 +29,7 @@ const Review = () => {
       id: Date.now(),
       message: reviewInput,
       rating: rating,
-      date: new Date().toISOString(),
+      date: new Date().toLocaleString(),
     };
 
     setReviewData((prevState) => [...prevState, reviewMessage]);
@@ -43,16 +43,19 @@ const Review = () => {
     reviewData.length === 0 ? (
       <p>No Review</p>
     ) : (
-      <ul>
+      <ul className="flex max-h-60 w-full flex-col gap-y-4 overflow-y-auto p-4">
         {reviewData.map((review) => {
           return (
-            <li key={review.id} className="flex flex-col">
-              <p>{review.message}</p>
-              <span className="flex items-center gap-x-1">
+            <li
+              key={review.id}
+              className="flex flex-col gap-y-2 rounded-md border border-dark-brown p-4"
+            >
+              <p className="text-lg font-medium">{review.message}</p>
+              <span className="flex items-center gap-x-1 text-sm">
                 <MdOutlineStar />
                 {review.rating}
               </span>
-              <span>{review.date}</span>
+              <span className="text-xs">{review.date}</span>
             </li>
           );
         })}
@@ -60,7 +63,7 @@ const Review = () => {
     );
 
   return (
-    <section className="flex flex-col items-center justify-center gap-y-4 p-6">
+    <section className="flex flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown p-6">
       <h1 className="font-noto text-2xl uppercase">Review</h1>
       <Button
         className={

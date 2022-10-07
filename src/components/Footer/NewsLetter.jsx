@@ -23,9 +23,11 @@ const NewsLetter = () => {
           type="email"
           ref={inputRef}
           placeholder="Email"
-          className="max-w-sm bg-white-bone p-2 text-sm uppercase outline-none placeholder:text-dark-brown"
+          className="max-w-sm border-none bg-white-bone p-2 text-sm outline-none placeholder:uppercase placeholder:text-dark-brown"
         />
-        <button className="text-sm uppercase">Submit</button>
+        <button className="py-2 px-3 text-sm uppercase duration-300 hover:bg-dark-brown hover:text-white-bone">
+          Submit
+        </button>
       </form>
     </section>
   );

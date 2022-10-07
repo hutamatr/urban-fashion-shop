@@ -7,10 +7,10 @@ import ScrollTop from "../UI/ScrollTop";
 const Layout = ({ children }) => {
   return (
     <>
-      <header className="fixed top-0 w-full bg-white-bone">
+      <header className="sticky top-0 z-50 w-full bg-white-bone">
         <Navigation />
       </header>
-      <main className="mx-auto mt-16 flex min-h-screen max-w-6xl flex-col gap-y-5">
+      <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-y-5">
         {children}
       </main>
       <Footer />

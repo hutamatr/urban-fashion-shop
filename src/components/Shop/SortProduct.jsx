@@ -17,7 +17,7 @@ const SortProduct = ({ onNavigate, onSortedProduct }) => {
         id="sort"
         onChange={sortProductHandler}
         value={sortProduct}
-        className="text-md cursor-pointer bg-white-bone uppercase"
+        className="text-md cursor-pointer border-none bg-white-bone uppercase"
       >
         {onSortedProduct ? (
           <>

@@ -9,10 +9,14 @@ const CartBadge = ({ onCartItems, className }) => {
   useEffect(() => {
     if (onCartItems) {
       setBadgePulse(true);
-      setTimeout(() => {
-        setBadgePulse(false);
-      }, 900);
     }
+    const timer = setTimeout(() => {
+      setBadgePulse(false);
+    }, 700);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [onCartItems]);
 
   return (
@@ -27,7 +31,7 @@ const CartBadge = ({ onCartItems, className }) => {
       >
         {onCartItems}
       </span>
-      <CgShoppingCart className="text-2xl" />
+      <CgShoppingCart className="text-2xl text-dark-brown" />
     </Link>
   );
 };
