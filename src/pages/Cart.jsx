@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import CartList from "../components/Cart/CartList";
-import useCartContext from "../hooks/useCartContext";
+import { useCart } from "../hooks/useStoreContext";
 import { formatCurrencyToFixed } from "../utils/formatCurrency";
 
 const Cart = () => {
-  const { totalPriceAmount } = useCartContext();
+  const { totalPriceAmount } = useCart();
+
+  useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem("cart_items"));
+    console.log(cartItems);
+  }, []);
+
   return (
     <section className="mb-6 flex min-h-screen flex-col gap-y-4 border-b border-b-dark-brown p-6">
       <div className="flex flex-row items-center justify-between gap-x-4">

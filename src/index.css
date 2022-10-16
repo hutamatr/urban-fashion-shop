@@ -12,6 +12,25 @@ body {
   color: #3f362f;
 }
 
-.layout {
+/* .layout {
   @apply max-w-5xl;
+} */
+
+::-webkit-scrollbar {
+  width: 0.65rem;
+}
+
+::-webkit-scrollbar:hover {
+  width: 1rem;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 1rem;
+  background: #E6E1DC;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3F362F;
+  border-radius: 1rem;
+  border: 3px solid #E6E1DC;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { MdOutlineStar } from "react-icons/md";
 
@@ -6,14 +6,14 @@ import Review from "../components/ProductDetails/Review";
 import OtherProduct from "../components/ProductDetails/OtherProduct";
 import { formatCurrencyOnly, formatCurrency } from "../utils/formatCurrency";
 import useAxios from "../hooks/useAxios";
-import CartContext from "../store/CartContext";
+import { useCart } from "../hooks/useStoreContext";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [amount, setAmount] = useState(1);
   const { productId } = useParams();
   const { requestHttp } = useAxios();
-  const { addItem } = useContext(CartContext);
+  const { addItem } = useCart();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -42,7 +42,6 @@ const ProductDetails = () => {
     };
 
     addItem(itemToOrder);
-    console.log(itemToOrder);
   }, [addItem, amount, id, image, price, title]);
 
   return (

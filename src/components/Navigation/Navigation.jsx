@@ -1,10 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 import { CgMenuRight, CgClose } from "react-icons/cg";
 
 import CartBadge from "../Cart/CartBadge";
-import CartContext from "../../store/CartContext";
+import { useCart } from "../../hooks/useStoreContext";
 
 export const links = [
   { to: "/", name: "Home" },
@@ -13,14 +13,16 @@ export const links = [
 ];
 const Navigation = () => {
   const [menuView, setMenuView] = useState(false);
-  const { items } = useContext(CartContext);
+  const { items } = useCart();
 
   const cartItemsTotal = items.reduce((curr, item) => {
     return curr + item.amount;
   }, 0);
 
   const menuHandler = () => setMenuView((prevState) => !prevState);
-  const menuViewClose = () => setMenuView(false);
+  const menuViewClose = (index) => {
+    setMenuView(false);
+  };
 
   return (
     <nav className="relative mx-auto flex max-w-6xl flex-row items-center justify-between bg-white-bone p-4 sm:static">
@@ -46,7 +48,7 @@ const Navigation = () => {
           return (
             <li
               key={index}
-              onClick={menuViewClose}
+              onClick={menuViewClose.bind(null, index)}
               className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
             >
               <NavLink to={menuLink.to}>{menuLink.name}</NavLink>

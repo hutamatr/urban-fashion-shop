@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import useCartContext from "../../hooks/useCartContext";
+import { useCart } from "../../hooks/useStoreContext";
 import { formatCurrencyToFixed } from "../../utils/formatCurrency";
 
 const CartList = () => {
-  const { items } = useCartContext();
+  const { items, addItem, removeItem } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,6 +13,17 @@ const CartList = () => {
   }, []);
 
   const gotoShopHandler = () => navigate("/shop", { replace: true });
+
+  const increaseItemHandler = (id) => {
+    const newItem = items.find((item) => item.id === id);
+    addItem({
+      ...newItem,
+      amount: 1,
+    });
+  };
+  const decreaseItemHandler = (id) => {
+    removeItem(id);
+  };
 
   return (
     <>
@@ -45,13 +56,24 @@ const CartList = () => {
                 <div className="flex w-full flex-col gap-y-3 p-4">
                   <p className="font-medium uppercase">{title}</p>
                   <div className="flex flex-row gap-x-2">
-                    <button className="text-xl font-bold">-</button>
+                    <button
+                      className="text-xl font-bold"
+                      onClick={decreaseItemHandler.bind(null, id)}
+                    >
+                      -
+                    </button>
                     <input
                       type="text"
                       value={amount}
+                      readOnly
                       className="max-w-[4rem] rounded p-1 text-center"
                     />
-                    <button className="text-xl font-bold">+</button>
+                    <button
+                      className="text-xl font-bold"
+                      onClick={increaseItemHandler.bind(null, id)}
+                    >
+                      +
+                    </button>
                   </div>
                   <span className="text-sm font-bold">
                     Rp. {formatCurrencyToFixed(price)} x {amount}
