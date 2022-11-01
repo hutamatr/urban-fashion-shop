@@ -9,7 +9,7 @@ import { useAuth } from "../hooks/useStoreContext";
 const Login = () => {
   const usernameRef = useRef();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { auth } = useAuth();
   const { requestHttp } = useAxios();
   const { userNameValidation, passwordValidation } = validation();
 
@@ -48,9 +48,9 @@ const Login = () => {
         dataReq: loginInput,
       },
       (data) => {
-        // login(data.data?.token);
+        auth(data?.token);
         console.log(data);
-        navigate("/home", { replace: true });
+        navigate("/", { replace: true });
       }
     );
 

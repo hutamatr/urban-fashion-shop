@@ -3,18 +3,21 @@ import { AuthContext } from "./Context";
 
 const initState = {
   isAuth: false,
+  auth_token: null,
 };
 
 const authReducer = (state, action) => {
   switch (action.type) {
     case "AUTH":
       return {
-        isAuth: action.payload,
+        isAuth: true,
+        auth_token: action.payload,
       };
 
     case "UN-AUTH":
       return {
-        isAuth: action.payload,
+        isAuth: false,
+        auth_token: null,
       };
 
     default:
@@ -25,12 +28,14 @@ const authReducer = (state, action) => {
 const AuthProvider = ({ children }) => {
   const [authState, dispatch] = useReducer(authReducer, initState);
 
-  const authHandler = () => {
-    dispatch({ type: "AUTH", payload: true });
+  const authHandler = (token) => {
+    localStorage.setItem("auth_token", token);
+    dispatch({ type: "AUTH", payload: token });
   };
 
   const unAuthHandler = () => {
-    dispatch({ type: "UN-AUTH", payload: false });
+    localStorage.removeItem("auth_token");
+    dispatch({ type: "UN-AUTH" });
   };
 
   const value = {
