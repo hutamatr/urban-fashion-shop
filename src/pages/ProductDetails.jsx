@@ -12,7 +12,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [amount, setAmount] = useState(1);
   const { productId } = useParams();
-  const { requestHttp } = useAxios();
+  const { requestHttp, loading, error } = useAxios();
   const { addItem } = useCart();
 
   useEffect(() => {
@@ -46,58 +46,68 @@ const ProductDetails = () => {
 
   return (
     <>
-      <section className="grid grid-cols-1 border-b border-b-dark-brown md:grid-cols-2 md:items-center">
-        <img
-          src={image}
-          alt=""
-          className="md: h-52 w-full bg-white object-contain object-center p-4 md:h-72"
-        />
-        <div className="flex flex-col items-start justify-center gap-y-6 p-5 text-dark-brown">
-          <div className="flex flex-col gap-y-2">
-            <h1 className="text-2xl font-semibold uppercase">{title}</h1>
-            <span className="flex items-center">
-              <MdOutlineStar /> {rating?.rate} ({rating?.count})
+      {loading.isLoading ? (
+        <p className="my-[25vh] min-h-[50vh] text-center text-xl font-medium">
+          {loading.loadingMessage}
+        </p>
+      ) : error.isError ? (
+        <p className="my-[25vh] min-h-[50vh] text-center text-xl font-bold text-red-600">
+          {error.errorMessage}
+        </p>
+      ) : (
+        <section className="grid grid-cols-1 border-b border-b-dark-brown md:grid-cols-2 md:items-center">
+          <img
+            src={image}
+            alt=""
+            className="md: h-52 w-full bg-white object-contain object-center p-4 md:h-72"
+          />
+          <div className="flex flex-col items-start justify-center gap-y-6 p-5 text-dark-brown">
+            <div className="flex flex-col gap-y-2">
+              <h1 className="text-2xl font-semibold uppercase">{title}</h1>
+              <span className="flex items-center">
+                <MdOutlineStar /> {rating?.rate} ({rating?.count})
+              </span>
+            </div>
+            <span className="font-semibold">
+              Rp. {`${price ? formatCurrency(price) : "-"}`}
             </span>
-          </div>
-          <span className="font-semibold">
-            Rp. {`${price ? formatCurrency(price) : "-"}`}
-          </span>
-          <div className="flex max-w-fit border-2 border-dark-brown">
+            <div className="flex max-w-fit border-2 border-dark-brown">
+              <button
+                onClick={decreaseAmountHandler}
+                className="py-2 px-4 text-lg font-bold"
+              >
+                -
+              </button>
+              <form action="">
+                <input
+                  type="text"
+                  value={amount < 1 ? setAmount(1) : amount}
+                  min="1"
+                  max="10"
+                  readOnly
+                  className="h-full w-10 border-none bg-white-bone text-center"
+                />
+              </form>
+              <button
+                onClick={increaseAmountHandler}
+                className="py-2 px-4 text-lg font-bold"
+              >
+                +
+              </button>
+            </div>
+            <p className="text-sm">{description}</p>
+            <span className="text-xs font-medium uppercase">
+              Category : {category}
+            </span>
             <button
-              onClick={decreaseAmountHandler}
-              className="py-2 px-4 text-lg font-bold"
+              className="w-full border border-dark-brown py-3 font-medium uppercase duration-300 hover:bg-dark-brown hover:text-white-bone"
+              onClick={addToCartHandler}
             >
-              -
-            </button>
-            <form action="">
-              <input
-                type="text"
-                value={amount < 1 ? setAmount(1) : amount}
-                min="1"
-                max="10"
-                readOnly
-                className="h-full w-10 border-x border-x-dark-brown bg-white-bone text-center outline-none"
-              />
-            </form>
-            <button
-              onClick={increaseAmountHandler}
-              className="py-2 px-4 text-lg font-bold"
-            >
-              +
+              Add to Cart
             </button>
           </div>
-          <p className="text-sm">{description}</p>
-          <span className="text-xs font-medium uppercase">
-            Category : {category}
-          </span>
-          <button
-            className="w-full border border-dark-brown py-3 font-medium uppercase duration-300 hover:bg-dark-brown hover:text-white-bone"
-            onClick={addToCartHandler}
-          >
-            Add to Cart
-          </button>
-        </div>
-      </section>
+        </section>
+      )}
       <Review />
       <OtherProduct />
     </>

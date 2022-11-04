@@ -6,13 +6,18 @@ import Hero from "../components/Home/Hero";
 import FashionProducts from "../components/Home/FashionProducts";
 import BestSellers from "../components/Home/BestSellers";
 import OurPhilosophy from "../components/Home/OurPhilosophy";
+import ToastAlert from "../components/UI/ToastAlert";
 import useAxios from "../hooks/useAxios";
+import { useAuth } from "../hooks/useStoreContext";
 
 const Home = () => {
   const [dataProduct, setDataProduct] = useState([]);
   const { requestHttp, loading, error } = useAxios();
+  const { authSuccess, setAuthSuccess, unAuthSuccess, setUnAuthSuccess } =
+    useAuth();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     requestHttp(
       {
         method: "GET",
@@ -27,7 +32,7 @@ const Home = () => {
     <ul className="grid min-h-fit grid-cols-2 content-center gap-3 md:content-center">
       {dataProduct.map((product) => {
         return (
-          <li key={product.id} className="">
+          <li key={product.id}>
             {loading.isLoading ? (
               <p className="mx-auto text-center font-manrope font-light uppercase text-dark-brown">
                 {loading.loadingMessage}
@@ -48,6 +53,22 @@ const Home = () => {
 
   return (
     <>
+      {authSuccess.isSuccess && (
+        <ToastAlert
+          children={authSuccess.successMessage}
+          icons={"success"}
+          onSuccess={authSuccess.isSuccess}
+          onSetSuccess={setAuthSuccess}
+        />
+      )}
+      {unAuthSuccess.isSuccess && (
+        <ToastAlert
+          children={unAuthSuccess.successMessage}
+          icons={"success"}
+          onSuccess={unAuthSuccess.isSuccess}
+          onSetSuccess={setUnAuthSuccess}
+        />
+      )}
       <Hero />
       <section className="grid min-h-max grid-cols-1 gap-8 p-6 md:my-20 md:min-h-fit md:grid-cols-2 md:grid-rows-1 md:gap-10 md:p-10">
         <div className="flex flex-col gap-y-8">
