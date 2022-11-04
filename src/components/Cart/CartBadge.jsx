@@ -3,28 +3,35 @@ import { Link } from "react-router-dom";
 
 import { CgShoppingCart } from "react-icons/cg";
 
-const CartBadge = ({ onCartItems }) => {
+const CartBadge = ({ onCartItems, className }) => {
   const [badgePulse, setBadgePulse] = useState(false);
 
   useEffect(() => {
     if (onCartItems) {
       setBadgePulse(true);
-      setTimeout(() => {
-        setBadgePulse(false);
-      }, 900);
     }
+    const timer = setTimeout(() => {
+      setBadgePulse(false);
+    }, 700);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [onCartItems]);
 
   return (
-    <Link to={"/cart"} className="relative flex items-center justify-center">
+    <Link
+      to={"/cart"}
+      className={`relative flex items-center justify-center ${className}`}
+    >
       <span
-        className={`absolute -top-3 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-dark-brown text-xs font-semibold text-white-bone md:hidden ${
+        className={`absolute -top-3 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-dark-brown text-xs font-semibold text-white-bone ${
           onCartItems < 1 ? "hidden" : "block"
         } ${badgePulse ? "animate-pulse" : ""}`}
       >
         {onCartItems}
       </span>
-      <CgShoppingCart className="text-2xl md:hidden" />
+      <CgShoppingCart className="text-2xl text-dark-brown" />
     </Link>
   );
 };

@@ -11,13 +11,13 @@ const SortProduct = ({ onNavigate, onSortedProduct }) => {
   };
 
   return (
-    <form className="flex max-w-full items-center justify-center gap-x-4 border-b border-b-dark-brown py-4">
+    <form className="flex max-w-full items-center justify-end gap-x-4 p-4">
       <select
         name="sort"
         id="sort"
         onChange={sortProductHandler}
         value={sortProduct}
-        className="text-md cursor-pointer bg-white-bone uppercase"
+        className="text-md cursor-pointer border-none bg-white-bone uppercase"
       >
         {onSortedProduct ? (
           <>

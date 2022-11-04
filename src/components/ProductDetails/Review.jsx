@@ -29,7 +29,7 @@ const Review = () => {
       id: Date.now(),
       message: reviewInput,
       rating: rating,
-      date: new Date().toISOString(),
+      date: new Date().toLocaleString(),
     };
 
     setReviewData((prevState) => [...prevState, reviewMessage]);
@@ -43,16 +43,19 @@ const Review = () => {
     reviewData.length === 0 ? (
       <p>No Review</p>
     ) : (
-      <ul>
+      <ul className="flex max-h-60 w-full flex-col gap-y-4 overflow-y-auto p-4">
         {reviewData.map((review) => {
           return (
-            <li key={review.id} className="flex flex-col">
-              <p>{review.message}</p>
-              <span className="flex items-center gap-x-1">
+            <li
+              key={review.id}
+              className="flex flex-col gap-y-2 rounded-md border border-dark-brown p-4"
+            >
+              <p className="text-lg font-medium">{review.message}</p>
+              <span className="flex items-center gap-x-1 text-sm">
                 <MdOutlineStar />
                 {review.rating}
               </span>
-              <span>{review.date}</span>
+              <span className="text-xs">{review.date}</span>
             </li>
           );
         })}
@@ -64,11 +67,11 @@ const Review = () => {
       <h1 className="font-noto text-2xl uppercase">Review</h1>
       <Button
         className={
-          "w-full py-3 duration-300 hover:bg-dark-brown hover:text-white-bone"
+          "w-full py-3 px-4 duration-300 hover:bg-dark-brown hover:text-white-bone md:mx-auto md:max-w-fit "
         }
         onClick={showReviewInputHandler}
       >
-        Write a Review
+        {isReviewShow ? "Cancel Review" : "Write a Review"}
       </Button>
       {isReviewShow && (
         <form

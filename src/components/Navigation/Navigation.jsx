@@ -1,73 +1,82 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, Link } from "react-router-dom";
 
 import { CgMenuRight, CgClose } from "react-icons/cg";
 
-import NavigationLinks from "./NavigationLinks";
 import CartBadge from "../Cart/CartBadge";
-import CartContext from "../../store/CartContext";
+import { useCart, useAuth } from "../../hooks/useStoreContext";
 
-export const links = [
-  { to: "/shop", name: "Shop" },
-  { to: "/sale", name: "Sale" },
-  { to: "/contact", name: "Contact" },
-  { to: "/about", name: "About" },
-  { to: "/login", name: "Login" },
-  { to: "/cart", name: "Cart" },
-];
 const Navigation = () => {
   const [menuView, setMenuView] = useState(false);
-  const { items } = useContext(CartContext);
+  const { items } = useCart();
+  const { isAuth, unAuth } = useAuth();
 
   const cartItemsTotal = items.reduce((curr, item) => {
     return curr + item.amount;
   }, 0);
 
   const menuHandler = () => setMenuView((prevState) => !prevState);
-
-  const LinksContent = (number, operator) => {
-    const operatorFunc = {
-      ">": (x, y) => x > y,
-      "<": (x, y) => x < y,
-    };
-    return links.map((link, index) => {
-      return operatorFunc[operator](index, number) ? (
-        <NavigationLinks key={index} to={link.to} children={link.name} />
-      ) : null;
-    });
-  };
+  const menuViewClose = () => setMenuView(false);
 
   return (
-    <nav className="fixed top-0 flex w-full max-w-6xl flex-row items-center justify-between border-x border-b border-dark-brown border-x-dark-brown bg-white-bone p-4 text-sm uppercase md:p-0 md:py-1">
-      <ul
-        className={`absolute top-full right-0 flex min-h-screen min-w-[70%] flex-col items-center gap-y-8 border-l border-b border-dark-brown bg-white-bone py-6 duration-500 md:static md:min-h-fit md:min-w-fit md:flex-row md:gap-x-px md:border-none md:bg-transparent md:py-0 md:px-0 ${
-          !menuView ? "-right-[100vw]" : ""
-        }`}
-      >
-        {LinksContent(4, "<")}
-      </ul>
-      <Link to={"/"} replace={true}>
-        <h1 className="font-noto text-2xl font-semibold md:translate-x-1/3">
-          !unknown
-        </h1>
+    <nav className="relative mx-auto flex max-w-6xl flex-row items-center justify-between bg-white-bone p-4 sm:static">
+      <Link to={"/"} replace={true} className="flex items-center gap-x-3">
+        <h1 className="font-noto text-2xl font-semibold">!unknown</h1>
       </Link>
-      <div className="flex flex-row items-center justify-center gap-x-6">
-        <CartBadge onCartItems={cartItemsTotal} />
-        <button onClick={menuHandler}>
-          {!menuView ? (
-            <CgMenuRight className="text-2xl md:hidden" />
+      <div className="flex flex-row gap-x-6">
+        <CartBadge onCartItems={cartItemsTotal} className="sm:hidden" />
+        <button className="sm:hidden" onClick={menuHandler}>
+          {menuView ? (
+            <CgClose className="h-6 w-6" />
           ) : (
-            <CgClose className="text-2xl md:hidden" />
+            <CgMenuRight className="h-6 w-6" />
           )}
         </button>
       </div>
-
       <ul
-        className={`absolute top-[45vh] right-0 flex min-w-[70%] flex-col-reverse items-center justify-center gap-y-8 py-4 duration-500 md:static md:min-w-fit md:flex-row md:gap-x-px md:py-0 md:px-0 ${
-          !menuView ? "-right-[100vw]" : ""
+        className={`absolute right-0 top-16 flex min-h-[50vh] w-[100vw] flex-col items-center gap-y-6 rounded-b-xl bg-white-bone py-4 px-6 text-center font-manrope text-sm font-semibold uppercase text-neutral-500 shadow-md duration-700 sm:static sm:top-0 sm:min-h-0 sm:w-auto sm:translate-x-0 sm:flex-row sm:items-center sm:gap-x-8 sm:bg-transparent sm:py-0 sm:opacity-100 sm:shadow-none ${
+          menuView ? "top-0" : "-top-[100vh] opacity-0"
         }`}
       >
-        {LinksContent(3, ">")}
+        <li
+          onClick={menuViewClose}
+          className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
+        >
+          <NavLink to={"/"}>Home</NavLink>
+        </li>
+        <li
+          onClick={menuViewClose}
+          className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
+        >
+          <NavLink to={"/shop"}>Shop</NavLink>
+        </li>
+
+        {isAuth && (
+          <li
+            onClick={menuViewClose}
+            className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
+          >
+            <NavLink to={"/account"}>My Account</NavLink>
+          </li>
+        )}
+
+        <li
+          onClick={menuViewClose}
+          className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
+        >
+          {isAuth ? (
+            <NavLink
+              to={"/"}
+              onClick={() => unAuth(true, "Logout Successfully")}
+            >
+              logout
+            </NavLink>
+          ) : (
+            <NavLink to={"/login"}>Login</NavLink>
+          )}
+        </li>
+
+        <CartBadge onCartItems={cartItemsTotal} className="hidden sm:block" />
       </ul>
     </nav>
   );

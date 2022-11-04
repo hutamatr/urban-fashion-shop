@@ -7,14 +7,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
 
 body {
-  /* background-color: #e6e1dc; */
-  background-image: url("../src/assets/image/patternpad.svg");
-  background-size: contain;
-  background-position: center;
+  background-color: #e6e1dc;
   font-family: "Manrope";
   color: #3f362f;
 }
 
-.layout {
+/* .layout {
   @apply max-w-5xl;
+} */
+
+::-webkit-scrollbar {
+  width: 0.65rem;
+}
+
+::-webkit-scrollbar:hover {
+  width: 1rem;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 1rem;
+  background: #E6E1DC;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3F362F;
+  border-radius: 1rem;
+  border: 3px solid #E6E1DC;
 }

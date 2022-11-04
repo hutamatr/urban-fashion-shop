@@ -50,30 +50,32 @@ const AllProduct = () => {
   }, [requestHttp]);
 
   const productContent = (
-    <ul className="grid grid-cols-2 gap-3 bg-white-bone p-6 sm:grid-cols-4 lg:grid-cols-6">
-      {sortedQuotes.map((product) => {
-        return (
-          <li key={product.id}>
-            {loading.isLoading ? (
-              <p className="mx-auto text-center font-medium uppercase">
-                {loading.loadingMessage}
-              </p>
-            ) : (
-              <Link to={`${product.id}`}>
-                <Figure
-                  {...product}
-                  classImage="object-contain h-52 w-48 bg-white object-center p-4"
-                />
-              </Link>
-            )}
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      {loading.isLoading ? (
+        <p className="mx-auto my-[25vh] min-h-[50vh] text-center font-semibold uppercase">
+          {loading.loadingMessage}
+        </p>
+      ) : (
+        <ul className="grid grid-cols-2 gap-3 bg-white-bone p-6 sm:grid-cols-4 lg:grid-cols-6">
+          {sortedQuotes.map((product) => {
+            return (
+              <li key={product.id}>
+                <Link to={`${product.id}`}>
+                  <Figure
+                    {...product}
+                    classImage="object-contain h-52 w-48 bg-white object-center p-4"
+                  />
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </>
   );
 
   return (
-    <section className="flex min-w-full flex-col border-b border-b-dark-brown">
+    <section className="flex min-w-full flex-col">
       <SortProduct
         onNavigate={navigate}
         onSortedProduct={isSortedProductList}

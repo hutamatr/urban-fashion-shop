@@ -1,24 +1,20 @@
 import React from "react";
+import { Carousel } from "flowbite-react";
+
+import heroImage1 from "../../assets/image/hero-image-1.webp";
+import heroImage2 from "../../assets/image/hero-image-2.webp";
+import heroImage3 from "../../assets/image/hero-image-3.webp";
 
 const Hero = () => {
+  const heroImage = [heroImage1, heroImage2, heroImage3];
   return (
-    <section className="min-h-screen border-b border-dark-brown bg-hero-image bg-cover bg-center">
-      <div className="mx-auto mt-10 grid min-h-screen grid-cols-1 items-center justify-items-center px-6 text-center md:max-w-[70vw]">
-        <h1 className="font-noto text-4xl font-medium uppercase md:text-6xl">
-          Fashions fade, style is eternal.
-        </h1>
-
-        <div className="flex flex-col items-center justify-center gap-y-2">
-          <h2 className="border-b-2 border-b-dark-brown font-noto text-2xl font-semibold uppercase md:text-3xl">
-            Lorem, ipsum dolor sit amet consectetur adipisicing.
-          </h2>
-          <p className="md:text-md font-manrope font-medium">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis ipsa
-            similique laudantium quasi molestiae ratione!
-          </p>
-        </div>
-      </div>
-    </section>
+    <div className="h-56 sm:h-72 xl:h-[85vh] 2xl:h-[50vh]">
+      <Carousel>
+        {heroImage.map((image, index) => (
+          <img src={image} alt={`hero-${index}`} key={index} />
+        ))}
+      </Carousel>
+    </div>
   );
 };
 

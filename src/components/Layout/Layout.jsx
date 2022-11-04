@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
 import Navigation from "../Navigation/Navigation";
 import Footer from "../Footer/Footer";
@@ -6,14 +7,16 @@ import ScrollTop from "../UI/ScrollTop";
 
 const Layout = ({ children }) => {
   return (
-    <div className="mx-auto max-w-6xl border-x border-x-dark-brown bg-white-bone">
-      <header>
+    <>
+      <header className="sticky top-0 z-50 w-full bg-white-bone">
         <Navigation />
       </header>
-      <main>{children}</main>
+      <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-y-5">
+        <Outlet />
+      </main>
       <Footer />
       <ScrollTop />
-    </div>
+    </>
   );
 };
 

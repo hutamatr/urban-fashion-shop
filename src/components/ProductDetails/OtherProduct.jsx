@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import Figure from "../UI/Figure";
 
@@ -12,33 +13,37 @@ const OtherProduct = () => {
     requestHttp(
       {
         method: "GET",
-        url: `products?limit=3`,
+        url: `products?limit=4`,
       },
       (data) => setOtherProduct(data)
     );
   }, [requestHttp]);
 
   return (
-    <section className="">
-      <h1>You May Also Like</h1>
-      <ul className="">
-        {loading.isLoading ? (
-          <p>{loading.loadingMessage}</p>
-        ) : (
-          <>
-            {otherProduct.map((product) => {
-              return (
-                <li key={product.id}>
+    <section className="mb-6 flex flex-col gap-y-6">
+      <h1 className="p-4 text-center font-noto text-3xl font-semibold sm:text-left">
+        You May Also Like
+      </h1>
+      {loading.isLoading ? (
+        <p className="text-center text-xl font-medium">
+          {loading.loadingMessage}
+        </p>
+      ) : (
+        <ul className="flex flex-col justify-around sm:flex-row">
+          {otherProduct.map((product) => {
+            return (
+              <li key={product.id}>
+                <Link to={`/shop/${product.id}`}>
                   <Figure
                     {...product}
                     classImage="object-contain h-52 w-48 bg-white object-center p-4"
                   />
-                </li>
-              );
-            })}
-          </>
-        )}
-      </ul>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </section>
   );
 };

@@ -10,7 +10,7 @@ const NewsLetter = () => {
   };
 
   return (
-    <section className="flex flex-col items-center gap-y-2 border-b border-b-dark-brown p-6 md:mx-0 md:min-h-fit md:min-w-[40%] md:border-r md:border-r-dark-brown md:border-b-transparent md:p-10">
+    <section className="flex flex-col items-center gap-y-2 border-y border-y-dark-brown p-6 md:mx-0 md:min-h-fit md:min-w-[40%] md:border-r md:border-r-dark-brown md:border-b-transparent md:p-10">
       <h2 className="font-noto text-2xl font-medium uppercase md:text-3xl">
         NewsLetter
       </h2>
@@ -23,9 +23,11 @@ const NewsLetter = () => {
           type="email"
           ref={inputRef}
           placeholder="Email"
-          className="max-w-sm bg-white-bone p-2 text-sm uppercase outline-none placeholder:text-dark-brown"
+          className="max-w-sm border-none bg-white-bone p-2 text-sm outline-none placeholder:uppercase placeholder:text-dark-brown"
         />
-        <button className="text-sm uppercase">Submit</button>
+        <button className="py-2 px-3 text-sm uppercase duration-300 hover:bg-dark-brown hover:text-white-bone">
+          Submit
+        </button>
       </form>
     </section>
   );

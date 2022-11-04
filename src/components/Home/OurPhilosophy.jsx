@@ -4,7 +4,7 @@ import philosophyImage from "../../assets/image/philosophy-image.webp";
 
 const OurPhilosophy = () => {
   return (
-    <section className="grid min-h-fit grid-cols-1 gap-y-4 border-b border-b-dark-brown p-6 md:grid-cols-2 md:gap-6 md:p-10">
+    <section className="grid min-h-fit grid-cols-1 gap-y-4 p-6 md:grid-cols-2 md:gap-6 md:p-10">
       <div className="flex flex-col gap-y-4">
         <h1 className="font-noto text-4xl uppercase lg:text-5xl">
           Our Philosophy
