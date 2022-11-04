@@ -4,11 +4,16 @@ export const CartContext = React.createContext({
   items: [],
   totalPriceAmount: 0,
   addItem: (item) => {},
-  removeItem: (id) => {},
+  decreaseItem: (id) => {},
+  deleteItem: (id) => {},
 });
 
 export const AuthContext = React.createContext({
   isAuth: false,
   auth: () => {},
   unAuth: () => {},
+  authSuccess: {},
+  setAuthSuccess: {},
+  unAuthSuccess: {},
+  setUnAuthSuccess: {},
 });
