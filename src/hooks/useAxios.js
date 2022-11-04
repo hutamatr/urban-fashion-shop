@@ -51,7 +51,7 @@ const useAxios = () => {
     setLoading({ isLoading: false, loadingMessage: "" });
   }, []);
 
-  return { requestHttp, loading, error };
+  return { requestHttp, loading, error, setError };
 };
 
 export default useAxios;
