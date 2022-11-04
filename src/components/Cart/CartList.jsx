@@ -5,7 +5,7 @@ import { useCart } from "../../hooks/useStoreContext";
 import { formatCurrencyToFixed } from "../../utils/formatCurrency";
 
 const CartList = () => {
-  const { items, addItem, removeItem } = useCart();
+  const { items, addItem, decreaseItem, deleteItem } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +22,11 @@ const CartList = () => {
     });
   };
   const decreaseItemHandler = (id) => {
-    removeItem(id);
+    decreaseItem(id);
+  };
+
+  const removeCartHandler = (id) => {
+    deleteItem(id);
   };
 
   return (
@@ -54,7 +58,7 @@ const CartList = () => {
                   className="w-32 border-r border-r-dark-brown bg-white object-contain p-4"
                 />
                 <div className="flex w-full flex-col gap-y-3 p-4">
-                  <p className="font-medium uppercase">{title}</p>
+                  <p className="text-sm font-medium uppercase">{title}</p>
                   <div className="flex flex-row gap-x-2">
                     <button
                       className="text-xl font-bold"
@@ -76,9 +80,12 @@ const CartList = () => {
                     </button>
                   </div>
                   <span className="text-sm font-bold">
-                    Rp. {formatCurrencyToFixed(price)} x {amount}
+                    @ Rp. {formatCurrencyToFixed(price)} x {amount}
                   </span>
-                  <button className="max-w-fit self-end px-3 py-2 text-sm duration-300 hover:bg-dark-brown hover:text-white-bone">
+                  <button
+                    className="max-w-fit self-end px-3 py-2 text-sm duration-300 hover:bg-dark-brown hover:text-white-bone"
+                    onClick={removeCartHandler.bind(null, id)}
+                  >
                     Remove
                   </button>
                 </div>
