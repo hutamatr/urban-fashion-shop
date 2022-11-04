@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import { links } from "../Navigation/Navigation";
 import useAxios from "../../hooks/useAxios";
+import { useAuth } from "../../hooks/useStoreContext";
 
 const NavigationFooter = () => {
   const [categories, setCategories] = useState([]);
-
+  const { isAuth, unAuth } = useAuth();
   const { requestHttp } = useAxios();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     requestHttp(
       {
         method: "GET",
@@ -38,15 +39,40 @@ const NavigationFooter = () => {
       <div className="flex flex-col gap-y-3 uppercase md:gap-y-2">
         <h3 className="font-manrope text-sm font-medium">Menu</h3>
         <ul className="flex flex-col gap-y-2 md:gap-y-1">
-          {links.map((link, index) => {
-            return index < 4 || index > 4 ? (
-              <li key={index}>
-                <Link to={link.to} className="font-manrope text-xs">
-                  {link.name}
-                </Link>
-              </li>
-            ) : null;
-          })}
+          <li>
+            <Link to={"/"} className="font-manrope text-xs">
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link to={"/shop"} className="font-manrope text-xs">
+              Shop
+            </Link>
+          </li>
+          {isAuth && (
+            <li>
+              <Link to={"/account"} className="font-manrope text-xs">
+                My Account
+              </Link>
+            </li>
+          )}
+          {isAuth ? (
+            <li>
+              <Link
+                to={"/"}
+                className="font-manrope text-xs"
+                onClick={() => unAuth(true, "Logout Successfully")}
+              >
+                Logout
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <Link to={"/login"} className="font-manrope text-xs">
+                Login
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </section>
