@@ -7,20 +7,28 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
+import RequireAuth from "./components/Auth/RequireAuth";
 import ProductDetails from "./pages/ProductDetails";
+import MyAccount from "./pages/MyAccount";
+import { useAuth } from "./hooks/useStoreContext";
 
 const App = () => {
+  const { isAuth } = useAuth();
+
   return (
-    <Layout>
-      <Routes>
+    <Routes>
+      <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="shop" element={<Shop />} />
         <Route path="shop/:productId" element={<ProductDetails />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-      </Routes>
-    </Layout>
+        <Route path="login" element={isAuth ? <Home /> : <Login />} />
+        <Route path="register" element={isAuth ? <Home /> : <Register />} />
+        <Route element={<RequireAuth />}>
+          <Route path="account" element={<MyAccount />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import Figure from "../UI/Figure";
 
@@ -32,10 +33,12 @@ const OtherProduct = () => {
           {otherProduct.map((product) => {
             return (
               <li key={product.id}>
-                <Figure
-                  {...product}
-                  classImage="object-contain h-52 w-48 bg-white object-center p-4"
-                />
+                <Link to={`/shop/${product.id}`}>
+                  <Figure
+                    {...product}
+                    classImage="object-contain h-52 w-48 bg-white object-center p-4"
+                  />
+                </Link>
               </li>
             );
           })}

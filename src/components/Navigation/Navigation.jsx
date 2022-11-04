@@ -4,25 +4,19 @@ import { NavLink, Link } from "react-router-dom";
 import { CgMenuRight, CgClose } from "react-icons/cg";
 
 import CartBadge from "../Cart/CartBadge";
-import { useCart } from "../../hooks/useStoreContext";
+import { useCart, useAuth } from "../../hooks/useStoreContext";
 
-export const links = [
-  { to: "/", name: "Home" },
-  { to: "/shop", name: "Shop" },
-  { to: "/login", name: "Login" },
-];
 const Navigation = () => {
   const [menuView, setMenuView] = useState(false);
   const { items } = useCart();
+  const { isAuth, unAuth } = useAuth();
 
   const cartItemsTotal = items.reduce((curr, item) => {
     return curr + item.amount;
   }, 0);
 
   const menuHandler = () => setMenuView((prevState) => !prevState);
-  const menuViewClose = (index) => {
-    setMenuView(false);
-  };
+  const menuViewClose = () => setMenuView(false);
 
   return (
     <nav className="relative mx-auto flex max-w-6xl flex-row items-center justify-between bg-white-bone p-4 sm:static">
@@ -44,17 +38,44 @@ const Navigation = () => {
           menuView ? "top-0" : "-top-[100vh] opacity-0"
         }`}
       >
-        {links.map((menuLink, index) => {
-          return (
-            <li
-              key={index}
-              onClick={menuViewClose.bind(null, index)}
-              className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
+        <li
+          onClick={menuViewClose}
+          className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
+        >
+          <NavLink to={"/"}>Home</NavLink>
+        </li>
+        <li
+          onClick={menuViewClose}
+          className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
+        >
+          <NavLink to={"/shop"}>Shop</NavLink>
+        </li>
+
+        {isAuth && (
+          <li
+            onClick={menuViewClose}
+            className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
+          >
+            <NavLink to={"/account"}>My Account</NavLink>
+          </li>
+        )}
+
+        <li
+          onClick={menuViewClose}
+          className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
+        >
+          {isAuth ? (
+            <NavLink
+              to={"/"}
+              onClick={() => unAuth(true, "Logout Successfully")}
             >
-              <NavLink to={menuLink.to}>{menuLink.name}</NavLink>
-            </li>
-          );
-        })}
+              logout
+            </NavLink>
+          ) : (
+            <NavLink to={"/login"}>Login</NavLink>
+          )}
+        </li>
+
         <CartBadge onCartItems={cartItemsTotal} className="hidden sm:block" />
       </ul>
     </nav>
