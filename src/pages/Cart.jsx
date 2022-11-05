@@ -17,7 +17,7 @@ const Cart = () => {
         <h1 className="font-noto text-3xl font-medium">Cart</h1>
       </div>
       <div
-        className={`grid grid-rows-1 sm:grid-cols-[3fr_1.5fr] sm:gap-x-4 ${
+        className={`grid grid-rows-1 md:grid-cols-[3fr_1.5fr] md:gap-x-4 ${
           totalCartItems < 1 ? "gap-y-[30vh]" : "gap-y-[20vh]"
         }`}
       >

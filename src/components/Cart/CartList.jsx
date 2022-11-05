@@ -61,8 +61,9 @@ const CartList = () => {
                   <p className="text-sm font-medium uppercase">{title}</p>
                   <div className="flex flex-row gap-x-2">
                     <button
-                      className="text-xl font-bold"
+                      className="text-2xl font-bold disabled:invisible"
                       onClick={decreaseItemHandler.bind(null, id)}
+                      disabled={amount === 1 ? true : false}
                     >
                       -
                     </button>
@@ -73,7 +74,7 @@ const CartList = () => {
                       className="max-w-[4rem] rounded p-1 text-center"
                     />
                     <button
-                      className="text-xl font-bold"
+                      className="text-2xl font-bold"
                       onClick={increaseItemHandler.bind(null, id)}
                     >
                       +
@@ -83,7 +84,7 @@ const CartList = () => {
                     @ Rp. {formatCurrencyToFixed(price)} x {amount}
                   </span>
                   <button
-                    className="max-w-fit self-end px-3 py-2 text-sm duration-300 hover:bg-dark-brown hover:text-white-bone"
+                    className="max-w-fit self-end px-3 py-2 text-sm font-semibold duration-300 hover:bg-dark-brown hover:text-white-bone"
                     onClick={removeCartHandler.bind(null, id)}
                   >
                     Remove

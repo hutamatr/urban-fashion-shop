@@ -51,7 +51,8 @@ const Login = () => {
         dataReq: loginInput,
       },
       (data) => {
-        auth(data?.token, "Login Successfully");
+        const expireDateLogin = new Date(new Date().getTime() + 86400 * 1000);
+        auth(data?.token, "Login Successfully", expireDateLogin.toISOString());
         navigate("/", { replace: true });
       }
     );

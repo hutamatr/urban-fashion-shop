@@ -4,13 +4,15 @@ import { MdOutlineStar } from "react-icons/md";
 
 import Review from "../components/ProductDetails/Review";
 import OtherProduct from "../components/ProductDetails/OtherProduct";
+import AddToCartModal from "../components/ProductDetails/AddToCartModal";
 import { formatCurrencyOnly, formatCurrency } from "../utils/formatCurrency";
-import useAxios from "../hooks/useAxios";
 import { useCart } from "../hooks/useStoreContext";
+import useAxios from "../hooks/useAxios";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [amount, setAmount] = useState(1);
+  const [isModalShow, setIsModalShow] = useState(false);
   const { productId } = useParams();
   const { requestHttp, loading, error } = useAxios();
   const { addItem } = useCart();
@@ -42,7 +44,12 @@ const ProductDetails = () => {
     };
 
     addItem(itemToOrder);
+    setIsModalShow(true);
   }, [addItem, amount, id, image, price, title]);
+
+  const closeModalBackdropHandler = () => {
+    setIsModalShow(false);
+  };
 
   return (
     <>
@@ -110,6 +117,12 @@ const ProductDetails = () => {
       )}
       <Review />
       <OtherProduct />
+      {isModalShow && (
+        <AddToCartModal
+          onCloseModalHandler={closeModalBackdropHandler}
+          {...product}
+        />
+      )}
     </>
   );
 };
