@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
-import { CartContext, AuthContext } from "../context/Context";
+import { CartContext, AuthContext, WishlistContext } from "../context/Context";
 
-export const useCart = () => useContext(CartContext);
-export const useAuth = () => useContext(AuthContext);
+export const useCart = () => useContext(CartContext),
+  useAuth = () => useContext(AuthContext),
+  useWish = () => useContext(WishlistContext);

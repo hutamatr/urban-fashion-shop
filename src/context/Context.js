@@ -17,3 +17,9 @@ export const AuthContext = React.createContext({
   unAuthSuccess: {},
   setUnAuthSuccess: {},
 });
+
+export const WishlistContext = React.createContext({
+  wishListItems: [],
+  addToWishList: (item) => {},
+  deleteWishList: (id) => {},
+});

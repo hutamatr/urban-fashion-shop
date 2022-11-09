@@ -10,6 +10,7 @@ import Cart from "./pages/Cart";
 import RequireAuth from "./components/Auth/RequireAuth";
 import ProductDetails from "./pages/ProductDetails";
 import MyAccount from "./pages/MyAccount";
+import Wishlist from "./components/Wishlist/Wishlist";
 import { useAuth } from "./hooks/useStoreContext";
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="register" element={isAuth ? <Home /> : <Register />} />
         <Route element={<RequireAuth />}>
           <Route path="account" element={<MyAccount />} />
+          <Route path="wishlist" element={<Wishlist />} />
         </Route>
       </Route>
     </Routes>
