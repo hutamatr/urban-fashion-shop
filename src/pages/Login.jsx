@@ -1,25 +1,32 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Spinner } from "flowbite-react";
+import { Spinner, Tooltip } from "flowbite-react";
 
-import FormInput from "../components/UI/FormInput";
+import LoginRegisterInput from "../components/UI/LoginRegisterInput";
 import ToastAlert from "../components/UI/ToastAlert";
 import validation from "../utils/validation";
 import useAxios from "../hooks/useAxios";
+import useFormState from "../hooks/useFormState";
 import { useAuth } from "../hooks/useStoreContext";
 
+const account = `For demo purposes, use this demo account. username : johnd, password : m38rmF$`;
+
 const Login = () => {
+  const { input, setInput, onChangeInputHandler } = useFormState({
+    username: "",
+    password: "",
+  });
+
   const usernameRef = useRef();
   const navigate = useNavigate();
   const { auth } = useAuth();
   const { requestHttp, error, setError, loading } = useAxios();
   const { userNameValidation, passwordValidation } = validation();
 
-  const [username, setUsername] = useState("");
   const [isValidUserName, setIsValidUserName] = useState(false);
-
-  const [password, setPassword] = useState("");
   const [isValidPassword, setIsValidPassword] = useState(false);
+
+  const { username, password } = input;
 
   useEffect(() => {
     const usernameValid = userNameValidation.test(username);
@@ -32,9 +39,6 @@ const Login = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     usernameRef.current.focus();
   }, []);
-
-  const usernameInputHandler = (event) => setUsername(event.target.value);
-  const passwordInputHandler = (event) => setPassword(event.target.value);
 
   const loginSubmitHandler = (event) => {
     event.preventDefault();
@@ -57,8 +61,10 @@ const Login = () => {
       }
     );
 
-    setUsername("");
-    setPassword("");
+    setInput({
+      username: "",
+      password: "",
+    });
   };
 
   return (
@@ -72,27 +78,41 @@ const Login = () => {
         />
       )}
       <section className="m-auto flex w-full flex-col gap-y-4 p-6 md:max-w-xs">
-        <h1 className="text-sm font-bold">Log In</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-sm font-bold">Log In</h1>
+          <Tooltip content={account} trigger="click">
+            <button
+              className="p-1 text-xs font-semibold ring-2 ring-dark-brown"
+              type="button"
+            >
+              Demo Account
+            </button>
+          </Tooltip>
+        </div>
         <form onSubmit={loginSubmitHandler} className="flex flex-col gap-y-2">
-          <FormInput
+          <LoginRegisterInput
             placeholder={"Username"}
+            name="username"
             input={username}
             type="text"
             ref={usernameRef}
-            onChange={usernameInputHandler}
+            onChange={onChangeInputHandler}
             isValidInput={isValidUserName}
           />
-          <FormInput
+
+          <LoginRegisterInput
             placeholder={"Password"}
+            name="password"
             input={password}
             type="password"
-            onChange={passwordInputHandler}
+            onChange={onChangeInputHandler}
             isValidInput={isValidPassword}
           />
 
           <button
             className="text flex flex-row items-center justify-center gap-x-2 bg-dark-brown py-3 font-light text-white disabled:cursor-not-allowed"
             disabled={!isValidUserName || !isValidPassword ? true : false}
+            type="submit"
           >
             {loading.isLoading && <Spinner />}
 

@@ -2,11 +2,20 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import validation from "../utils/validation";
-import FormInput from "../components/UI/FormInput";
+import LoginRegisterInput from "../components/UI/LoginRegisterInput";
 import { useAuth } from "../hooks/useStoreContext";
 import useAxios from "../hooks/useAxios";
+import useFormState from "../hooks/useFormState";
+import Button from "../components/UI/Button";
 
 const Register = () => {
+  const { input, setInput, onChangeInputHandler } = useFormState({
+    userName: "",
+    userEmail: "",
+    password: "",
+    passwordMatch: "",
+  });
+
   const userNameRef = useRef();
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -14,19 +23,21 @@ const Register = () => {
   const { userNameValidation, emailValidation, passwordValidation } =
     validation();
 
-  const [userName, setUserName] = useState("");
+  const { userName, userEmail, password, passwordMatch } = input;
+
+  // const [userName, setUserName] = useState("");
   const [isValidUserName, setIsValidUserName] = useState(false);
   const [isUserNameFocus, setIsUserNameFocus] = useState(false);
 
-  const [userEmail, setUserEmail] = useState("");
+  // const [userEmail, setUserEmail] = useState("");
   const [isValidUserEmail, setIsValidUserEmail] = useState(false);
   const [isUserEmailFocus, setIsUserEmailFocus] = useState(false);
 
-  const [password, setPassword] = useState("");
+  // const [password, setPassword] = useState("");
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [isPasswordFocus, setIsPasswordFocus] = useState(false);
 
-  const [passwordMatch, setPasswordMatch] = useState("");
+  // const [passwordMatch, setPasswordMatch] = useState("");
   const [isValidPasswordMatch, setIsValidPasswordMatch] = useState(false);
   const [isPasswordMatchFocus, setIsPasswordMatchFocus] = useState(false);
 
@@ -47,22 +58,21 @@ const Register = () => {
     setIsValidPasswordMatch(password === passwordMatch);
   }, [password, passwordMatch, passwordValidation]);
 
-  const userNameChangeHandler = (event) => setUserName(event.target.value);
-  const userNameFocusHandler = () =>
+  const userNameFocusHandler = () => {
     setIsUserNameFocus((prevState) => !prevState);
+  };
 
-  const userEmailChangeHandler = (event) => setUserEmail(event.target.value);
-  const userEmailFocusHandler = () =>
+  const userEmailFocusHandler = () => {
     setIsUserEmailFocus((prevState) => !prevState);
+  };
 
-  const passwordChangeHandler = (event) => setPassword(event.target.value);
-  const passwordFocusHandler = () =>
+  const passwordFocusHandler = () => {
     setIsPasswordFocus((prevState) => !prevState);
+  };
 
-  const passwordMatchChangeHandler = (event) =>
-    setPasswordMatch(event.target.value);
-  const passwordMatchFocusHandler = () =>
+  const passwordMatchFocusHandler = () => {
     setIsPasswordMatchFocus((prevState) => !prevState);
+  };
 
   const RegisterSubmitHandler = (event) => {
     event.preventDefault();
@@ -76,81 +86,77 @@ const Register = () => {
     requestHttp(
       {
         method: "POST",
-        url: "/accounts/register",
+        url: "/users",
         dataReq: registerFormInput,
       },
       (data) => {
-        login(data.data?.token);
+        login(data?.token);
         navigate("/home", { replace: true });
       }
     );
 
-    setUserName("");
-    setUserEmail("");
-    setPassword("");
-    setPasswordMatch("");
+    setInput({
+      userName: "",
+      userEmail: "",
+      password: "",
+      passwordMatch: "",
+    });
   };
 
   return (
     <section className="m-auto flex w-full flex-col gap-y-4 p-6 md:max-w-xs">
       <h1 className="text-sm font-bold">Sign Up</h1>
       <form onSubmit={RegisterSubmitHandler} className="flex flex-col gap-y-2">
-        <FormInput
+        <LoginRegisterInput
           placeholder={"Username"}
           isValidInput={isValidUserName}
           isFocusInput={isUserNameFocus}
+          name="userName"
           input={userName}
           ref={userNameRef}
           autoComplete={"off"}
           type="text"
-          onChange={userNameChangeHandler}
+          onChange={onChangeInputHandler}
           onFocus={userNameFocusHandler}
           onBlur={userNameFocusHandler}
         />
-        <FormInput
+        <LoginRegisterInput
           placeholder={"Email"}
           isValidInput={isValidUserEmail}
           isFocusInput={isUserEmailFocus}
+          name="userEmail"
           input={userEmail}
           type="email"
-          onChange={userEmailChangeHandler}
+          onChange={onChangeInputHandler}
           onFocus={userEmailFocusHandler}
           onBlur={userEmailFocusHandler}
         />
-        <FormInput
+        <LoginRegisterInput
           placeholder={"Password"}
           isValidInput={isValidPassword}
           isFocusInput={isPasswordFocus}
+          name="password"
           input={password}
           type="password"
-          onChange={passwordChangeHandler}
+          onChange={onChangeInputHandler}
           onFocus={passwordFocusHandler}
           onBlur={passwordFocusHandler}
         />
-        <FormInput
+        <LoginRegisterInput
           placeholder={"Confirm Password"}
           isValidInput={isValidPasswordMatch}
           isFocusInput={isPasswordMatchFocus}
+          name="passwordMatch"
           input={passwordMatch}
           type="password"
-          onChange={passwordMatchChangeHandler}
+          onChange={onChangeInputHandler}
           onFocus={passwordMatchFocusHandler}
           onBlur={passwordMatchFocusHandler}
         />
 
-        <button
-          className="bg-dark-brown py-3 text-xs font-light text-white disabled:cursor-not-allowed"
-          disabled={
-            !isValidUserName ||
-            !isValidUserEmail ||
-            !isValidPassword ||
-            !isValidPasswordMatch
-              ? true
-              : false
-          }
-        >
+        <Button className="!bg-dark-brown py-3 text-xs font-light text-white disabled:cursor-not-allowed">
           Create Account
-        </button>
+        </Button>
       </form>
       <p className="text-center text-sm">
         Already have an account?{" "}
