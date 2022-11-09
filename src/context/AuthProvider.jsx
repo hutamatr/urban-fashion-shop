@@ -76,6 +76,7 @@ const AuthProvider = ({ children }) => {
   const unAuthHandler = useCallback((isUnAuth, successMessage) => {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("exp_token");
+    localStorage.removeItem("decode");
     dispatch({ type: "UN-AUTH" });
     if (isUnAuth) {
       setUnAuthSuccess({

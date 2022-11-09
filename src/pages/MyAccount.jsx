@@ -22,7 +22,7 @@ const MyAccount = () => {
 
   return (
     <>
-      <section className="flex min-h-[40vh] flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown p-6 md:min-h-fit md:py-12">
+      <section className="flex min-h-[30vh] flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown p-6 md:min-h-fit md:py-12">
         <h1 className="font-noto text-3xl uppercase md:text-4xl">My Account</h1>
         <div className="flex flex-col items-center justify-center gap-y-1">
           <span className="max-w-md text-lg font-medium uppercase">
