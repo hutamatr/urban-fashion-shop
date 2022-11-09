@@ -23,7 +23,7 @@ const NavigationFooter = () => {
   return (
     <section className="flex flex-col gap-y-6 border-b border-b-dark-brown p-6 text-center md:w-full md:flex-row md:justify-evenly md:border-t md:border-b-0 md:border-t-dark-brown md:text-start">
       <div className="flex flex-col gap-y-3 uppercase md:gap-y-2">
-        <h3 className="font-manrope text-sm font-medium">Category</h3>
+        <h3 className="font-manrope text-sm font-semibold">Category</h3>
         <ul className="flex flex-col gap-y-2 md:gap-y-1">
           {categories.map((category, index) => {
             return index > 0 ? (
@@ -37,7 +37,7 @@ const NavigationFooter = () => {
         </ul>
       </div>
       <div className="flex flex-col gap-y-3 uppercase md:gap-y-2">
-        <h3 className="font-manrope text-sm font-medium">Menu</h3>
+        <h3 className="font-manrope text-sm font-semibold">Menu</h3>
         <ul className="flex flex-col gap-y-2 md:gap-y-1">
           <li>
             <Link to={"/"} className="font-manrope text-xs">
