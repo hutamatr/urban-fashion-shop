@@ -2,13 +2,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MdOutlineStar } from "react-icons/md";
 
-import Review from "../components/ProductDetails/Review";
-import OtherProduct from "../components/ProductDetails/OtherProduct";
-import AddToCartModal from "../components/ProductDetails/AddToCartModal";
-import ToastAlert from "../components/UI/ToastAlert";
-import { formatCurrencyOnly, formatCurrency } from "../utils/formatCurrency";
-import { useCart, useWish, useAuth } from "../hooks/useStoreContext";
-import useAxios from "../hooks/useAxios";
+import Review from "../../components/ProductDetails/Review";
+import OtherProduct from "../../components/ProductDetails/OtherProduct";
+import AddToCartModal from "../../components/ProductDetails/AddToCartModal";
+import ToastAlert from "../../components/UI/ToastAlert";
+import { formatCurrencyOnly, formatCurrency } from "../../utils/formatCurrency";
+import { useCart, useWish, useAuth } from "../../hooks/useStoreContext";
+import useAxios from "../../hooks/useAxios";
 
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 

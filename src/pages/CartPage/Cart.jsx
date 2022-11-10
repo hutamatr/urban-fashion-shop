@@ -1,8 +1,8 @@
 import React from "react";
 
-import CartList from "../components/Cart/CartList";
-import ShoppingSummary from "../components/Cart/ShoppingSummary";
-import { useCart } from "../hooks/useStoreContext";
+import CartList from "../../components/Cart/CartList";
+import ShoppingSummary from "../../components/Cart/ShoppingSummary";
+import { useCart } from "../../hooks/useStoreContext";
 
 const Cart = () => {
   const { items } = useCart();

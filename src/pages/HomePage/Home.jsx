@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import Figure from "../components/UI/Figure";
-import Hero from "../components/Home/Hero";
-import FashionProducts from "../components/Home/FashionProducts";
-import BestSellers from "../components/Home/BestSellers";
-import OurPhilosophy from "../components/Home/OurPhilosophy";
-import ToastAlert from "../components/UI/ToastAlert";
-import useAxios from "../hooks/useAxios";
-import { useAuth } from "../hooks/useStoreContext";
+import Figure from "../../components/UI/Figure";
+import Hero from "../../components/Home/Hero";
+import FashionProducts from "../../components/Home/FashionProducts";
+import BestSellers from "../../components/Home/BestSellers";
+import OurPhilosophy from "../../components/Home/OurPhilosophy";
+import ToastAlert from "../../components/UI/ToastAlert";
+import useAxios from "../../hooks/useAxios";
+import { useAuth } from "../../hooks/useStoreContext";
 
 const Home = () => {
   const [dataProduct, setDataProduct] = useState([]);

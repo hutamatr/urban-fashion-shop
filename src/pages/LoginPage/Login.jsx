@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner, Tooltip } from "flowbite-react";
 
-import LoginRegisterInput from "../components/UI/LoginRegisterInput";
-import ToastAlert from "../components/UI/ToastAlert";
-import validation from "../utils/validation";
-import useAxios from "../hooks/useAxios";
-import useFormState from "../hooks/useFormState";
-import { useAuth } from "../hooks/useStoreContext";
+import LoginRegisterInput from "../../components/UI/LoginRegisterInput";
+import ToastAlert from "../../components/UI/ToastAlert";
+import validation from "../../utils/validation";
+import useAxios from "../../hooks/useAxios";
+import useFormState from "../../hooks/useFormState";
+import { useAuth } from "../../hooks/useStoreContext";
 
 const account = `For demo purposes, use this demo account. username : johnd, password : m38rmF$`;
 
