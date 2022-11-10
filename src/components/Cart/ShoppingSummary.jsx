@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "flowbite-react";
+import countryList from "react-select-country-list";
 
 import { useCart, useAuth } from "../../hooks/useStoreContext";
 import { formatCurrencyToFixed } from "../../utils/formatCurrency";
 import useFormState from "../../hooks/useFormState";
+import useAxios from "../../hooks/useAxios";
+import SelectItems from "../UI/SelectItems";
 import Button from "../UI/Button";
 import Input from "../UI/Input";
 
 const inputClassName =
   "w-full rounded-sm border-2 border-dark-brown bg-white-bone p-2 text-sm font-medium outline-none placeholder:text-sm focus:border-dark-brown focus:ring-0 placeholder:uppercase";
 
+const shippingCost = 20000;
+
 const ShoppingSummary = ({ totalCartItems }) => {
+  const [country, setCountry] = useState("");
   const { input, setInput, onChangeInputHandler } = useFormState({
     fullName: "",
     email: "",
@@ -18,16 +25,46 @@ const ShoppingSummary = ({ totalCartItems }) => {
     phone: "",
     zipCode: "",
     city: "",
-    state: "",
-    country: "",
+    province: "",
   });
 
-  const { fullName, email, street, phone, zipCode, city, state, country } =
-    input;
-
+  const { requestHttp, loading, error } = useAxios();
   const { totalPriceAmount } = useCart();
   const { isAuth } = useAuth();
   const navigate = useNavigate();
+  const countryOption = useMemo(() => countryList().getData(), []);
+
+  useEffect(() => {
+    const userId = JSON.parse(localStorage.getItem("decode"));
+    if (userId) {
+      requestHttp(
+        {
+          method: "GET",
+          url: `users/${userId.sub}`,
+        },
+        (data) => {
+          const {
+            name: { firstname, lastname },
+            email,
+            address: { city, number, street, zipcode },
+            phone,
+          } = data;
+
+          setInput((prevState) => ({
+            ...prevState,
+            email,
+            street: `${street}, ${number}`,
+            phone,
+            city,
+            fullName: `${firstname} ${lastname}`,
+            zipCode: zipcode,
+          }));
+        }
+      );
+    }
+  }, [requestHttp, setInput]);
+
+  const { fullName, email, street, phone, zipCode, city, province } = input;
 
   const OrderHandler = () => {
     if (isAuth) {
@@ -37,9 +74,38 @@ const ShoppingSummary = ({ totalCartItems }) => {
     }
   };
 
+  const countryChangeHandler = (value) => {
+    setCountry(value);
+  };
+
   const formSubmitHandler = (event) => {
     event.preventDefault();
-    console.log("formCheckOut", input);
+    if (
+      !fullName ||
+      !email ||
+      !street ||
+      !phone ||
+      !zipCode ||
+      !city ||
+      !province ||
+      !country
+    ) {
+      alert("error");
+      return;
+    }
+
+    console.log({
+      address: {
+        street,
+        city,
+        province,
+        country,
+        zipCode,
+      },
+      fullName,
+      email,
+      phone,
+    });
 
     setInput({
       fullName: "",
@@ -48,14 +114,22 @@ const ShoppingSummary = ({ totalCartItems }) => {
       phone: "",
       zipCode: "",
       city: "",
-      state: "",
-      country: "",
+      province: "",
     });
+    setCountry("");
   };
 
   return (
     <section className="flex flex-col gap-y-4">
-      <h3 className="text-lg font-semibold">Shipping detail</h3>
+      <div className="flex flex-row items-center gap-x-4">
+        <h3 className="text-lg font-semibold">Shipping detail</h3>
+        {loading.isLoading && <Spinner aria-label="Default status example" />}
+        {error.isError && (
+          <span className="text-xs font-medium text-red-600">
+            {error.errorMessage}
+          </span>
+        )}
+      </div>
       <form className="flex flex-col gap-y-3" onSubmit={formSubmitHandler}>
         <div className="grid w-full grid-cols-2 gap-2">
           <Input
@@ -94,7 +168,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
         <div className=" flex flex-row items-center gap-x-2">
           <Input
             name="zipCode"
-            type="number"
+            type="text"
             className={inputClassName}
             placeholder="zipcode"
             value={zipCode}
@@ -109,29 +183,47 @@ const ShoppingSummary = ({ totalCartItems }) => {
             onChange={onChangeInputHandler}
           />
           <Input
-            name="state"
+            name="province"
             type="text"
             className={inputClassName}
-            placeholder="state"
-            value={state}
+            placeholder="province"
+            value={province}
             onChange={onChangeInputHandler}
           />
         </div>
-        <Input
+        <SelectItems
           name="country"
-          type="text"
-          className={inputClassName}
-          placeholder="country"
+          options={countryOption}
           value={country}
-          onChange={onChangeInputHandler}
+          onChange={countryChangeHandler}
+          className={`${inputClassName} !p-0`}
+          placeholder="COUNTRY"
         />
-        <div className="my-4 flex justify-between sm:flex-row sm:items-center">
+        <div className="mt-4 flex justify-between sm:flex-row sm:items-center">
           <p>
-            Total Prices (<span className="font-medium">{totalCartItems}</span>
-            {totalCartItems === 1 ? "Item" : "Items"} ) :
+            Subtotal (<span className="font-medium">{totalCartItems}</span>
+            {totalCartItems === 1 ? " Item" : " Items"} ) :
           </p>
           <span className="font-medium">
             Rp. {formatCurrencyToFixed(totalPriceAmount)}
+          </span>
+        </div>
+        {totalCartItems >= 1 && (
+          <div className="flex justify-between border-b border-b-dark-brown pb-2 sm:flex-row sm:items-center">
+            <p>Shipping</p>
+            <span className="font-medium">
+              Rp. {formatCurrencyToFixed(shippingCost)}
+            </span>
+          </div>
+        )}
+
+        <div className="flex justify-between font-bold sm:flex-row sm:items-center">
+          <p>Total</p>
+          <span>
+            Rp.
+            {formatCurrencyToFixed(
+              totalPriceAmount + (totalCartItems >= 1 ? shippingCost : 0)
+            )}
           </span>
         </div>
         <Button

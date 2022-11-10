@@ -6,7 +6,7 @@ import SocialsMedia from "./SocialsMedia";
 
 const Footer = () => {
   return (
-    <footer className="mx-auto max-w-6xl border-x border-x-dark-brown">
+    <footer className="mx-auto max-w-full border-x border-x-dark-brown">
       <div className="md:flex md:border-b md:border-b-dark-brown">
         <NewsLetter />
         <NavigationFooter />
