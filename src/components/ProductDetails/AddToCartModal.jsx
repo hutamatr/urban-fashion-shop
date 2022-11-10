@@ -26,6 +26,7 @@ const AddToCartModal = ({ onCloseModalHandler, image, title, category }) => {
             src={image}
             alt={title}
             className="h-40 w-32 bg-white object-contain object-center p-4 ring-1 ring-dark-brown"
+            loading="lazy"
           />
           <h2 className="font-medium">
             {title} - {category}

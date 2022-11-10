@@ -88,6 +88,7 @@ const ProductDetails = () => {
             src={image}
             alt=""
             className="md: h-52 w-full bg-white object-contain object-center p-4 md:h-72"
+            loading="lazy"
           />
           <div className="flex flex-col items-start justify-center gap-y-6 p-5 text-dark-brown">
             <div className="flex flex-col gap-y-2">

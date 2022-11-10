@@ -11,7 +11,7 @@ const Hero = () => {
     <div className="h-56 sm:h-72 xl:h-[85vh] 2xl:h-[50vh]">
       <Carousel>
         {heroImage.map((image, index) => (
-          <img src={image} alt={`hero-${index}`} key={index} />
+          <img src={image} alt={`hero-${index}`} key={index} loading="lazy" />
         ))}
       </Carousel>
     </div>

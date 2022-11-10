@@ -56,6 +56,7 @@ const CartList = () => {
                   src={image}
                   alt={title}
                   className="w-32 border-r border-r-dark-brown bg-white object-contain p-4"
+                  loading="lazy"
                 />
                 <div className="flex w-full flex-col gap-y-3 p-4">
                   <p className="text-sm font-medium uppercase">{title}</p>

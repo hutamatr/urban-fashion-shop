@@ -14,7 +14,7 @@ const Figure = ({ image, title, price, id, classImage }) => {
         className={`border border-dark-brown ${classImage} hover:border-2`}
         loading="lazy"
       />
-      <figcaption className="max-w-fit px-2 text-xs uppercase duration-300">
+      <figcaption className="min-h-full max-w-fit px-2 text-xs uppercase duration-300">
         {title}
       </figcaption>
       <span className="flex items-center justify-self-end px-2 pb-2 text-sm font-semibold">

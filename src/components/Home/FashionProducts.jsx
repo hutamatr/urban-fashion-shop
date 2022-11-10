@@ -12,7 +12,12 @@ const FashionProducts = () => {
 
   return (
     <section className="flex min-h-screen flex-col bg-home-image bg-cover md:grid md:min-h-fit md:grid-cols-2 md:flex-row md:bg-none lg:min-h-[50vh]">
-      <img src={imageHome} alt="" className="hidden object-contain md:block" />
+      <img
+        src={imageHome}
+        alt=""
+        loading="lazy"
+        className="hidden object-contain md:block"
+      />
       <div className="grid min-h-screen grid-cols-1 content-end gap-4 p-6 md:min-h-fit md:content-between md:p-10">
         <div className="flex flex-col gap-y-3">
           <h1 className="max-w-fit bg-dark-brown bg-opacity-40 p-1 font-noto text-4xl uppercase text-white-bone sm:bg-transparent md:text-5xl md:text-dark-brown">
