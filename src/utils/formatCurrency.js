@@ -5,7 +5,7 @@ export const formatCurrency = (amount) => {
 };
 
 export const formatCurrencyOnly = (amount) => {
-  const exchangeRateRupiah = 14800;
+  const exchangeRateRupiah = 15000;
   return +amount * exchangeRateRupiah;
 };
 

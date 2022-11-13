@@ -2,14 +2,15 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Home from "./pages/Home";
-import Shop from "./pages/Shop";
-import Cart from "./pages/Cart";
+import Login from "./pages/LoginPage/Login";
+import Register from "./pages/RegisterPage/Register";
+import Home from "./pages/HomePage/Home";
+import Shop from "./pages/ShopPage/Shop";
+import Cart from "./pages/CartPage/Cart";
+import ProductDetails from "./pages/ProductDetailsPage/ProductDetails";
+import MyAccount from "./pages/MyAccountPage/MyAccount";
 import RequireAuth from "./components/Auth/RequireAuth";
-import ProductDetails from "./pages/ProductDetails";
-import MyAccount from "./pages/MyAccount";
+import Wishlist from "./components/Wishlist/Wishlist";
 import { useAuth } from "./hooks/useStoreContext";
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="register" element={isAuth ? <Home /> : <Register />} />
         <Route element={<RequireAuth />}>
           <Route path="account" element={<MyAccount />} />
+          <Route path="wishlist" element={<Wishlist />} />
         </Route>
       </Route>
     </Routes>

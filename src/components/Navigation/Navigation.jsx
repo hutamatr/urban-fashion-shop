@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
-import { CgMenuRight, CgClose } from "react-icons/cg";
-
+import DropdownNav from "./DropdownNav";
 import CartBadge from "../Cart/CartBadge";
 import { useCart, useAuth } from "../../hooks/useStoreContext";
+
+import { CgMenuRight, CgClose } from "react-icons/cg";
 
 const Navigation = () => {
   const [menuView, setMenuView] = useState(false);
   const { items } = useCart();
-  const { isAuth, unAuth } = useAuth();
+  const { isAuth } = useAuth();
 
   const cartItemsTotal = items.reduce((curr, item) => {
     return curr + item.amount;
@@ -25,6 +26,7 @@ const Navigation = () => {
       </Link>
       <div className="flex flex-row gap-x-6">
         <CartBadge onCartItems={cartItemsTotal} className="sm:hidden" />
+        {isAuth && <DropdownNav className="sm:hidden" />}
         <button className="sm:hidden" onClick={menuHandler}>
           {menuView ? (
             <CgClose className="h-6 w-6" />
@@ -51,32 +53,25 @@ const Navigation = () => {
           <NavLink to={"/shop"}>Shop</NavLink>
         </li>
 
-        {isAuth && (
+        {!isAuth && (
           <li
             onClick={menuViewClose}
             className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
           >
-            <NavLink to={"/account"}>My Account</NavLink>
+            <NavLink to={"/login"}>Login</NavLink>
           </li>
         )}
 
-        <li
-          onClick={menuViewClose}
-          className="w-fit px-2 py-1 text-dark-brown duration-300 hover:bg-dark-brown hover:text-white-bone"
-        >
-          {isAuth ? (
-            <NavLink
-              to={"/"}
-              onClick={() => unAuth(true, "Logout Successfully")}
-            >
-              logout
-            </NavLink>
-          ) : (
-            <NavLink to={"/login"}>Login</NavLink>
-          )}
-        </li>
-
         <CartBadge onCartItems={cartItemsTotal} className="hidden sm:block" />
+
+        {isAuth && (
+          <li>
+            <DropdownNav
+              onCloseMenu={menuViewClose}
+              className="hidden sm:block"
+            />
+          </li>
+        )}
       </ul>
     </nav>
   );

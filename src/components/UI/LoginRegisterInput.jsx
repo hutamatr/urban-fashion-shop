@@ -3,8 +3,9 @@ import React, { forwardRef, useState } from "react";
 import { MdDone, MdRemoveRedEye, MdOutlineRemoveRedEye } from "react-icons/md";
 
 import RegisterNote from "../Register/RegisterNote";
+import Input from "./Input";
 
-const FormInput = forwardRef(
+const LoginRegisterInput = forwardRef(
   (
     {
       id,
@@ -12,6 +13,7 @@ const FormInput = forwardRef(
       isValidInput,
       autoComplete,
       input,
+      name,
       type,
       onChange,
       onFocus,
@@ -28,9 +30,10 @@ const FormInput = forwardRef(
         <div
           className={`flex flex-row items-center justify-between border-2 border-dark-brown bg-white-bone`}
         >
-          <input
-            required
+          <Input
+            required={true}
             type={isPassView ? "text" : type}
+            name={name}
             id={id}
             value={input}
             autoComplete={autoComplete ? autoComplete : null}
@@ -70,4 +73,4 @@ const FormInput = forwardRef(
   }
 );
 
-export default FormInput;
+export default LoginRegisterInput;
