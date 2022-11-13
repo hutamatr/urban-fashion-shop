@@ -4,17 +4,15 @@ import { Spinner } from "flowbite-react";
 import countryList from "react-select-country-list";
 
 import { useCart, useAuth } from "../../hooks/useStoreContext";
-import { formatCurrencyToFixed } from "../../utils/formatCurrency";
 import useFormState from "../../hooks/useFormState";
 import useAxios from "../../hooks/useAxios";
+import TotalPricesOrder from "./TotalPricesOrder";
 import SelectItems from "../UI/SelectItems";
 import Button from "../UI/Button";
 import Input from "../UI/Input";
 
 const inputClassName =
   "w-full rounded-sm border-2 border-dark-brown bg-white-bone p-2 text-sm font-medium outline-none placeholder:text-sm focus:border-dark-brown focus:ring-0 placeholder:uppercase";
-
-const shippingCost = 20000;
 
 const ShoppingSummary = ({ totalCartItems }) => {
   const [country, setCountry] = useState("");
@@ -66,7 +64,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
 
   const { fullName, email, street, phone, zipCode, city, province } = input;
 
-  const OrderHandler = () => {
+  const orderHandler = () => {
     if (isAuth) {
       //
     } else {
@@ -80,19 +78,6 @@ const ShoppingSummary = ({ totalCartItems }) => {
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
-    if (
-      !fullName ||
-      !email ||
-      !street ||
-      !phone ||
-      !zipCode ||
-      !city ||
-      !province ||
-      !country
-    ) {
-      alert("error");
-      return;
-    }
 
     console.log({
       address: {
@@ -105,6 +90,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
       fullName,
       email,
       phone,
+      orderAt: new Date().toISOString(),
     });
 
     setInput({
@@ -139,6 +125,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
             placeholder="full name"
             value={fullName}
             onChange={onChangeInputHandler}
+            required={true}
           />
           <Input
             name="email"
@@ -147,6 +134,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
             value={email}
             placeholder="email"
             onChange={onChangeInputHandler}
+            required={true}
           />
           <Input
             name="street"
@@ -155,6 +143,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
             placeholder="street"
             value={street}
             onChange={onChangeInputHandler}
+            required={true}
           />
           <Input
             name="phone"
@@ -163,6 +152,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
             placeholder="phone"
             value={phone}
             onChange={onChangeInputHandler}
+            required={true}
           />
         </div>
         <div className=" flex flex-row items-center gap-x-2">
@@ -173,6 +163,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
             placeholder="zipcode"
             value={zipCode}
             onChange={onChangeInputHandler}
+            required={true}
           />
           <Input
             name="city"
@@ -181,6 +172,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
             placeholder="city"
             value={city}
             onChange={onChangeInputHandler}
+            required={true}
           />
           <Input
             name="province"
@@ -189,6 +181,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
             placeholder="province"
             value={province}
             onChange={onChangeInputHandler}
+            required={true}
           />
         </div>
         <SelectItems
@@ -199,42 +192,19 @@ const ShoppingSummary = ({ totalCartItems }) => {
           className={`${inputClassName} !p-0`}
           placeholder="COUNTRY"
         />
-        <div className="mt-4 flex justify-between sm:flex-row sm:items-center">
-          <p>
-            Subtotal (<span className="font-medium">{totalCartItems}</span>
-            {totalCartItems === 1 ? " Item" : " Items"} ) :
-          </p>
-          <span className="font-medium">
-            Rp. {formatCurrencyToFixed(totalPriceAmount)}
-          </span>
-        </div>
-        {totalCartItems >= 1 && (
-          <div className="flex justify-between border-b border-b-dark-brown pb-2 sm:flex-row sm:items-center">
-            <p>Shipping</p>
-            <span className="font-medium">
-              Rp. {formatCurrencyToFixed(shippingCost)}
-            </span>
-          </div>
-        )}
-
-        <div className="flex justify-between font-bold sm:flex-row sm:items-center">
-          <p>Total</p>
-          <span>
-            Rp.
-            {formatCurrencyToFixed(
-              totalPriceAmount + (totalCartItems >= 1 ? shippingCost : 0)
-            )}
-          </span>
-        </div>
+        <TotalPricesOrder
+          totalCartItems={totalCartItems}
+          totalPriceAmount={totalPriceAmount}
+        />
         <Button
           className={
             "!bg-dark-brown py-3 text-white-bone disabled:cursor-not-allowed"
           }
           disabled={totalCartItems < 1}
-          onClick={OrderHandler}
+          onClick={orderHandler}
           type="submit"
         >
-          Order
+          Checkout
         </Button>
       </form>
     </section>

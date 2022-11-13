@@ -9,13 +9,6 @@ import useFormState from "../../hooks/useFormState";
 import Button from "../../components/UI/Button";
 
 const Register = () => {
-  const { input, setInput, onChangeInputHandler } = useFormState({
-    userName: "",
-    userEmail: "",
-    password: "",
-    passwordMatch: "",
-  });
-
   const userNameRef = useRef();
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -23,21 +16,24 @@ const Register = () => {
   const { userNameValidation, emailValidation, passwordValidation } =
     validation();
 
+  const { input, setInput, onChangeInputHandler } = useFormState({
+    userName: "",
+    userEmail: "",
+    password: "",
+    passwordMatch: "",
+  });
+
   const { userName, userEmail, password, passwordMatch } = input;
 
-  // const [userName, setUserName] = useState("");
   const [isValidUserName, setIsValidUserName] = useState(false);
   const [isUserNameFocus, setIsUserNameFocus] = useState(false);
 
-  // const [userEmail, setUserEmail] = useState("");
   const [isValidUserEmail, setIsValidUserEmail] = useState(false);
   const [isUserEmailFocus, setIsUserEmailFocus] = useState(false);
 
-  // const [password, setPassword] = useState("");
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [isPasswordFocus, setIsPasswordFocus] = useState(false);
 
-  // const [passwordMatch, setPasswordMatch] = useState("");
   const [isValidPasswordMatch, setIsValidPasswordMatch] = useState(false);
   const [isPasswordMatchFocus, setIsPasswordMatchFocus] = useState(false);
 

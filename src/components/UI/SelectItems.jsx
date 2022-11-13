@@ -42,6 +42,7 @@ const SelectItems = ({
       className={className}
       placeholder={placeholder}
       styles={colourStyles}
+      required={true}
     />
   );
 };
