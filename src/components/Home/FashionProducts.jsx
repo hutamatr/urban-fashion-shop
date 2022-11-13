@@ -24,9 +24,9 @@ const FashionProducts = () => {
             Fashion <br /> Products
           </h1>
           <p className="mb-4 bg-dark-brown bg-opacity-40 p-1 text-sm text-white-bone sm:bg-transparent md:text-lg md:text-dark-brown">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. A fugit
-            ipsam, dignissimos optio odio atque aspernatur cumque perferendis,
-            nobis, ad omnis! Voluptatem repudiandae consequuntur ducimus?
+            Fashion is part of the daily air and it changes all the time, with
+            all the events. You can even see the approaching of a revolution in
+            clothes. You can see and feel everything in clothes.
           </p>
         </div>
         <Button

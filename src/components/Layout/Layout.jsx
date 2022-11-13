@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
       <header className="sticky top-0 z-50 w-full bg-white-bone">
         <Navigation />
       </header>
-      <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-y-5">
+      <main className="container mx-auto flex min-h-screen max-w-6xl flex-col gap-y-5">
         <Outlet />
       </main>
       <Footer />
