@@ -79,10 +79,10 @@ const Login = () => {
       )}
       <section className="m-auto flex w-full flex-col gap-y-4 p-6 md:max-w-xs">
         <div className="flex items-center justify-between">
-          <h1 className="text-sm font-bold">Log In</h1>
+          <h1 className="text-sm font-bold dark:text-white-bone">Log In</h1>
           <Tooltip content={account} trigger="click">
             <button
-              className="p-1 text-xs font-semibold ring-2 ring-dark-brown"
+              className="p-1 text-xs font-semibold ring-2 ring-dark-brown dark:text-white-bone dark:ring-white-bone"
               type="button"
             >
               Demo Account
@@ -110,7 +110,7 @@ const Login = () => {
           />
 
           <button
-            className="text flex flex-row items-center justify-center gap-x-2 bg-dark-brown py-3 font-light text-white disabled:cursor-not-allowed"
+            className="flex flex-row items-center justify-center gap-x-2 bg-dark-brown py-3 font-light text-white disabled:cursor-not-allowed dark:bg-white-bone dark:font-semibold dark:text-dark-brown"
             disabled={!isValidUserName || !isValidPassword ? true : false}
             type="submit"
           >
@@ -119,11 +119,11 @@ const Login = () => {
             {loading.isLoading ? loading.loadingMessage : "Login"}
           </button>
         </form>
-        <p className="text-center text-sm">
+        <p className="text-center text-sm dark:text-white-bone">
           Don't have an account?{" "}
           <Link
             to={"/register"}
-            className="font-semibold text-dark-brown underline"
+            className="font-semibold text-dark-brown underline dark:text-white-bone"
           >
             Sign Up
           </Link>

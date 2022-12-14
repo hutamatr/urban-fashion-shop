@@ -21,19 +21,19 @@ const BestSellers = () => {
   }, [requestHttp]);
 
   const bestSellersContent = (
-    <ul className="grid grid-cols-2 justify-items-center gap-3 md:grid-cols-4 md:grid-rows-1 lg:gap-6">
+    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:grid-rows-1 lg:grid-cols-4 lg:gap-16">
       {bestSellers.map((product) => {
         return (
           <li key={product.id}>
             {loading.isLoading ? (
-              <p className="mx-auto text-center font-manrope font-light uppercase">
+              <p className="mx-auto text-center font-manrope font-light uppercase dark:text-white-bone">
                 {loading.loadingMessage}
               </p>
             ) : (
               <Link to={`shop/${product.id}`}>
                 <Figure
                   {...product}
-                  classImage="object-contain h-52 w-48 bg-white object-center p-4 lg:h-64 lg:w-52"
+                  classImage="object-contain h-52 w-52 bg-white object-center p-4"
                 />
               </Link>
             )}
@@ -43,8 +43,8 @@ const BestSellers = () => {
     </ul>
   );
   return (
-    <section className="grid grid-cols-1 gap-y-4 border-b border-dark-brown p-6 text-dark-brown md:grid-cols-1 md:p-10">
-      <h1 className="mb-2 text-center font-noto text-4xl uppercase md:text-5xl">
+    <section className="grid grid-cols-1 gap-y-4 border-b border-dark-brown p-6 text-dark-brown dark:border-b-white-bone md:grid-cols-1 md:p-10">
+      <h1 className="mb-2 text-center font-noto text-4xl uppercase dark:text-white-bone md:text-5xl">
         BestSellers
       </h1>
       {error.isError ? (

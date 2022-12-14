@@ -28,7 +28,7 @@ const LoginRegisterInput = forwardRef(
     return (
       <>
         <div
-          className={`flex flex-row items-center justify-between border-2 border-dark-brown bg-white-bone`}
+          className={`flex flex-row items-center justify-between border-2 border-dark-brown bg-white-bone dark:border-white-bone dark:bg-dark-brown`}
         >
           <Input
             required={true}
@@ -42,7 +42,7 @@ const LoginRegisterInput = forwardRef(
             onFocus={onFocus}
             onBlur={onBlur}
             placeholder={placeholder}
-            className={`w-full border-none bg-white-bone p-2 text-sm font-medium outline-none placeholder:text-sm focus:ring-0 `}
+            className={`w-full border-none bg-white-bone p-2 text-sm font-medium outline-none placeholder:text-sm focus:ring-0 dark:bg-dark-brown dark:text-white-bone dark:placeholder:text-white-bone`}
           />
           {isValidInput && input && placeholder !== "Password" && (
             <MdDone className="mr-2 w-max text-green-500" />

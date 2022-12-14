@@ -79,20 +79,6 @@ const ShoppingSummary = ({ totalCartItems }) => {
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
-    console.log({
-      address: {
-        street,
-        city,
-        province,
-        country,
-        zipCode,
-      },
-      fullName,
-      email,
-      phone,
-      orderAt: new Date().toISOString(),
-    });
-
     setInput({
       fullName: "",
       email: "",
@@ -108,7 +94,9 @@ const ShoppingSummary = ({ totalCartItems }) => {
   return (
     <section className="flex flex-col gap-y-4">
       <div className="flex flex-row items-center gap-x-4">
-        <h3 className="text-lg font-semibold">Shipping detail</h3>
+        <h3 className="text-lg font-semibold dark:text-white-bone">
+          Shipping detail
+        </h3>
         {loading.isLoading && <Spinner aria-label="Default status example" />}
         {error.isError && (
           <span className="text-xs font-medium text-red-600">
@@ -198,7 +186,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
         />
         <Button
           className={
-            "!bg-dark-brown py-3 text-white-bone disabled:cursor-not-allowed"
+            "!bg-dark-brown py-3 text-white-bone disabled:cursor-not-allowed dark:!bg-white-bone dark:text-dark-brown"
           }
           disabled={totalCartItems < 1}
           onClick={orderHandler}

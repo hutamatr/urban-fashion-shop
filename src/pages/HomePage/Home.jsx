@@ -29,7 +29,7 @@ const Home = () => {
   }, [requestHttp]);
 
   const productContent = (
-    <ul className="grid min-h-fit grid-cols-2 content-center gap-3 md:content-center">
+    <ul className="grid grid-cols-1 gap-3 bg-white-bone dark:bg-dark-brown md:grid-cols-2">
       {dataProduct.map((product) => {
         return (
           <li key={product.id}>
@@ -38,10 +38,10 @@ const Home = () => {
                 {loading.loadingMessage}
               </p>
             ) : (
-              <Link to={`shop/${product.id}`} className="flex justify-center">
+              <Link to={`shop/${product.id}`} className="dark:bg-dark-brown">
                 <Figure
                   {...product}
-                  classImage="object-contain h-52 w-48 bg-white object-center p-4"
+                  classImage="object-contain h-52 w-52 bg-white object-center p-4"
                 />
               </Link>
             )}
@@ -70,12 +70,12 @@ const Home = () => {
         />
       )}
       <Hero />
-      <section className="grid min-h-max grid-cols-1 gap-8 p-6 md:my-20 md:min-h-fit md:grid-cols-2 md:grid-rows-1 md:gap-10 md:p-10">
+      <section className="grid min-h-max grid-cols-1 gap-8 p-6 md:min-h-fit md:grid-cols-2 md:grid-rows-1 md:gap-10 md:p-10">
         <div className="flex flex-col gap-y-8">
-          <h1 className="font-noto text-4xl font-light uppercase italic text-dark-brown md:text-5xl">
+          <h1 className="font-noto text-4xl font-light uppercase italic text-dark-brown dark:text-white-bone md:text-5xl">
             Care for your clothes like the good friends they are.
           </h1>
-          <span className="block text-end font-light uppercase italic md:text-xl">
+          <span className="block text-end font-light uppercase italic dark:text-white-bone md:text-xl">
             -Joan Crawford
           </span>
         </div>

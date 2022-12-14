@@ -33,9 +33,7 @@ const useAxios = () => {
       const data = await response.data;
       setRequestFunc(data);
     } catch (error) {
-      if (!error?.response) {
-        setError({ isError: true, errorMessage: "No Server Response" });
-      } else if (error.response?.status === 400) {
+      if (error.response?.status === 400) {
         setError({
           isError: true,
           errorMessage: error.response?.data?.error,

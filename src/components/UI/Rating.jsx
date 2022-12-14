@@ -27,7 +27,7 @@ const StarRating = ({ onRating }) => {
             type="button"
             key={index}
             className={`bg-transparent duration-300 ${
-              index <= (rating && hover) ? "text-dark-brown" : "text-slate-100"
+              index <= (rating && hover) ? "text-yellow-300" : "text-white"
             }`}
             onClick={ratingHandler.bind(this, index)}
             onDoubleClick={resetRatingHandler}
@@ -40,7 +40,7 @@ const StarRating = ({ onRating }) => {
           </button>
         );
       })}
-      <span>{rating}/5</span>
+      <span className="text-dark-brown dark:text-white-bone">{rating}/5</span>
     </div>
   );
 };
