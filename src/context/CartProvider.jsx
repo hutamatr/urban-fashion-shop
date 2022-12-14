@@ -60,16 +60,12 @@ const cartReducer = (state, action) => {
 
       let removedItems;
 
-      // if (existingItems.amount === 1) {
-      //   removedItems = state.items.filter((item) => item.id !== action.payload);
-      // } else {
       let removedItem = {
         ...existingItems,
         amount: existingItems.amount - 1,
       };
       removedItems = [...state.items];
       removedItems[existingRemoveItemsIndex] = removedItem;
-      // }
 
       return {
         items: removedItems,

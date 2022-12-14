@@ -52,11 +52,11 @@ const AllProduct = () => {
   const productContent = (
     <>
       {loading.isLoading ? (
-        <p className="mx-auto my-[25vh] min-h-[50vh] text-center font-semibold uppercase">
+        <p className="mx-auto my-[25vh] min-h-[50vh] text-center font-semibold uppercase dark:text-white-bone">
           {loading.loadingMessage}
         </p>
       ) : (
-        <ul className="grid grid-cols-2 gap-3 bg-white-bone p-6 sm:grid-cols-4 lg:grid-cols-6">
+        <ul className="grid grid-cols-2 gap-3 bg-white-bone p-6 dark:bg-dark-brown sm:grid-cols-3 lg:grid-cols-4">
           {sortedQuotes.map((product) => {
             return (
               <li key={product.id}>

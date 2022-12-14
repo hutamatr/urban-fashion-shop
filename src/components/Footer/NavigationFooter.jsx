@@ -21,14 +21,19 @@ const NavigationFooter = () => {
   }, [requestHttp]);
 
   return (
-    <section className="flex flex-col gap-y-6 border-b border-b-dark-brown p-6 text-center md:w-full md:flex-row md:justify-evenly md:border-t md:border-b-0 md:border-t-dark-brown md:text-start">
+    <section className="flex flex-col gap-y-6 border-y border-y-dark-brown p-6 text-center dark:border-y-white-bone md:w-full md:flex-row md:justify-evenly md:text-start">
       <div className="flex flex-col gap-y-3 uppercase md:gap-y-2">
-        <h3 className="font-manrope text-sm font-semibold">Category</h3>
+        <h3 className="font-manrope text-sm font-semibold dark:text-white-bone">
+          Category
+        </h3>
         <ul className="flex flex-col gap-y-2 md:gap-y-1">
           {categories.map((category, index) => {
             return index > 0 ? (
               <li key={category}>
-                <Link to={`/${category}`} className="font-manrope text-xs">
+                <Link
+                  to={`/${category}`}
+                  className="font-manrope text-xs dark:text-white-bone"
+                >
                   {category}
                 </Link>
               </li>
@@ -37,8 +42,10 @@ const NavigationFooter = () => {
         </ul>
       </div>
       <div className="flex flex-col gap-y-3 uppercase md:gap-y-2">
-        <h3 className="font-manrope text-sm font-semibold">Menu</h3>
-        <ul className="flex flex-col gap-y-2 md:gap-y-1">
+        <h3 className="font-manrope text-sm font-semibold dark:text-white-bone">
+          Menu
+        </h3>
+        <ul className="flex flex-col gap-y-2 dark:text-white-bone md:gap-y-1">
           <li>
             <Link to={"/"} className="font-manrope text-xs">
               Home

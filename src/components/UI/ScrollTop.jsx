@@ -22,12 +22,12 @@ const ScrollTop = () => {
 
   return (
     <button
-      className={`fixed bottom-[5%] right-6 z-30 rounded-full bg-dark-brown p-3 opacity-70 duration-500 hover:-translate-y-2 hover:opacity-100 ${
+      className={`fixed bottom-[5%] right-6 z-30 rounded-full bg-dark-brown p-3 opacity-70 duration-500 hover:-translate-y-2 hover:opacity-100 dark:bg-white-bone ${
         scrollPosition > 500 ? "block" : "hidden"
       }`}
       onClick={scrollTopHandler}
     >
-      <MdArrowUpward className="text-xl text-white-bone" />
+      <MdArrowUpward className="text-xl text-white-bone dark:text-dark-brown" />
     </button>
   );
 };

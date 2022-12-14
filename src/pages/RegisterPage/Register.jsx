@@ -101,7 +101,7 @@ const Register = () => {
 
   return (
     <section className="m-auto flex w-full flex-col gap-y-4 p-6 md:max-w-xs">
-      <h1 className="text-sm font-bold">Sign Up</h1>
+      <h1 className="text-sm font-bold dark:text-white-bone">Sign Up</h1>
       <form onSubmit={RegisterSubmitHandler} className="flex flex-col gap-y-2">
         <LoginRegisterInput
           placeholder={"Username"}
@@ -150,13 +150,16 @@ const Register = () => {
           onBlur={passwordMatchFocusHandler}
         />
 
-        <Button className="!bg-dark-brown py-3 text-xs font-light text-white disabled:cursor-not-allowed">
+        <Button className="!bg-dark-brown py-3 text-xs font-light text-white disabled:cursor-not-allowed dark:!bg-white-bone dark:font-medium dark:text-dark-brown">
           Create Account
         </Button>
       </form>
-      <p className="text-center text-sm">
+      <p className="text-center text-sm dark:text-white-bone">
         Already have an account?{" "}
-        <Link to={"/login"} className="font-semibold text-dark-brown underline">
+        <Link
+          to={"/login"}
+          className="font-semibold text-dark-brown underline dark:text-white-bone"
+        >
           Log In
         </Link>
       </p>
