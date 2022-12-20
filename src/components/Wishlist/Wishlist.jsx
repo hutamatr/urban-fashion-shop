@@ -3,13 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { useWish } from "../../hooks/useStoreContext";
 import Figure from "../UI/Figure";
+import Button from "../UI/Button";
 
 const Wishlist = () => {
-  const { wishListItems } = useWish();
+  const { wishListItems, deleteWishList } = useWish();
   const navigate = useNavigate();
 
   const gotoShopHandler = () => {
     navigate("/shop");
+  };
+
+  const deleteItemWishlistHandler = (id) => {
+    deleteWishList(id);
   };
 
   return (
@@ -19,8 +24,8 @@ const Wishlist = () => {
           Wishlist
         </h1>
       </section>
-      <section>
-        {wishListItems.length === 0 ? (
+      <section className="min-h-screen">
+        {wishListItems.length < 1 ? (
           <div className="flex flex-col items-center justify-center">
             <span className="my-6 grid place-items-center text-xl font-semibold dark:text-white-bone">
               Wishlist Empty
@@ -33,16 +38,22 @@ const Wishlist = () => {
             </button>
           </div>
         ) : (
-          <ul className="grid grid-cols-2 gap-3 bg-white-bone p-6 dark:bg-dark-brown sm:grid-cols-3 lg:grid-cols-4">
+          <ul className="grid grid-cols-2 gap-4 bg-white-bone p-6 dark:bg-dark-brown sm:grid-cols-3 md:gap-16 lg:grid-cols-4">
             {wishListItems.map((item) => {
               return (
-                <li key={item.id}>
+                <li key={item.id} className="">
                   <Link to={`/shop/${item.id}`}>
                     <Figure
                       {...item}
                       classImage="object-contain h-52 w-48 bg-white object-center p-4"
                     />
                   </Link>
+                  {/* <Button
+                    onClick={deleteItemWishlistHandler.bind(null, item.id)}
+                    className="my-2 mx-auto block !bg-dark-brown py-1 px-3 text-white-bone"
+                  >
+                    Delete
+                  </Button> */}
                 </li>
               );
             })}

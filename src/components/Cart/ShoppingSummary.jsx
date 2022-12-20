@@ -51,10 +51,10 @@ const ShoppingSummary = ({ totalCartItems }) => {
           setInput((prevState) => ({
             ...prevState,
             email,
-            street: `${street}, ${number}`,
             phone,
             city,
             fullName: `${firstname} ${lastname}`,
+            street: `${street}, ${number}`,
             zipCode: zipcode,
           }));
         }
@@ -64,20 +64,26 @@ const ShoppingSummary = ({ totalCartItems }) => {
 
   const { fullName, email, street, phone, zipCode, city, province } = input;
 
-  const orderHandler = () => {
-    if (isAuth) {
-      //
-    } else {
-      navigate("/login");
-    }
-  };
+  // const orderHandler = () => {
+  //   if (isAuth) {
+  //     // Handling Order
+  //   } else {
+  //     navigate("/login");
+  //   }
+  // };
 
   const countryChangeHandler = (value) => {
     setCountry(value);
   };
 
-  const formSubmitHandler = (event) => {
+  const formOrderHandler = (event) => {
     event.preventDefault();
+
+    if (isAuth) {
+      // Handling Order
+    } else {
+      navigate("/login");
+    }
 
     setInput({
       fullName: "",
@@ -104,7 +110,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
           </span>
         )}
       </div>
-      <form className="flex flex-col gap-y-3" onSubmit={formSubmitHandler}>
+      <form className="flex flex-col gap-y-3" onSubmit={formOrderHandler}>
         <div className="grid w-full grid-cols-2 gap-2">
           <Input
             name="fullName"
@@ -189,7 +195,7 @@ const ShoppingSummary = ({ totalCartItems }) => {
             "!bg-dark-brown py-3 text-white-bone disabled:cursor-not-allowed dark:!bg-white-bone dark:text-dark-brown"
           }
           disabled={totalCartItems < 1}
-          onClick={orderHandler}
+          // onClick={orderHandler}
           type="submit"
         >
           Checkout

@@ -33,18 +33,12 @@ const Home = () => {
       {dataProduct.map((product) => {
         return (
           <li key={product.id}>
-            {loading.isLoading ? (
-              <p className="mx-auto text-center font-manrope font-light uppercase text-dark-brown">
-                {loading.loadingMessage}
-              </p>
-            ) : (
-              <Link to={`shop/${product.id}`} className="dark:bg-dark-brown">
-                <Figure
-                  {...product}
-                  classImage="object-contain h-52 w-52 bg-white object-center p-4"
-                />
-              </Link>
-            )}
+            <Link to={`shop/${product.id}`} className="dark:bg-dark-brown">
+              <Figure
+                {...product}
+                classImage="object-contain h-52 w-52 bg-white object-center p-4"
+              />
+            </Link>
           </li>
         );
       })}
@@ -79,13 +73,17 @@ const Home = () => {
             -Joan Crawford
           </span>
         </div>
-        {error.isError ? (
+        {loading.isLoading && (
+          <p className="mx-auto text-center font-manrope font-light uppercase text-dark-brown">
+            {loading.loadingMessage}
+          </p>
+        )}
+        {error.isError && (
           <p className="mx-auto text-center font-medium uppercase text-red-700">
             {error.errorMessage}
           </p>
-        ) : (
-          productContent
         )}
+        {!loading.isLoading && !error.isError && productContent}
       </section>
       <FashionProducts />
       <BestSellers />

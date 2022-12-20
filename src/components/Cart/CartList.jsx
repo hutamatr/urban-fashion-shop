@@ -31,7 +31,7 @@ const CartList = () => {
 
   return (
     <>
-      {items.length === 0 ? (
+      {items.length < 1 ? (
         <div className="flex flex-col items-center justify-center">
           <span className="my-6 grid place-items-center text-xl font-semibold dark:text-white-bone">
             Cart Empty

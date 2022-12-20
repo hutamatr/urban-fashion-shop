@@ -1,7 +1,9 @@
 import { useState, useCallback } from "react";
 import axios from "axios";
 
-const BASE_URL = "https://fakestoreapi.com/";
+// const BASE_URL = "https://fakestoreapi.com/";
+
+const API = axios.create({ baseURL: "https://fakestoreapi.com/" });
 
 const useAxios = () => {
   const [error, setError] = useState({
@@ -21,9 +23,9 @@ const useAxios = () => {
         loadingMessage: "Loading...",
       });
       const { method, url, dataReq } = requestConfig;
-      const response = await axios({
-        method: method,
-        url: `${BASE_URL}${url}`,
+      const response = await API({
+        method,
+        url,
         data: dataReq ? dataReq : null,
         headers: {
           "Content-Type": "application/json",

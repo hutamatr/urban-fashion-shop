@@ -39,7 +39,7 @@ const Review = () => {
   };
 
   const reviewList =
-    reviewData.length === 0 ? (
+    reviewData.length < 1 ? (
       <p className="text-dark-brown dark:text-white-bone">No Review</p>
     ) : (
       <ul className="flex max-h-60 w-full flex-col gap-y-4 overflow-y-auto p-4">

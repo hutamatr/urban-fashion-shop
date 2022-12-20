@@ -50,28 +50,20 @@ const AllProduct = () => {
   }, [requestHttp]);
 
   const productContent = (
-    <>
-      {loading.isLoading ? (
-        <p className="mx-auto my-[25vh] min-h-[50vh] text-center font-semibold uppercase dark:text-white-bone">
-          {loading.loadingMessage}
-        </p>
-      ) : (
-        <ul className="grid grid-cols-2 gap-3 bg-white-bone p-6 dark:bg-dark-brown sm:grid-cols-3 lg:grid-cols-4">
-          {sortedQuotes.map((product) => {
-            return (
-              <li key={product.id}>
-                <Link to={`${product.id}`}>
-                  <Figure
-                    {...product}
-                    classImage="object-contain h-52 w-48 bg-white object-center p-4"
-                  />
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </>
+    <ul className="grid grid-cols-2 gap-3 bg-white-bone p-6 dark:bg-dark-brown sm:grid-cols-3 lg:grid-cols-4">
+      {sortedQuotes.map((product) => {
+        return (
+          <li key={product.id}>
+            <Link to={`${product.id}`}>
+              <Figure
+                {...product}
+                classImage="object-contain h-52 w-48 bg-white object-center p-4"
+              />
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
   );
 
   return (
@@ -80,13 +72,17 @@ const AllProduct = () => {
         onNavigate={navigate}
         onSortedProduct={isSortedProductList}
       />
-      {error.isError ? (
+      {loading.isLoading && (
+        <p className="mx-auto my-[25vh] min-h-[50vh] text-center font-semibold uppercase dark:text-white-bone">
+          {loading.loadingMessage}
+        </p>
+      )}
+      {error.isError && (
         <p className="mx-auto py-6 text-center font-medium uppercase text-red-700">
           {error.errorMessage}
         </p>
-      ) : (
-        productContent
       )}
+      {!loading.isLoading && !error.isError && productContent}
     </section>
   );
 };
