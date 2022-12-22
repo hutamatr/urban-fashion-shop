@@ -11,13 +11,21 @@ const NavigationFooter = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    requestHttp(
-      {
-        method: "GET",
-        url: "products/categories",
-      },
-      (data) => setCategories(data)
-    );
+    const categoriesStorage = JSON.parse(localStorage.getItem("categories"));
+    if (!categoriesStorage) {
+      requestHttp(
+        {
+          method: "GET",
+          url: "products/categories",
+        },
+        (data) => {
+          setCategories(data);
+          localStorage.setItem("categories", JSON.stringify(data));
+        }
+      );
+    } else {
+      setCategories(categoriesStorage);
+    }
   }, [requestHttp]);
 
   return (
@@ -28,8 +36,8 @@ const NavigationFooter = () => {
         </h3>
         <ul className="flex flex-col gap-y-2 md:gap-y-1">
           {categories.map((category, index) => {
-            return index > 0 ? (
-              <li key={category}>
+            return (
+              <li key={index}>
                 <Link
                   to={`/${category}`}
                   className="font-manrope text-xs dark:text-white-bone"
@@ -37,7 +45,7 @@ const NavigationFooter = () => {
                   {category}
                 </Link>
               </li>
-            ) : null;
+            );
           })}
         </ul>
       </div>

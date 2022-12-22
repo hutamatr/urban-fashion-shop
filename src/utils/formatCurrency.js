@@ -1,5 +1,5 @@
 export const formatCurrency = (amount) => {
-  const exchangeRateRupiah = 15000; // 4 - Oct - 2022
+  const exchangeRateRupiah = 15500; // 20 - Dec - 2022
   const toRupiah = +amount * exchangeRateRupiah;
   return toRupiah.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 };

@@ -4,9 +4,9 @@ const AccountDetails = ({ address, email, phone, name, loading }) => {
   return (
     <section className="mx-auto p-6">
       {loading.isLoading ? (
-        <span className="w-full text-center text-dark-brown dark:text-white-bone">
+        <p className="w-full text-center text-dark-brown dark:text-white-bone">
           {loading.loadingMessage}
-        </span>
+        </p>
       ) : (
         <>
           <h2 className="mb-4 text-lg font-semibold dark:text-white-bone">

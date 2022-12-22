@@ -25,18 +25,12 @@ const BestSellers = () => {
       {bestSellers.map((product) => {
         return (
           <li key={product.id}>
-            {loading.isLoading ? (
-              <p className="mx-auto text-center font-manrope font-light uppercase dark:text-white-bone">
-                {loading.loadingMessage}
-              </p>
-            ) : (
-              <Link to={`shop/${product.id}`}>
-                <Figure
-                  {...product}
-                  classImage="object-contain h-52 w-52 bg-white object-center p-4"
-                />
-              </Link>
-            )}
+            <Link to={`shop/${product.id}`}>
+              <Figure
+                {...product}
+                classImage="object-contain h-52 w-52 bg-white object-center p-4"
+              />
+            </Link>
           </li>
         );
       })}
@@ -47,13 +41,17 @@ const BestSellers = () => {
       <h1 className="mb-2 text-center font-noto text-4xl uppercase dark:text-white-bone md:text-5xl">
         BestSellers
       </h1>
-      {error.isError ? (
+      {loading.isLoading && (
+        <p className="mx-auto text-center font-manrope font-light uppercase dark:text-white-bone">
+          {loading.loadingMessage}
+        </p>
+      )}
+      {error.isError && (
         <p className="mx-auto text-center font-manrope font-medium uppercase text-red-700">
           {error.errorMessage}
         </p>
-      ) : (
-        bestSellersContent
       )}
+      {!loading.isLoading && !error.isError && bestSellersContent}
     </section>
   );
 };
