@@ -18,7 +18,7 @@ const ModalCard = ({ children }) => {
   );
 };
 
-const Modal = ({ children, onCloseModalHandler }) => {
+export const Modal = ({ children, onCloseModalHandler }) => {
   return (
     <>
       {createPortal(
@@ -32,5 +32,3 @@ const Modal = ({ children, onCloseModalHandler }) => {
     </>
   );
 };
-
-export default Modal;

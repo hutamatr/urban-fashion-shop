@@ -1,8 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import Modal from "../UI/Modal";
-import Button from "../UI/Button";
+import { Modal, Button, Image } from "components/UI";
 
 import { MdClose } from "react-icons/md";
 
@@ -22,11 +21,10 @@ const AddToCartModal = ({ onCloseModalHandler, image, title, category }) => {
           Added Successfully
         </h1>
         <div className="flex flex-row items-center justify-center gap-x-4">
-          <img
+          <Image
             src={image}
             alt={title}
             className="h-40 w-32 bg-white object-contain object-center p-4 ring-1 ring-dark-brown"
-            loading="lazy"
           />
           <h2 className="font-medium">
             {title} - {category}
@@ -34,7 +32,7 @@ const AddToCartModal = ({ onCloseModalHandler, image, title, category }) => {
         </div>
         <Button
           className={
-            "!border-2 !bg-dark-brown py-3 font-semibold !text-white-bone hover:!bg-white-bone hover:!text-dark-brown"
+            "border-2 border-dark-brown bg-dark-brown py-3 font-semibold uppercase text-white-bone hover:bg-white-bone hover:text-dark-brown"
           }
           onClick={toCartHandler}
         >

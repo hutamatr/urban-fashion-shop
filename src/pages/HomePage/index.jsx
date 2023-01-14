@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-import Figure from "../../components/UI/Figure";
-import Hero from "../../components/Home/Hero";
-import FashionProducts from "../../components/Home/FashionProducts";
-import BestSellers from "../../components/Home/BestSellers";
-import OurPhilosophy from "../../components/Home/OurPhilosophy";
-import ToastAlert from "../../components/UI/ToastAlert";
-import useAxios from "../../hooks/useAxios";
-import { useAuth } from "../../hooks/useStoreContext";
+import Hero from "components/Home/Hero";
+import ProductItem from "components/Shop/ProductItem";
+import FashionProducts from "components/Home/FashionProducts";
+import BestSellers from "components/Home/BestSellers";
+import OurPhilosophy from "components/Home/OurPhilosophy";
+import useAxios from "hooks/useAxios";
+import { Toast } from "components/UI";
+import { useAuth } from "hooks/useStoreContext";
 
 const Home = () => {
   const [dataProduct, setDataProduct] = useState([]);
@@ -32,14 +31,11 @@ const Home = () => {
     <ul className="grid grid-cols-1 gap-3 bg-white-bone dark:bg-dark-brown md:grid-cols-2">
       {dataProduct.map((product) => {
         return (
-          <li key={product.id}>
-            <Link to={`shop/${product.id}`} className="dark:bg-dark-brown">
-              <Figure
-                {...product}
-                classImage="object-contain h-52 w-52 bg-white object-center p-4"
-              />
-            </Link>
-          </li>
+          <ProductItem
+            key={product.id}
+            product={product}
+            linkTo={`shop/${product.id}`}
+          />
         );
       })}
     </ul>
@@ -48,7 +44,7 @@ const Home = () => {
   return (
     <>
       {authSuccess.isSuccess && (
-        <ToastAlert
+        <Toast
           children={authSuccess.successMessage}
           icons={"success"}
           onSuccess={authSuccess.isSuccess}
@@ -56,7 +52,7 @@ const Home = () => {
         />
       )}
       {unAuthSuccess.isSuccess && (
-        <ToastAlert
+        <Toast
           children={unAuthSuccess.successMessage}
           icons={"success"}
           onSuccess={unAuthSuccess.isSuccess}

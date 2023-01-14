@@ -2,12 +2,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MdOutlineStar } from "react-icons/md";
 
-import Review from "../../components/ProductDetails/Review";
-import OtherProduct from "../../components/ProductDetails/OtherProduct";
-import AddToCartModal from "../../components/ProductDetails/AddToCartModal";
-import { formatCurrencyOnly, formatCurrency } from "../../utils/formatCurrency";
-import { useCart, useWish, useAuth } from "../../hooks/useStoreContext";
-import useAxios from "../../hooks/useAxios";
+import Review from "components/ProductDetails/Review";
+import OtherProduct from "components/ProductDetails/OtherProduct";
+import AddToCartModal from "components/ProductDetails/AddToCartModal";
+import useAxios from "hooks/useAxios";
+import { formatCurrencyOnly, formatCurrency } from "utils/formatCurrency";
+import { useCart, useWish, useAuth } from "hooks/useStoreContext";
+import { Button, Image, Input } from "components/UI";
 
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 
@@ -84,7 +85,7 @@ const ProductDetails = () => {
         </p>
       )}
       <section className="grid grid-cols-1 border-b border-b-dark-brown dark:border-b-white-bone md:grid-cols-2 md:items-center">
-        <img
+        <Image
           src={image}
           alt=""
           className="md: h-52 w-full bg-white object-contain object-center p-4 md:h-72"
@@ -102,14 +103,14 @@ const ProductDetails = () => {
           </span>
           <div className="flex flex-col-reverse gap-y-4 md:w-full md:flex-row md:items-center md:justify-between">
             <div className="flex max-w-fit border-2 border-dark-brown dark:border-white-bone">
-              <button
+              <Button
                 onClick={decreaseAmountHandler}
                 className="py-2 px-4 text-lg font-bold dark:text-white-bone"
               >
                 -
-              </button>
+              </Button>
               <form action="">
-                <input
+                <Input
                   type="text"
                   value={amount < 1 ? setAmount(1) : amount}
                   min="1"
@@ -118,15 +119,15 @@ const ProductDetails = () => {
                   className="h-full w-10 border-none bg-white-bone text-center dark:bg-dark-brown dark:text-white-bone"
                 />
               </form>
-              <button
+              <Button
                 onClick={increaseAmountHandler}
                 className="py-2 px-4 text-lg font-bold dark:text-white-bone"
               >
                 +
-              </button>
+              </Button>
             </div>
 
-            <button
+            <Button
               className="flex items-center gap-x-2 rounded-sm bg-dark-brown py-[.75rem] px-2 text-white-bone dark:bg-white-bone dark:text-dark-brown"
               onClick={isOnWishListHandler}
             >
@@ -141,18 +142,18 @@ const ProductDetails = () => {
                   Add to Wishlist
                 </>
               )}
-            </button>
+            </Button>
           </div>
           <p className="text-sm dark:text-white-bone">{description}</p>
           <span className="text-xs font-medium uppercase dark:text-white-bone">
             Category : {category}
           </span>
-          <button
+          <Button
             className="w-full border border-dark-brown py-3 font-medium uppercase duration-300 hover:bg-dark-brown hover:text-white-bone dark:border-white-bone dark:text-white-bone dark:hover:bg-white-bone dark:hover:text-dark-brown"
             onClick={addToCartHandler}
           >
             Add to Cart
-          </button>
+          </Button>
         </div>
       </section>
       <Review />

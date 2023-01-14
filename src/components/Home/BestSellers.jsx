@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-import Figure from "../UI/Figure";
-import useAxios from "../../hooks/useAxios";
+import useAxios from "hooks/useAxios";
+import ProductItem from "components/Shop/ProductItem";
 
 const BestSellers = () => {
   const [bestSellers, setBestSellers] = useState([]);
@@ -14,7 +13,6 @@ const BestSellers = () => {
       {
         method: "GET",
         url: "products?limit=4",
-        headers: false,
       },
       (data) => setBestSellers(data)
     );
@@ -24,14 +22,11 @@ const BestSellers = () => {
     <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:grid-rows-1 lg:grid-cols-4 lg:gap-16">
       {bestSellers.map((product) => {
         return (
-          <li key={product.id}>
-            <Link to={`shop/${product.id}`}>
-              <Figure
-                {...product}
-                classImage="object-contain h-52 w-52 bg-white object-center p-4"
-              />
-            </Link>
-          </li>
+          <ProductItem
+            key={product.id}
+            product={product}
+            linkTo={`shop/${product.id}`}
+          />
         );
       })}
     </ul>

@@ -2,9 +2,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Dropdown, Avatar } from "flowbite-react";
 
-import { useAuth, useWish } from "../../hooks/useStoreContext";
+import { useAuth, useWish } from "hooks/useStoreContext";
 
-import avatarImage from "../../assets/image/avatar.webp";
+import avatarImage from "assets/image/avatar.webp";
 
 const DropdownNav = ({ onCloseMenu, className }) => {
   const { unAuth } = useAuth();

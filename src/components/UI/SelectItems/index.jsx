@@ -1,7 +1,7 @@
 import React from "react";
 import Select from "react-select";
 
-const SelectItems = ({
+export const SelectItems = ({
   options,
   value,
   onChange,
@@ -46,5 +46,3 @@ const SelectItems = ({
     />
   );
 };
-
-export default SelectItems;

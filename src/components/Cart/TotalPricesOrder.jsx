@@ -1,6 +1,6 @@
 import React from "react";
 
-import { formatCurrencyToFixed } from "../../utils/formatCurrency";
+import { formatCurrencyToFixed } from "utils/formatCurrency";
 
 const shippingCost = 20000;
 

@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 import DropdownNav from "./DropdownNav";
-import CartBadge from "../Cart/CartBadge";
+import CartBadge from "components/Cart/CartBadge";
 import SwitcherTheme from "./SwitcherTheme";
-import { useCart, useAuth } from "../../hooks/useStoreContext";
+import { Button } from "components/UI";
+import { useCart, useAuth } from "hooks/useStoreContext";
 
 import { CgMenuRight, CgClose } from "react-icons/cg";
 
@@ -33,13 +34,13 @@ const Navigation = () => {
           className="dark:text-white-bone sm:hidden "
         />
         {isAuth && <DropdownNav className="sm:hidden" />}
-        <button className="sm:hidden" onClick={menuHandler}>
+        <Button className="sm:hidden" onClick={menuHandler}>
           {menuView ? (
             <CgClose className="h-6 w-6 dark:text-white-bone" />
           ) : (
             <CgMenuRight className="h-6 w-6 dark:text-white-bone" />
           )}
-        </button>
+        </Button>
       </div>
       <ul
         className={`absolute right-0 top-16 flex min-h-[50vh] w-[100vw] flex-col items-center gap-y-6 rounded-b-xl bg-white-bone py-4 px-6 text-center font-manrope text-sm font-semibold uppercase text-neutral-500 shadow-md duration-700 dark:bg-dark-brown sm:static sm:top-0 sm:min-h-0 sm:w-auto sm:translate-x-0 sm:flex-row sm:items-center sm:gap-x-8 sm:bg-transparent sm:py-0 sm:opacity-100 sm:shadow-none sm:duration-75 ${

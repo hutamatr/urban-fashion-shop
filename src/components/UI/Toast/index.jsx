@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { Toast } from "flowbite-react";
+import { Toast as ToastAlert } from "flowbite-react";
 import { MdCheckCircleOutline, MdErrorOutline } from "react-icons/md";
 
-const ToastAlert = ({
+export const Toast = ({
   children,
   icons,
   onSuccess,
@@ -36,7 +36,7 @@ const ToastAlert = ({
   }, [onError, onSetError, onSuccess, onSetSuccess]);
 
   return (
-    <Toast style={{ margin: "1rem", position: "fixed", zIndex: 50 }}>
+    <ToastAlert style={{ margin: "1rem", position: "fixed", zIndex: 50 }}>
       <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded">
         {icons === "success" && (
           <MdCheckCircleOutline className="h-5 w-5 text-blue-600" />
@@ -46,9 +46,7 @@ const ToastAlert = ({
         )}
       </div>
       <div className="ml-3 font-manrope font-medium">{children}</div>
-      <Toast.Toggle />
-    </Toast>
+      <ToastAlert.Toggle />
+    </ToastAlert>
   );
 };
-
-export default ToastAlert;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import useAxios from "../../hooks/useAxios";
-import { useAuth } from "../../hooks/useStoreContext";
+import useAxios from "hooks/useAxios";
+import { useAuth } from "hooks/useStoreContext";
 
 const NavigationFooter = () => {
   const [categories, setCategories] = useState([]);

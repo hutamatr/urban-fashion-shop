@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
+import { Button } from "..";
+
 import { MdOutlineStar } from "react-icons/md";
 
-const StarRating = ({ onRating }) => {
+export const Rating = ({ onRating }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
 
@@ -23,7 +25,7 @@ const StarRating = ({ onRating }) => {
       {[...Array(5)].map((_, index) => {
         index += 1;
         return (
-          <button
+          <Button
             type="button"
             key={index}
             className={`bg-transparent duration-300 ${
@@ -37,12 +39,10 @@ const StarRating = ({ onRating }) => {
             <span className="text-xl">
               <MdOutlineStar />
             </span>
-          </button>
+          </Button>
         );
       })}
       <span className="text-dark-brown dark:text-white-bone">{rating}/5</span>
     </div>
   );
 };
-
-export default StarRating;

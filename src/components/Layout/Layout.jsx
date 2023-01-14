@@ -1,9 +1,9 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-import Navigation from "../Navigation/Navigation";
-import Footer from "../Footer/Footer";
-import ScrollTop from "../UI/ScrollTop";
+import Navigation from "components/Navigation/Navigation";
+import Footer from "components/Footer/Footer";
+import { ScrollTop } from "components/UI";
 
 const Layout = () => {
   return (
