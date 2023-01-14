@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 
-const Input = forwardRef(
+export const Input = forwardRef(
   (
     {
       type,
@@ -14,6 +14,7 @@ const Input = forwardRef(
       onBlur,
       autoComplete,
       required,
+      readOnly,
     },
     ref
   ) => {
@@ -31,9 +32,8 @@ const Input = forwardRef(
         ref={ref}
         autoComplete={autoComplete}
         required={required}
+        readOnly={readOnly}
       />
     );
   }
 );
-
-export default Input;

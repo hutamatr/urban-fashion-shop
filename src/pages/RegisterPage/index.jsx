@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import validation from "../../utils/validation";
-import LoginRegisterInput from "../../components/UI/LoginRegisterInput";
-import { useAuth } from "../../hooks/useStoreContext";
-import useAxios from "../../hooks/useAxios";
-import useFormState from "../../hooks/useFormState";
-import Button from "../../components/UI/Button";
+import validation from "utils/validation";
+import { useAuth } from "hooks/useStoreContext";
+import useAxios from "hooks/useAxios";
+import useFormState from "hooks/useFormState";
+import { Button, LoginRegisterInput } from "components/UI";
 
 const Register = () => {
   const userNameRef = useRef();

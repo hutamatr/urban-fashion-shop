@@ -1,17 +1,17 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout/Layout";
 
-import Login from "./pages/LoginPage/Login";
-import Register from "./pages/RegisterPage/Register";
-import Home from "./pages/HomePage/Home";
-import Shop from "./pages/ShopPage/Shop";
-import Cart from "./pages/CartPage/Cart";
-import ProductDetails from "./pages/ProductDetailsPage/ProductDetails";
-import MyAccount from "./pages/MyAccountPage/MyAccount";
-import RequireAuth from "./components/Auth/RequireAuth";
-import Wishlist from "./components/Wishlist/Wishlist";
-import { useAuth } from "./hooks/useStoreContext";
+import Login from "pages/LoginPage";
+import Register from "pages/RegisterPage";
+import Home from "pages/HomePage";
+import Shop from "pages/ShopPage";
+import Cart from "pages/CartPage";
+import ProductDetails from "pages/ProductDetailsPage";
+import MyAccount from "pages/MyAccountPage";
+import RequireAuth from "components/Auth/RequireAuth";
+import Wishlist from "components/Wishlist/Wishlist";
+import Layout from "components/Layout/Layout";
+import { useAuth } from "hooks/useStoreContext";
 
 const App = () => {
   const { isAuth } = useAuth();

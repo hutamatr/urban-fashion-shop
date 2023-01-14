@@ -1,6 +1,8 @@
 import React from "react";
 
-import philosophyImage from "../../assets/image/philosophy-image.webp";
+import { Image } from "components/UI";
+
+import philosophyImage from "assets/image/philosophy-image.webp";
 
 const OurPhilosophy = () => {
   return (
@@ -13,11 +15,10 @@ const OurPhilosophy = () => {
           You have a more interesting life if you wear impressive clothes.
         </p>
       </div>
-      <img
+      <Image
         src={philosophyImage}
-        alt=""
+        alt="You have a more interesting life if you wear impressive clothes."
         className={`ring-1 ring-dark-brown dark:ring-white-bone md:object-contain`}
-        loading="lazy"
       />
     </section>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import AccountDetails from "../../components/MyAccount/AccountDetails";
-import useAxios from "../../hooks/useAxios";
+import AccountDetails from "components/MyAccount/AccountDetails";
+import useAxios from "hooks/useAxios";
 
 const MyAccount = () => {
   const [user, setUser] = useState({});

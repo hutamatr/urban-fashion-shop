@@ -1,8 +1,8 @@
 import React from "react";
 
-import CartList from "../../components/Cart/CartList";
-import ShoppingSummary from "../../components/Cart/ShoppingSummary";
-import { useCart } from "../../hooks/useStoreContext";
+import CartList from "components/Cart/CartList";
+import CartSummary from "components/Cart/CartSummary";
+import { useCart } from "hooks/useStoreContext";
 
 const Cart = () => {
   const { items } = useCart();
@@ -24,7 +24,7 @@ const Cart = () => {
         }`}
       >
         <CartList />
-        <ShoppingSummary totalCartItems={totalCartItems} />
+        <CartSummary totalCartItems={totalCartItems} />
       </div>
     </section>
   );

@@ -2,12 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner, Tooltip } from "flowbite-react";
 
-import LoginRegisterInput from "../../components/UI/LoginRegisterInput";
-import ToastAlert from "../../components/UI/ToastAlert";
-import validation from "../../utils/validation";
-import useAxios from "../../hooks/useAxios";
-import useFormState from "../../hooks/useFormState";
-import { useAuth } from "../../hooks/useStoreContext";
+import validation from "utils/validation";
+import useAxios from "hooks/useAxios";
+import useFormState from "hooks/useFormState";
+import { Toast, Button, LoginRegisterInput } from "components/UI";
+import { useAuth } from "hooks/useStoreContext";
 
 const account = `For demo purposes, use this demo account. username : johnd, password : m38rmF$`;
 
@@ -70,7 +69,7 @@ const Login = () => {
   return (
     <>
       {error.isError && (
-        <ToastAlert
+        <Toast
           children={error.errorMessage}
           onError={error.isError}
           onSetError={setError}
@@ -81,12 +80,12 @@ const Login = () => {
         <div className="flex items-center justify-between">
           <h1 className="text-sm font-bold dark:text-white-bone">Log In</h1>
           <Tooltip content={account} trigger="click">
-            <button
+            <Button
               className="p-1 text-xs font-semibold ring-2 ring-dark-brown dark:text-white-bone dark:ring-white-bone"
               type="button"
             >
               Demo Account
-            </button>
+            </Button>
           </Tooltip>
         </div>
         <form onSubmit={loginSubmitHandler} className="flex flex-col gap-y-2">
@@ -109,7 +108,7 @@ const Login = () => {
             isValidInput={isValidPassword}
           />
 
-          <button
+          <Button
             className="flex flex-row items-center justify-center gap-x-2 bg-dark-brown py-3 font-light text-white disabled:cursor-not-allowed dark:bg-white-bone dark:font-semibold dark:text-dark-brown"
             disabled={!isValidUserName || !isValidPassword ? true : false}
             type="submit"
@@ -117,7 +116,7 @@ const Login = () => {
             {loading.isLoading && <Spinner />}
 
             {loading.isLoading ? loading.loadingMessage : "Login"}
-          </button>
+          </Button>
         </form>
         <p className="text-center text-sm dark:text-white-bone">
           Don't have an account?{" "}

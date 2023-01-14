@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
+import ProductItem from "./ProductItem";
 import SortProduct from "./SortProduct";
-import Figure from "../UI/Figure";
-import useAxios from "../../hooks/useAxios";
+import useAxios from "hooks/useAxios";
 
 const sortProductsByPrice = (products, ascending) => {
   return products.sort((productA, productB) => {
@@ -17,7 +17,7 @@ const sortProductsByPrice = (products, ascending) => {
   });
 };
 
-const AllProduct = () => {
+const ProductList = () => {
   const [allProducts, setAllProducts] = useState([]);
 
   const { requestHttp, loading, error } = useAxios();
@@ -53,14 +53,11 @@ const AllProduct = () => {
     <ul className="grid grid-cols-2 gap-3 bg-white-bone p-6 dark:bg-dark-brown sm:grid-cols-3 lg:grid-cols-4">
       {sortedQuotes.map((product) => {
         return (
-          <li key={product.id}>
-            <Link to={`${product.id}`}>
-              <Figure
-                {...product}
-                classImage="object-contain h-52 w-48 bg-white object-center p-4"
-              />
-            </Link>
-          </li>
+          <ProductItem
+            product={product}
+            linkTo={`${product.id}`}
+            key={product.id}
+          />
         );
       })}
     </ul>
@@ -87,4 +84,4 @@ const AllProduct = () => {
   );
 };
 
-export default AllProduct;
+export default ProductList;

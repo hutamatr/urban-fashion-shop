@@ -1,8 +1,6 @@
 import { useState, useCallback } from "react";
 import axios from "axios";
 
-// const BASE_URL = "https://fakestoreapi.com/";
-
 const API = axios.create({ baseURL: "https://fakestoreapi.com/" });
 
 const useAxios = () => {

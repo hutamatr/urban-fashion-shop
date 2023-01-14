@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import Button from "../UI/Button";
+import { Button } from "components/UI";
 
 import imageHome from "../../assets/image/home-image.webp";
 
@@ -31,7 +31,7 @@ const FashionProducts = () => {
         </div>
         <Button
           className={
-            "border-dark-brown bg-transparent py-4 text-dark-brown hover:bg-dark-brown hover:text-white-bone dark:border-white-bone dark:text-white-bone md:duration-300"
+            "border border-dark-brown bg-transparent bg-white-bone py-4 uppercase text-dark-brown hover:bg-dark-brown hover:text-white-bone dark:border-white-bone dark:bg-dark-brown dark:text-white-bone md:duration-300"
           }
           onClick={goToShopHandler}
         >

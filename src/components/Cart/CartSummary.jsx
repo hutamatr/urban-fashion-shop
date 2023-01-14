@@ -3,18 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { Spinner } from "flowbite-react";
 import countryList from "react-select-country-list";
 
-import { useCart, useAuth } from "../../hooks/useStoreContext";
-import useFormState from "../../hooks/useFormState";
-import useAxios from "../../hooks/useAxios";
+import { useCart, useAuth } from "hooks/useStoreContext";
+import useFormState from "hooks/useFormState";
+import useAxios from "hooks/useAxios";
 import TotalPricesOrder from "./TotalPricesOrder";
-import SelectItems from "../UI/SelectItems";
-import Button from "../UI/Button";
-import Input from "../UI/Input";
+import { SelectItems, Button, Input } from "components/UI";
 
 const inputClassName =
   "w-full rounded-sm border-2 border-dark-brown bg-white-bone p-2 text-sm font-medium outline-none placeholder:text-sm focus:border-dark-brown focus:ring-0 placeholder:uppercase";
 
-const ShoppingSummary = ({ totalCartItems }) => {
+const CartSummary = ({ totalCartItems }) => {
   const [country, setCountry] = useState("");
   const { input, setInput, onChangeInputHandler } = useFormState({
     fullName: "",
@@ -63,14 +61,6 @@ const ShoppingSummary = ({ totalCartItems }) => {
   }, [requestHttp, setInput]);
 
   const { fullName, email, street, phone, zipCode, city, province } = input;
-
-  // const orderHandler = () => {
-  //   if (isAuth) {
-  //     // Handling Order
-  //   } else {
-  //     navigate("/login");
-  //   }
-  // };
 
   const countryChangeHandler = (value) => {
     setCountry(value);
@@ -195,7 +185,6 @@ const ShoppingSummary = ({ totalCartItems }) => {
             "!bg-dark-brown py-3 text-white-bone disabled:cursor-not-allowed dark:!bg-white-bone dark:text-dark-brown"
           }
           disabled={totalCartItems < 1}
-          // onClick={orderHandler}
           type="submit"
         >
           Checkout
@@ -205,4 +194,4 @@ const ShoppingSummary = ({ totalCartItems }) => {
   );
 };
 
-export default ShoppingSummary;
+export default CartSummary;

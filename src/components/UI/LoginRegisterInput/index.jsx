@@ -2,10 +2,10 @@ import React, { forwardRef, useState } from "react";
 
 import { MdDone, MdRemoveRedEye, MdOutlineRemoveRedEye } from "react-icons/md";
 
-import RegisterNote from "../Register/RegisterNote";
-import Input from "./Input";
+import RegisterNote from "components/Register/RegisterNote";
+import { Input } from "../Input";
 
-const LoginRegisterInput = forwardRef(
+export const LoginRegisterInput = forwardRef(
   (
     {
       id,
@@ -72,5 +72,3 @@ const LoginRegisterInput = forwardRef(
     );
   }
 );
-
-export default LoginRegisterInput;
