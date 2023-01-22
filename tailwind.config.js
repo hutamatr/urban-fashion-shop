@@ -1,9 +1,10 @@
 /** @type {import('tailwindcss').Config} */
+// eslint-disable-next-line no-undef
 module.exports = {
-  darkMode: "class",
+  darkMode: 'class',
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+    './src/**/*.{js,jsx,ts,tsx}',
+    'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {
@@ -12,14 +13,14 @@ module.exports = {
         manrope: ["'Manrope'"],
       },
       backgroundImage: {
-        "hero-image": "url('/src/assets/image/hero-image.webp')",
-        "home-image": "url('/src/assets/image/home-image.webp')",
+        'hero-image': "url('/src/assets/image/hero-image.webp')",
+        'home-image': "url('/src/assets/image/home-image.webp')",
       },
       colors: {
-        "dark-brown": "#3F362F",
-        "white-bone": "#E6E1DC",
+        'dark-brown': '#3F362F',
+        'white-bone': '#E6E1DC',
       },
     },
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [require('flowbite/plugin')],
 };

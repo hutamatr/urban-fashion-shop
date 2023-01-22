@@ -1,11 +1,11 @@
-import { useState } from "react";
-import useDarkMode from "../../hooks/useDarkMode";
-import { DarkModeSwitch } from "react-toggle-dark-mode";
+import { useState } from 'react';
+import useDarkMode from '../../hooks/useDarkMode';
+import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
 const SwitcherTheme = () => {
   const { colorTheme, setTheme } = useDarkMode();
   const [darkTheme, setDarkTheme] = useState(
-    colorTheme === "light" ? true : false
+    colorTheme === 'light' ? true : false
   );
 
   const toggleThemeHandler = (checked) => {
@@ -19,8 +19,8 @@ const SwitcherTheme = () => {
         checked={darkTheme}
         onChange={toggleThemeHandler}
         size={22}
-        sunColor="#FC9601"
-        moonColor="#FEFCD7 "
+        sunColor='#FC9601'
+        moonColor='#FEFCD7 '
       />
     </>
   );

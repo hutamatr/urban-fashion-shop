@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import { BsInstagram, BsFacebook } from "react-icons/bs";
+import { BsInstagram, BsFacebook } from 'react-icons/bs';
 
 const SocialsMedia = () => {
   return (
-    <section className="text-xs uppercase md:grid md:grid-flow-col">
-      <ul className="flex items-center justify-center gap-x-4 py-4 px-6 sm:justify-around sm:gap-x-2">
+    <section className='text-xs uppercase md:grid md:grid-flow-col'>
+      <ul className='flex items-center justify-center gap-x-4 py-4 px-6 sm:justify-around sm:gap-x-2'>
         <li>
           <a
-            href="https://www.instagram.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-x-2 dark:text-white-bone"
+            href='https://www.instagram.com/'
+            target='_blank'
+            rel='noreferrer'
+            className='flex items-center gap-x-2 dark:text-white-bone'
           >
             <BsInstagram />
             Instagram
@@ -19,24 +19,24 @@ const SocialsMedia = () => {
         </li>
         <li>
           <a
-            href="https://www.facebook.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-x-2 dark:text-white-bone"
+            href='https://www.facebook.com/'
+            target='_blank'
+            rel='noreferrer'
+            className='flex items-center gap-x-2 dark:text-white-bone'
           >
             <BsFacebook />
             Facebook
           </a>
         </li>
       </ul>
-      <div className="flex items-center justify-center py-4 px-6 dark:text-white-bone">
-        <a href="mailto:!unknown@gmail.com">!unknown@gmail.com</a>
+      <div className='flex items-center justify-center py-4 px-6 dark:text-white-bone'>
+        <a href='mailto:!unknown@gmail.com'>!unknown@gmail.com</a>
       </div>
-      <div className="flex flex-col items-center justify-center gap-y-6 gap-x-4 py-4 px-6 dark:text-white-bone md:flex-row md:justify-around md:gap-x-2">
+      <div className='flex flex-col items-center justify-center gap-y-6 gap-x-4 py-4 px-6 dark:text-white-bone md:flex-row md:justify-around md:gap-x-2'>
         <span>Privacy Policy</span>
         <span>Term & Conditions</span>
       </div>
-      <div className="py-4 px-6 text-center dark:text-white-bone">
+      <div className='py-4 px-6 text-center dark:text-white-bone'>
         <span>!unknown &#169; 2022</span>
       </div>
     </section>

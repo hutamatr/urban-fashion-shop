@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { Button } from "..";
+import { Button } from '..';
 
-import { MdOutlineStar } from "react-icons/md";
+import { MdOutlineStar } from 'react-icons/md';
 
 export const Rating = ({ onRating }) => {
   const [rating, setRating] = useState(0);
@@ -21,28 +21,28 @@ export const Rating = ({ onRating }) => {
   };
 
   return (
-    <div className="flex gap-x-1 py-2">
+    <div className='flex gap-x-1 py-2'>
       {[...Array(5)].map((_, index) => {
         index += 1;
         return (
           <Button
-            type="button"
+            type='button'
             key={index}
             className={`bg-transparent duration-300 ${
-              index <= (rating && hover) ? "text-yellow-300" : "text-white"
+              index <= (rating && hover) ? 'text-yellow-300' : 'text-white'
             }`}
             onClick={ratingHandler.bind(this, index)}
             onDoubleClick={resetRatingHandler}
             onMouseEnter={mouseEnterHandler.bind(this, index)}
             onMouseLeave={mouseLeaveHandler.bind(this, rating)}
           >
-            <span className="text-xl">
+            <span className='text-xl'>
               <MdOutlineStar />
             </span>
           </Button>
         );
       })}
-      <span className="text-dark-brown dark:text-white-bone">{rating}/5</span>
+      <span className='text-dark-brown dark:text-white-bone'>{rating}/5</span>
     </div>
   );
 };
