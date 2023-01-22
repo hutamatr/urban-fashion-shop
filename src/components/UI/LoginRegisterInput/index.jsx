@@ -1,9 +1,9 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useState } from 'react';
 
-import { MdDone, MdRemoveRedEye, MdOutlineRemoveRedEye } from "react-icons/md";
+import { MdDone, MdRemoveRedEye, MdOutlineRemoveRedEye } from 'react-icons/md';
 
-import RegisterNote from "components/Register/RegisterNote";
-import { Input } from "../Input";
+import RegisterNote from 'components/Register/RegisterNote';
+import { Input } from '../Input';
 
 export const LoginRegisterInput = forwardRef(
   (
@@ -27,12 +27,10 @@ export const LoginRegisterInput = forwardRef(
 
     return (
       <>
-        <div
-          className={`flex flex-row items-center justify-between border-2 border-dark-brown bg-white-bone dark:border-white-bone dark:bg-dark-brown`}
-        >
+        <div className='flex flex-row items-center justify-between border-2 border-dark-brown bg-white-bone dark:border-white-bone dark:bg-dark-brown'>
           <Input
             required={true}
-            type={isPassView ? "text" : type}
+            type={isPassView ? 'text' : type}
             name={name}
             id={id}
             value={input}
@@ -42,26 +40,26 @@ export const LoginRegisterInput = forwardRef(
             onFocus={onFocus}
             onBlur={onBlur}
             placeholder={placeholder}
-            className={`w-full border-none bg-white-bone p-2 text-sm font-medium outline-none placeholder:text-sm focus:ring-0 dark:bg-dark-brown dark:text-white-bone dark:placeholder:text-white-bone`}
+            className='w-full border-none bg-white-bone p-2 text-sm font-medium outline-none placeholder:text-sm focus:ring-0 dark:bg-dark-brown dark:text-white-bone dark:placeholder:text-white-bone'
           />
-          {isValidInput && input && placeholder !== "Password" && (
-            <MdDone className="mr-2 w-max text-green-500" />
+          {isValidInput && input && placeholder !== 'Password' && (
+            <MdDone className='mr-2 w-max text-green-500' />
           )}
-          {type === "password" &&
-            placeholder !== "Confirm Password" &&
+          {type === 'password' &&
+            placeholder !== 'Confirm Password' &&
             input && (
               <>
                 {isPassView ? (
                   <MdRemoveRedEye
-                    className="mr-2 cursor-pointer"
+                    className='mr-2 cursor-pointer'
                     onClick={viewPasswordHandler}
-                    fill="#5B5B60"
+                    fill='#5B5B60'
                   />
                 ) : (
                   <MdOutlineRemoveRedEye
-                    className="mr-2 cursor-pointer"
+                    className='mr-2 cursor-pointer'
                     onClick={viewPasswordHandler}
-                    fill="#5B5B60"
+                    fill='#5B5B60'
                   />
                 )}
               </>

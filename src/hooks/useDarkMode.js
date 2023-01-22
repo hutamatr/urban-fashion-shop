@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
 
 const useDarkMode = () => {
   const [theme, setTheme] = useState(localStorage.theme);
-  const colorTheme = theme === "dark" ? "light" : "dark";
+  const colorTheme = theme === 'dark' ? 'light' : 'dark';
 
   useEffect(() => {
     const rootElm = window.document.documentElement;
@@ -10,13 +10,13 @@ const useDarkMode = () => {
     rootElm.classList.add(theme);
 
     const bodyElm = window.document.body;
-    if (colorTheme === "light") {
-      bodyElm.style.backgroundColor = "#3F362F";
+    if (colorTheme === 'light') {
+      bodyElm.style.backgroundColor = '#3F362F';
     } else {
-      bodyElm.style.backgroundColor = "#E6E1DC";
+      bodyElm.style.backgroundColor = '#E6E1DC';
     }
 
-    localStorage.setItem("theme", theme);
+    localStorage.setItem('theme', theme);
   }, [theme, colorTheme]);
 
   return { colorTheme, setTheme };

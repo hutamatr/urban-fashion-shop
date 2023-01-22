@@ -1,5 +1,5 @@
-import React, { useReducer } from "react";
-import { CartContext } from "./Context";
+import React, { useReducer } from 'react';
+import { CartContext } from './Context';
 
 const initCart = {
   items: [],
@@ -21,7 +21,7 @@ const cartReducer = (state, action) => {
   };
 
   switch (action.type) {
-    case "ADD_ITEM":
+    case 'ADD_ITEM': {
       const {
         existingItemIndex: existingCartItemIndex,
         existingItem: existingCartItem,
@@ -48,7 +48,9 @@ const cartReducer = (state, action) => {
         items: updatedItems,
         totalPriceAmount: updatedTotalPrice,
       };
-    case "DECREASE_ITEM":
+    }
+
+    case 'DECREASE_ITEM': {
       const {
         existingItemIndex: existingRemoveItemsIndex,
         existingItem: existingItems,
@@ -71,8 +73,9 @@ const cartReducer = (state, action) => {
         items: removedItems,
         totalPriceAmount: removedTotalPriceAmountToFixed,
       };
+    }
 
-    case "DELETE_ITEM":
+    case 'DELETE_ITEM': {
       const { existingItem: existingDeleteItem } = existingItem(
         state,
         action.payload
@@ -90,6 +93,7 @@ const cartReducer = (state, action) => {
         items: deleteItems,
         totalPriceAmount: deleteTotalPriceAmount,
       };
+    }
 
     default:
       return initCart;
@@ -100,15 +104,15 @@ const CartProvider = ({ children }) => {
   const [cartState, dispatchCart] = useReducer(cartReducer, initCart);
 
   const addItemHandler = (item) => {
-    dispatchCart({ type: "ADD_ITEM", payload: item });
+    dispatchCart({ type: 'ADD_ITEM', payload: item });
   };
 
   const decreaseItemHandler = (id) => {
-    dispatchCart({ type: "DECREASE_ITEM", payload: id });
+    dispatchCart({ type: 'DECREASE_ITEM', payload: id });
   };
 
   const deleteItemHandler = (id) => {
-    dispatchCart({ type: "DELETE_ITEM", payload: id });
+    dispatchCart({ type: 'DELETE_ITEM', payload: id });
   };
 
   const { items, totalPriceAmount } = cartState;

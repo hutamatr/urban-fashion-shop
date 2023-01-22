@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { Toast as ToastAlert } from "flowbite-react";
-import { MdCheckCircleOutline, MdErrorOutline } from "react-icons/md";
+import React, { useEffect } from 'react';
+import { Toast as ToastAlert } from 'flowbite-react';
+import { MdCheckCircleOutline, MdErrorOutline } from 'react-icons/md';
 
 export const Toast = ({
   children,
@@ -15,7 +15,7 @@ export const Toast = ({
       const errorTime = setTimeout(() => {
         onSetError({
           isError: false,
-          errorMessage: "",
+          errorMessage: '',
         });
       }, 1500);
       return () => {
@@ -26,7 +26,7 @@ export const Toast = ({
       const successTime = setTimeout(() => {
         onSetSuccess({
           isSuccess: false,
-          successMessage: "",
+          successMessage: '',
         });
       }, 1500);
       return () => {
@@ -36,16 +36,16 @@ export const Toast = ({
   }, [onError, onSetError, onSuccess, onSetSuccess]);
 
   return (
-    <ToastAlert style={{ margin: "1rem", position: "fixed", zIndex: 50 }}>
-      <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded">
-        {icons === "success" && (
-          <MdCheckCircleOutline className="h-5 w-5 text-blue-600" />
+    <ToastAlert style={{ margin: '1rem', position: 'fixed', zIndex: 50 }}>
+      <div className='inline-flex h-8 w-8 shrink-0 items-center justify-center rounded'>
+        {icons === 'success' && (
+          <MdCheckCircleOutline className='h-5 w-5 text-blue-600' />
         )}
-        {icons === "error" && (
-          <MdErrorOutline className="h-5 w-5 text-red-600" />
+        {icons === 'error' && (
+          <MdErrorOutline className='h-5 w-5 text-red-600' />
         )}
       </div>
-      <div className="ml-3 font-manrope font-medium">{children}</div>
+      <div className='ml-3 font-manrope font-medium'>{children}</div>
       <ToastAlert.Toggle />
     </ToastAlert>
   );

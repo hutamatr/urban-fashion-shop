@@ -1,6 +1,6 @@
-import React, { useReducer, useEffect, useState, useCallback } from "react";
-import jwt from "jwt-decode";
-import { AuthContext } from "./Context";
+import React, { useReducer, useEffect, useState, useCallback } from 'react';
+import jwt from 'jwt-decode';
+import { AuthContext } from './Context';
 
 const calculateAutoLogoutTime = (expireDate) => {
   const currentTimeInMilliseconds = new Date().getTime();
@@ -13,14 +13,14 @@ const calculateAutoLogoutTime = (expireDate) => {
 };
 
 const getStorageItems = () => {
-  const authToken = localStorage.getItem("auth_token");
-  const expireToken = localStorage.getItem("exp_token");
+  const authToken = localStorage.getItem('auth_token');
+  const expireToken = localStorage.getItem('exp_token');
 
   const remainingTime = calculateAutoLogoutTime(expireToken);
 
   if (remainingTime <= 5000) {
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("exp_token");
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('exp_token');
     return null;
   }
   return {
@@ -31,24 +31,25 @@ const getStorageItems = () => {
 
 const authReducer = (state, action) => {
   switch (action.type) {
-    case "AUTH":
+    case 'AUTH':
       return {
         isAuth: true,
         auth_token: action.payload,
       };
 
-    case "UN-AUTH":
+    case 'UN-AUTH':
       return {
         isAuth: false,
         auth_token: null,
       };
 
-    default:
+    default: {
       const localStorageToken = getStorageItems();
       return {
         isAuth: !!localStorageToken.authToken,
         auth_token: localStorageToken.authToken,
       };
+    }
   }
 };
 
@@ -65,19 +66,19 @@ const AuthProvider = ({ children }) => {
 
   const [authSuccess, setAuthSuccess] = useState({
     isSuccess: false,
-    successMessage: "",
+    successMessage: '',
   });
 
   const [unAuthSuccess, setUnAuthSuccess] = useState({
     isSuccess: false,
-    successMessage: "",
+    successMessage: '',
   });
 
   const unAuthHandler = useCallback((isUnAuth, successMessage) => {
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("exp_token");
-    localStorage.removeItem("decode");
-    dispatch({ type: "UN-AUTH" });
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('exp_token');
+    localStorage.removeItem('decode');
+    dispatch({ type: 'UN-AUTH' });
     if (isUnAuth) {
       setUnAuthSuccess({
         isSuccess: isUnAuth,
@@ -89,10 +90,10 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const authHandler = (token, successMessage, expireAuth) => {
-    localStorage.setItem("auth_token", token);
-    localStorage.setItem("decode", JSON.stringify(jwt(token)));
-    localStorage.setItem("exp_token", expireAuth);
-    dispatch({ type: "AUTH", payload: token });
+    localStorage.setItem('auth_token', token);
+    localStorage.setItem('decode', JSON.stringify(jwt(token)));
+    localStorage.setItem('exp_token', expireAuth);
+    dispatch({ type: 'AUTH', payload: token });
     setAuthSuccess({
       isSuccess: !!token,
       successMessage: successMessage,

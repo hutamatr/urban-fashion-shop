@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-import validation from "utils/validation";
-import { useAuth } from "hooks/useStoreContext";
-import useAxios from "hooks/useAxios";
-import useFormState from "hooks/useFormState";
-import { Button, LoginRegisterInput } from "components/UI";
+import validation from 'utils/validation';
+import { useAuth } from 'hooks/useStoreContext';
+import useAxios from 'hooks/useAxios';
+import useFormState from 'hooks/useFormState';
+import { Button, LoginRegisterInput } from 'components/UI';
 
 const Register = () => {
   const userNameRef = useRef();
@@ -16,10 +16,10 @@ const Register = () => {
     validation();
 
   const { input, setInput, onChangeInputHandler } = useFormState({
-    userName: "",
-    userEmail: "",
-    password: "",
-    passwordMatch: "",
+    userName: '',
+    userEmail: '',
+    password: '',
+    passwordMatch: '',
   });
 
   const { userName, userEmail, password, passwordMatch } = input;
@@ -80,84 +80,84 @@ const Register = () => {
 
     requestHttp(
       {
-        method: "POST",
-        url: "/users",
+        method: 'POST',
+        url: '/users',
         dataReq: registerFormInput,
       },
       (data) => {
         login(data?.token);
-        navigate("/home", { replace: true });
+        navigate('/home', { replace: true });
       }
     );
 
     setInput({
-      userName: "",
-      userEmail: "",
-      password: "",
-      passwordMatch: "",
+      userName: '',
+      userEmail: '',
+      password: '',
+      passwordMatch: '',
     });
   };
 
   return (
-    <section className="m-auto flex w-full flex-col gap-y-4 p-6 md:max-w-xs">
-      <h1 className="text-sm font-bold dark:text-white-bone">Sign Up</h1>
-      <form onSubmit={RegisterSubmitHandler} className="flex flex-col gap-y-2">
+    <section className='m-auto flex w-full flex-col gap-y-4 p-6 md:max-w-xs'>
+      <h1 className='text-sm font-bold dark:text-white-bone'>Sign Up</h1>
+      <form onSubmit={RegisterSubmitHandler} className='flex flex-col gap-y-2'>
         <LoginRegisterInput
-          placeholder={"Username"}
+          placeholder='Username'
           isValidInput={isValidUserName}
           isFocusInput={isUserNameFocus}
-          name="userName"
+          name='userName'
           input={userName}
           ref={userNameRef}
-          autoComplete={"off"}
-          type="text"
+          autoComplete='off'
+          type='text'
           onChange={onChangeInputHandler}
           onFocus={userNameFocusHandler}
           onBlur={userNameFocusHandler}
         />
         <LoginRegisterInput
-          placeholder={"Email"}
+          placeholder='Email'
           isValidInput={isValidUserEmail}
           isFocusInput={isUserEmailFocus}
-          name="userEmail"
+          name='userEmail'
           input={userEmail}
-          type="email"
+          type='email'
           onChange={onChangeInputHandler}
           onFocus={userEmailFocusHandler}
           onBlur={userEmailFocusHandler}
         />
         <LoginRegisterInput
-          placeholder={"Password"}
+          placeholder='Password'
           isValidInput={isValidPassword}
           isFocusInput={isPasswordFocus}
-          name="password"
+          name='password'
           input={password}
-          type="password"
+          type='password'
           onChange={onChangeInputHandler}
           onFocus={passwordFocusHandler}
           onBlur={passwordFocusHandler}
         />
         <LoginRegisterInput
-          placeholder={"Confirm Password"}
+          placeholder='Confirm Password'
           isValidInput={isValidPasswordMatch}
           isFocusInput={isPasswordMatchFocus}
-          name="passwordMatch"
+          name='passwordMatch'
           input={passwordMatch}
-          type="password"
+          type='password'
           onChange={onChangeInputHandler}
           onFocus={passwordMatchFocusHandler}
           onBlur={passwordMatchFocusHandler}
         />
 
-        <Button className="!bg-dark-brown py-3 text-xs font-light text-white disabled:cursor-not-allowed dark:!bg-white-bone dark:font-medium dark:text-dark-brown">
+        <Button className='!bg-dark-brown py-3 text-xs font-light text-white disabled:cursor-not-allowed dark:!bg-white-bone dark:font-medium dark:text-dark-brown'>
           Create Account
         </Button>
       </form>
-      <p className="text-center text-sm dark:text-white-bone">
-        Already have an account?{" "}
+      <p className='text-center text-sm dark:text-white-bone'>
+        Already have an account?{' '}
         <Link
-          to={"/login"}
-          className="font-semibold text-dark-brown underline dark:text-white-bone"
+          to='/login'
+          className='font-semibold text-dark-brown underline dark:text-white-bone'
         >
           Log In
         </Link>

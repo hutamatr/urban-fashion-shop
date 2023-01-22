@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 export const CartContext = React.createContext({
   items: [],
   totalPriceAmount: 0,
-  addItem: (item) => {},
-  decreaseItem: (id) => {},
-  deleteItem: (id) => {},
+  addItem: () => {},
+  decreaseItem: () => {},
+  deleteItem: () => {},
 });
 
 export const AuthContext = React.createContext({
@@ -20,6 +20,6 @@ export const AuthContext = React.createContext({
 
 export const WishlistContext = React.createContext({
   wishListItems: [],
-  addToWishList: (item) => {},
-  deleteWishList: (id) => {},
+  addToWishList: () => {},
+  deleteWishList: () => {},
 });

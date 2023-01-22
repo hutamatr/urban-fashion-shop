@@ -1,7 +1,7 @@
-import React from "react";
-import CartProvider from "./CartProvider";
-import AuthProvider from "./AuthProvider";
-import WishlistProvider from "./WishlistProvider";
+import React from 'react';
+import CartProvider from './CartProvider';
+import AuthProvider from './AuthProvider';
+import WishlistProvider from './WishlistProvider';
 
 const ContextProvider = ({ children }) => {
   return (
