@@ -1,4 +1,4 @@
-# !Unknown Online Store
+Fashion Online Shop
 
 ## Table of contents
 
@@ -34,13 +34,13 @@ Users should be able to:
 
 ### Links
 
-- Live Site URL: [!UnknownOnlineShop](https://unknown-shopping-store.vercel.app/)
+- Live Site URL: [Fashion Online Shop](https://unknown-shopping-store.vercel.app/)
 
 ## My process
 
 ### Built with
 
-- [ReactJs](https://reactjs.org/)
+- [ReactJS](https://reactjs.org/)
 - [React Router](https://reactrouter.com/en/main)
 - [React Select](https://react-select.com/home)
 - [FakeStoreAPI](https://fakestoreapi.com/)
