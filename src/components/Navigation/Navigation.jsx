@@ -43,8 +43,8 @@ const Navigation = () => {
         </Button>
       </div>
       <ul
-        className={`absolute right-0 top-16 flex min-h-[50vh] w-[100vw] flex-col items-center gap-y-6 rounded-b-xl bg-white-bone py-4 px-6 text-center font-manrope text-sm font-semibold uppercase text-neutral-500 shadow-md duration-700 dark:bg-dark-brown sm:static sm:top-0 sm:min-h-0 sm:w-auto sm:translate-x-0 sm:flex-row sm:items-center sm:gap-x-8 sm:bg-transparent sm:py-0 sm:opacity-100 sm:shadow-none sm:duration-75 ${
-          menuView ? 'top-0' : '-top-[100vh] opacity-0'
+        className={`fixed right-0 top-16 flex h-[100vh] w-[70vw] flex-col items-center gap-y-6 rounded-b-xl bg-white-bone py-4 px-6 text-center font-manrope text-sm font-semibold uppercase text-neutral-500 shadow-md duration-700 dark:bg-dark-brown sm:static sm:top-0 sm:h-fit sm:min-h-0 sm:w-auto sm:translate-x-0 sm:flex-row sm:items-center sm:gap-x-8 sm:bg-transparent sm:py-0 sm:opacity-100 sm:shadow-none sm:duration-75 ${
+          menuView ? 'top-0' : 'translate-x-96 sm:top-full'
         }`}
       >
         <li
