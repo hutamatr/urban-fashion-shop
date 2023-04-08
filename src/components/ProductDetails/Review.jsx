@@ -50,7 +50,7 @@ const Review = () => {
         Review
       </h1>
       <Button
-        className='w-full py-3 px-4 duration-300 hover:bg-dark-brown hover:text-white-bone dark:border-white-bone dark:bg-dark-brown dark:text-white-bone dark:hover:bg-white-bone dark:hover:text-dark-brown md:mx-auto md:max-w-fit'
+        className='w-full px-4 py-3 duration-300 hover:bg-dark-brown hover:text-white-bone dark:border-white-bone dark:bg-dark-brown dark:text-white-bone dark:hover:bg-white-bone dark:hover:text-dark-brown md:mx-auto md:max-w-fit'
         onClick={showReviewInputHandler}
       >
         {isReviewShow ? 'Cancel Review' : 'Write a Review'}

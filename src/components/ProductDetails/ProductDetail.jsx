@@ -42,7 +42,7 @@ const ProductDetail = ({
           <div className='flex max-w-fit border-2 border-dark-brown dark:border-white-bone'>
             <Button
               onClick={onDecreaseAmount}
-              className='py-2 px-4 text-lg font-bold dark:text-white-bone'
+              className='px-4 py-2 text-lg font-bold dark:text-white-bone'
             >
               -
             </Button>
@@ -56,14 +56,14 @@ const ProductDetail = ({
             />
             <Button
               onClick={onIncreaseAmount}
-              className='py-2 px-4 text-lg font-bold dark:text-white-bone'
+              className='px-4 py-2 text-lg font-bold dark:text-white-bone'
             >
               +
             </Button>
           </div>
 
           <Button
-            className='flex items-center gap-x-2 rounded-sm bg-dark-brown py-[.75rem] px-2 text-white-bone dark:bg-white-bone dark:text-dark-brown'
+            className='flex items-center gap-x-2 rounded-sm bg-dark-brown px-2 py-[.75rem] text-white-bone dark:bg-white-bone dark:text-dark-brown'
             onClick={onIsOnWishlist}
           >
             {isOnWishList ? (
