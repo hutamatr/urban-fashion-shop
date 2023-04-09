@@ -1,17 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { shallow } from 'zustand/shallow';
 
 import validation from 'utils/validation';
-import { useAuth } from 'hooks/useStoreContext';
-import useAxios from 'hooks/useAxios';
+import { useStore } from 'store/useStore';
+// import useAxios from 'hooks/useAxios';
 import useFormState from 'hooks/useFormState';
 import { Button, LoginRegisterInput } from 'components/UI';
 
 const Register = () => {
   const userNameRef = useRef();
   const navigate = useNavigate();
-  const { login } = useAuth();
-  const { requestHttp } = useAxios();
+  const { authHandler: register } = useStore(
+    (state) => ({
+      authHandler: state.authHandler,
+    }),
+    shallow
+  );
+  // const { requestHttp } = useAxios();
   const { userNameValidation, emailValidation, passwordValidation } =
     validation();
 
@@ -78,17 +84,21 @@ const Register = () => {
       password: password,
     };
 
-    requestHttp(
-      {
-        method: 'POST',
-        url: '/users',
-        dataReq: registerFormInput,
-      },
-      (data) => {
-        login(data?.token);
-        navigate('/home', { replace: true });
-      }
-    );
+    register(registerFormInput);
+
+    navigate('/home', { replace: true });
+
+    // requestHttp(
+    //   {
+    //     method: 'POST',
+    //     url: '/users',
+    //     dataReq: registerFormInput,
+    //   },
+    //   (data) => {
+    //     authHandler(data?.token);
+    //     navigate('/home', { replace: true });
+    //   }
+    // );
 
     setInput({
       userName: '',
