@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { shallow } from 'zustand/shallow';
 
-import useAxios from 'hooks/useAxios';
 import ProductItem from 'components/Shop/ProductItem';
+import { useStore } from 'store/useStore';
 
 const BestSellers = () => {
-  const [bestSellers, setBestSellers] = useState([]);
-
-  const { requestHttp, loading, error } = useAxios();
+  const { getAllProducts, products, isLoading, isError, error } = useStore(
+    (state) => ({
+      getAllProducts: state.getAllProducts,
+      products: state.products,
+      isLoading: state.isLoading,
+      isError: state.isError,
+      error: state.error,
+    }),
+    shallow
+  );
 
   useEffect(() => {
-    requestHttp(
-      {
-        method: 'GET',
-        url: 'products?limit=4',
-      },
-      (data) => setBestSellers(data)
-    );
-  }, [requestHttp]);
+    getAllProducts();
+  }, []);
 
   const bestSellersContent = (
     <ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 sm:grid-rows-1 lg:grid-cols-4 lg:gap-16'>
-      {bestSellers.map((product) => {
+      {products.slice(0, 4).map((product) => {
         return (
           <ProductItem
             key={product.id}
@@ -36,17 +38,17 @@ const BestSellers = () => {
       <h1 className='mb-2 text-center font-noto text-4xl uppercase dark:text-white-bone md:text-5xl'>
         BestSellers
       </h1>
-      {loading.isLoading && (
+      {isLoading && (
         <p className='mx-auto text-center font-manrope font-light uppercase dark:text-white-bone'>
-          {loading.loadingMessage}
+          Loading...
         </p>
       )}
-      {error.isError && (
+      {isError && (
         <p className='mx-auto text-center font-manrope font-medium uppercase text-red-700'>
-          {error.errorMessage}
+          {error.message}
         </p>
       )}
-      {!loading.isLoading && !error.isError && bestSellersContent}
+      {!isLoading && !isError && bestSellersContent}
     </section>
   );
 };

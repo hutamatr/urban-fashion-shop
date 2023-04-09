@@ -1,35 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { shallow } from 'zustand/shallow';
 
 import Hero from 'components/Home/Hero';
 import ProductItem from 'components/Shop/ProductItem';
 import FashionProducts from 'components/Home/FashionProducts';
 import BestSellers from 'components/Home/BestSellers';
 import OurPhilosophy from 'components/Home/OurPhilosophy';
-import useAxios from 'hooks/useAxios';
-import { Toast } from 'components/UI';
-import { useAuth } from 'hooks/useStoreContext';
+import { Toaster } from 'react-hot-toast';
+import { useStore } from 'store/useStore';
 
 const Home = () => {
-  const [dataProduct, setDataProduct] = useState([]);
-  const { requestHttp, loading, error } = useAxios();
-  const { authSuccess, setAuthSuccess, unAuthSuccess, setUnAuthSuccess } =
-    useAuth();
+  const { getAllProducts, products, isLoading, isError, error } = useStore(
+    (state) => ({
+      getAllProducts: state.getAllProducts,
+      products: state.products,
+      isLoading: state.isLoading,
+      isError: state.isError,
+      error: state.error,
+    }),
+    shallow
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    requestHttp(
-      {
-        method: 'GET',
-        url: 'products?limit=2',
-        headers: false,
-      },
-      (data) => setDataProduct(data)
-    );
-  }, [requestHttp]);
+    getAllProducts();
+  }, []);
 
   const productContent = (
     <ul className='grid grid-cols-1 gap-3 bg-white-bone dark:bg-dark-brown md:grid-cols-2'>
-      {dataProduct.map((product) => {
+      {products.slice(0, 2).map((product) => {
         return (
           <ProductItem
             key={product.id}
@@ -43,24 +42,7 @@ const Home = () => {
 
   return (
     <>
-      {authSuccess.isSuccess && (
-        <Toast
-          icons='success'
-          onSuccess={authSuccess.isSuccess}
-          onSetSuccess={setAuthSuccess}
-        >
-          {authSuccess.successMessage}
-        </Toast>
-      )}
-      {unAuthSuccess.isSuccess && (
-        <Toast
-          icons='success'
-          onSuccess={unAuthSuccess.isSuccess}
-          onSetSuccess={setUnAuthSuccess}
-        >
-          {unAuthSuccess.successMessage}
-        </Toast>
-      )}
+      <Toaster />
       <Hero />
       <section className='grid min-h-max grid-cols-1 gap-8 p-6 md:min-h-fit md:grid-cols-2 md:grid-rows-1 md:gap-10 md:p-10'>
         <div className='flex flex-col gap-y-8'>
@@ -71,17 +53,17 @@ const Home = () => {
             -Joan Crawford
           </span>
         </div>
-        {loading.isLoading && (
+        {isLoading && (
           <p className='mx-auto text-center font-manrope font-light uppercase text-dark-brown'>
-            {loading.loadingMessage}
+            Loading...
           </p>
         )}
-        {error.isError && (
+        {isError && (
           <p className='mx-auto text-center font-medium uppercase text-red-700'>
-            {error.errorMessage}
+            {error.message}
           </p>
         )}
-        {!loading.isLoading && !error.isError && productContent}
+        {!isLoading && !isError && productContent}
       </section>
       <FashionProducts />
       <BestSellers />
