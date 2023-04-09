@@ -1,12 +1,21 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { shallow } from 'zustand/shallow';
 
 import CartItem from './CartItem';
-import { useCart } from 'hooks/useStoreContext';
 import { Button } from 'components/UI';
+import { useStore } from 'store/useStore';
 
 const CartList = () => {
-  const { items, addItem, decreaseItem, deleteItem } = useCart();
+  const { items, addItem, decreaseItem, deleteItem } = useStore(
+    (state) => ({
+      items: state.items,
+      addItem: state.addItem,
+      decreaseItem: state.decreaseItem,
+      deleteItem: state.deleteItem,
+    }),
+    shallow
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +47,7 @@ const CartList = () => {
             Cart Empty
           </span>
           <Button
-            className='bg-dark-brown py-2 px-6 text-white-bone dark:bg-white-bone dark:text-dark-brown'
+            className='bg-dark-brown px-6 py-2 text-white-bone dark:bg-white-bone dark:text-dark-brown'
             onClick={gotoShopHandler}
           >
             Shop

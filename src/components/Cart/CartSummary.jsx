@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'flowbite-react';
 import countryList from 'react-select-country-list';
+import { shallow } from 'zustand/shallow';
 
-import { useCart, useAuth } from 'hooks/useStoreContext';
 import useFormState from 'hooks/useFormState';
-import useAxios from 'hooks/useAxios';
 import TotalPricesOrder from './TotalPricesOrder';
 import { SelectItems, Button, Input } from 'components/UI';
+import { useStore } from 'store/useStore';
 
 const inputClassName =
   'w-full rounded-sm border-2 border-dark-brown bg-white-bone p-2 text-sm font-medium outline-none placeholder:text-sm focus:border-dark-brown focus:ring-0 placeholder:uppercase';
@@ -24,41 +24,45 @@ const CartSummary = ({ totalCartItems }) => {
     province: '',
   });
 
-  const { requestHttp, loading, error } = useAxios();
-  const { totalPriceAmount } = useCart();
-  const { isAuth } = useAuth();
+  const { isAuth, totalPriceAmount, user, getUser, isLoading, isError, error } =
+    useStore(
+      (state) => ({
+        isAuth: state.isAuth,
+        totalPriceAmount: state.totalPriceAmount,
+        user: state.user,
+        getUser: state.getUser,
+        isLoading: state.isLoading,
+        isError: state.isError,
+        error: state.error,
+      }),
+      shallow
+    );
   const navigate = useNavigate();
   const countryOption = useMemo(() => countryList().getData(), []);
 
   useEffect(() => {
     const userId = JSON.parse(localStorage.getItem('decode'));
     if (userId) {
-      requestHttp(
-        {
-          method: 'GET',
-          url: `users/${userId.sub}`,
-        },
-        (data) => {
-          const {
-            name: { firstname, lastname },
-            email,
-            address: { city, number, street, zipcode },
-            phone,
-          } = data;
-
-          setInput((prevState) => ({
-            ...prevState,
-            email,
-            phone,
-            city,
-            fullName: `${firstname} ${lastname}`,
-            street: `${street}, ${number}`,
-            zipCode: zipcode,
-          }));
-        }
-      );
+      getUser();
+      const {
+        name: { firstname, lastname },
+        email,
+        address: { city, number, street, zipcode },
+        phone,
+      } = user;
+      setInput((prevState) => ({
+        ...prevState,
+        email,
+        phone,
+        city,
+        fullName: `${firstname} ${lastname}`,
+        street: `${street}, ${number}`,
+        zipCode: zipcode,
+      }));
+    } else {
+      return;
     }
-  }, [requestHttp, setInput]);
+  }, [setInput]);
 
   const { fullName, email, street, phone, zipCode, city, province } = input;
 
@@ -93,8 +97,8 @@ const CartSummary = ({ totalCartItems }) => {
         <h3 className='text-lg font-semibold dark:text-white-bone'>
           Shipping detail
         </h3>
-        {loading.isLoading && <Spinner aria-label='Default status example' />}
-        {error.isError && (
+        {isLoading && <Spinner aria-label='Default status example' />}
+        {isError && (
           <span className='text-xs font-medium text-red-600'>
             {error.errorMessage}
           </span>

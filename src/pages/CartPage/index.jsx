@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { shallow } from 'zustand/shallow';
 
 import CartList from 'components/Cart/CartList';
 import CartSummary from 'components/Cart/CartSummary';
-import { useCart } from 'hooks/useStoreContext';
+import { useStore } from 'store/useStore';
 
 const Cart = () => {
-  const { items } = useCart();
+  const {
+    items: cartItems,
+    totalCart,
+    totalCartHandler,
+  } = useStore(
+    (state) => ({
+      items: state.items,
+      totalCart: state.totalCart,
+      totalCartHandler: state.totalCartHandler,
+    }),
+    shallow
+  );
 
-  const totalCartItems = items.reduce((curr, item) => {
-    return curr + item.amount;
-  }, 0);
+  useEffect(() => {
+    totalCartHandler();
+  }, [cartItems]);
 
   return (
     <section className='mb-6 flex min-h-screen flex-col gap-y-4'>
@@ -20,11 +32,11 @@ const Cart = () => {
       </div>
       <div
         className={`grid grid-rows-1 px-6 md:grid-cols-[3fr_1.5fr] md:gap-x-4 ${
-          totalCartItems < 1 ? 'gap-y-[30vh]' : 'gap-y-[20vh]'
+          totalCart < 1 ? 'gap-y-[30vh]' : 'gap-y-[20vh]'
         }`}
       >
         <CartList />
-        <CartSummary totalCartItems={totalCartItems} />
+        <CartSummary totalCartItems={totalCart} />
       </div>
     </section>
   );
