@@ -1,32 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { shallow } from 'zustand/shallow';
 
-import useAxios from 'hooks/useAxios';
-import { useAuth } from 'hooks/useStoreContext';
+import { useStore } from 'store/useStore';
 
 const NavigationFooter = () => {
-  const [categories, setCategories] = useState([]);
-  const { isAuth, unAuth } = useAuth();
-  const { requestHttp } = useAxios();
+  const { isAuth, unAuthHandler, getCategories, categories } = useStore(
+    (state) => ({
+      isAuth: state.isAuth,
+      unAuthHandler: state.unAuthHandler,
+      getCategories: state.getCategories,
+      categories: state.categories,
+    }),
+    shallow
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    const categoriesStorage = JSON.parse(localStorage.getItem('categories'));
-    if (!categoriesStorage) {
-      requestHttp(
-        {
-          method: 'GET',
-          url: 'products/categories',
-        },
-        (data) => {
-          setCategories(data);
-          localStorage.setItem('categories', JSON.stringify(data));
-        }
-      );
-    } else {
-      setCategories(categoriesStorage);
-    }
-  }, [requestHttp]);
+    getCategories();
+  }, []);
 
   return (
     <section className='flex flex-col gap-y-6 border-y border-y-dark-brown p-6 text-center dark:border-y-white-bone md:w-full md:flex-row md:justify-evenly md:text-start'>
@@ -76,7 +68,7 @@ const NavigationFooter = () => {
               <Link
                 to='/'
                 className='font-manrope text-xs'
-                onClick={() => unAuth(true, 'Logout Successfully')}
+                onClick={() => unAuthHandler()}
               >
                 Logout
               </Link>
