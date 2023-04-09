@@ -1,36 +1,50 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { shallow } from 'zustand/shallow';
 
 import Review from 'components/ProductDetails/Review';
 import ProductDetail from 'components/ProductDetails/ProductDetail';
 import OtherProduct from 'components/ProductDetails/OtherProduct';
 import AddToCartModal from 'components/ProductDetails/AddToCartModal';
-import useAxios from 'hooks/useAxios';
 import { formatCurrencyOnly } from 'utils/formatCurrency';
-import { useCart, useWish, useAuth } from 'hooks/useStoreContext';
+import { useStore } from 'store/useStore';
 
 const ProductDetails = () => {
-  const [product, setProduct] = useState({});
   const [amount, setAmount] = useState(1);
   const [isModalShow, setIsModalShow] = useState(false);
   const [isOnWishList, setIsOnWishList] = useState(false);
+
   const { productId } = useParams();
-  const { requestHttp, loading, error } = useAxios();
-  const { addItem } = useCart();
-  const { addToWishList, deleteWishList } = useWish();
-  const { isAuth } = useAuth();
+  const {
+    isAuth,
+    addItem: addItemToCart,
+    addWishlist,
+    deleteWishlist,
+    product,
+    getProductDetail,
+    isLoading,
+    isError,
+    error,
+  } = useStore(
+    (state) => ({
+      isAuth: state.isAuth,
+      addItem: state.addItem,
+      addWishlist: state.addWishlist,
+      deleteWishlist: state.deleteWishlist,
+      product: state.product,
+      getProductDetail: state.getProductDetail,
+      isLoading: state.isLoading,
+      isError: state.isError,
+      error: state.error,
+    }),
+    shallow
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    requestHttp(
-      {
-        method: 'GET',
-        url: `products/${productId}`,
-      },
-      (data) => setProduct(data)
-    );
-  }, [requestHttp, productId]);
+    getProductDetail(+productId);
+  }, []);
 
   const { id, image, title, price } = product;
 
@@ -47,9 +61,9 @@ const ProductDetails = () => {
       amount: +amount,
     };
 
-    addItem(itemToOrder);
+    addItemToCart(itemToOrder);
     setIsModalShow(true);
-  }, [addItem, amount, id, image, price, title]);
+  }, [addItemToCart, amount, id, image, price, title]);
 
   const closeModalBackdropHandler = () => {
     setIsModalShow(false);
@@ -63,25 +77,25 @@ const ProductDetails = () => {
     }
 
     if (isOnWishList) {
-      deleteWishList(id);
+      deleteWishlist(id);
     } else {
-      addToWishList(product);
+      addWishlist(product);
     }
   };
 
   return (
     <>
-      {loading.isLoading && (
+      {isLoading && (
         <p className='my-[25vh] min-h-[50vh] text-center text-xl font-medium dark:text-white-bone'>
-          {loading.loadingMessage}
+          Loading...
         </p>
       )}
-      {error.isError && (
+      {isError && (
         <p className='my-[25vh] min-h-[50vh] text-center text-xl font-bold text-red-600'>
           {error.errorMessage}
         </p>
       )}
-      {!loading.isLoading && !error.isError && (
+      {!isLoading && !isError && (
         <ProductDetail
           {...product}
           onDecreaseAmount={decreaseAmountHandler}

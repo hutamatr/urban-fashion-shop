@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { shallow } from 'zustand/shallow';
 
 import ProductItem from './ProductItem';
 import SortProduct from './SortProduct';
-import useAxios from 'hooks/useAxios';
+import { useStore } from 'store/useStore';
 
 const sortProductsByPrice = (products, ascending) => {
   return products.sort((productA, productB) => {
@@ -18,40 +19,34 @@ const sortProductsByPrice = (products, ascending) => {
 };
 
 const ProductList = () => {
-  const [allProducts, setAllProducts] = useState([]);
-
-  const { requestHttp, loading, error } = useAxios();
+  const { getAllProducts, products, isLoading, isError, error } = useStore(
+    (state) => ({
+      getAllProducts: state.getAllProducts,
+      products: state.products,
+      isLoading: state.isLoading,
+      isError: state.isError,
+      error: state.error,
+    }),
+    shallow
+  );
 
   const navigate = useNavigate();
   const location = useLocation();
-
-  const filteredProduct = allProducts.filter((product) => {
-    return product.category !== 'electronics';
-  });
 
   const queryParams = new URLSearchParams(location.search);
 
   const isSortedProductList = queryParams.get('sort') === 'low-to-high';
 
-  const sortedQuotes = sortProductsByPrice(
-    filteredProduct,
-    isSortedProductList
-  );
+  const sortedProducts = sortProductsByPrice(products, isSortedProductList);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    requestHttp(
-      {
-        method: 'GET',
-        url: 'products',
-      },
-      (data) => setAllProducts(data)
-    );
-  }, [requestHttp]);
+    getAllProducts();
+  }, []);
 
   const productContent = (
     <ul className='grid grid-cols-2 gap-3 bg-white-bone p-6 dark:bg-dark-brown sm:grid-cols-3 lg:grid-cols-4'>
-      {sortedQuotes.map((product) => {
+      {sortedProducts.map((product) => {
         return (
           <ProductItem
             product={product}
@@ -69,17 +64,17 @@ const ProductList = () => {
         onNavigate={navigate}
         onSortedProduct={isSortedProductList}
       />
-      {loading.isLoading && (
+      {isLoading && (
         <p className='mx-auto my-[25vh] min-h-[50vh] text-center font-semibold uppercase dark:text-white-bone'>
-          {loading.loadingMessage}
+          Loading...
         </p>
       )}
-      {error.isError && (
+      {isError && (
         <p className='mx-auto py-6 text-center font-medium uppercase text-red-700'>
-          {error.errorMessage}
+          {error.message}
         </p>
       )}
-      {!loading.isLoading && !error.isError && productContent}
+      {!isLoading && !isError && productContent}
     </section>
   );
 };

@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { shallow } from 'zustand/shallow';
 
 import ProductItem from 'components/Shop/ProductItem';
-import useAxios from 'hooks/useAxios';
+import { useStore } from 'store/useStore';
 
 const OtherProduct = () => {
-  const [otherProduct, setOtherProduct] = useState([]);
-  const { requestHttp, loading, error } = useAxios();
+  const { products, getAllProducts, isLoading, isError, error } = useStore(
+    (state) => ({
+      products: state.products,
+      getAllProducts: state.getAllProducts,
+      isLoading: state.isLoading,
+      isError: state.isError,
+      error: state.error,
+    }),
+    shallow
+  );
 
   useEffect(() => {
-    requestHttp(
-      {
-        method: 'GET',
-        url: `products?limit=4`,
-      },
-      (data) => setOtherProduct(data)
-    );
-  }, [requestHttp]);
+    getAllProducts();
+  }, []);
 
   const otherProductContent = (
     <ul className='grid grid-cols-2 gap-4 bg-white-bone dark:bg-dark-brown sm:grid-cols-4 md:gap-8 lg:gap-16'>
-      {otherProduct.map((product) => {
+      {products.slice(0, 4).map((product) => {
         return (
           <ProductItem
             key={product.id}
@@ -36,17 +39,17 @@ const OtherProduct = () => {
       <h1 className='p-4 text-center font-noto text-3xl font-semibold dark:text-white-bone sm:text-left'>
         You May Also Like
       </h1>
-      {loading.isLoading && (
+      {isLoading && (
         <p className='text-center text-xl font-medium dark:text-white-bone'>
-          {loading.loadingMessage}
+          Loading...
         </p>
       )}
-      {error.isError && (
+      {isError && (
         <p className='text-center text-xl font-medium text-red-600'>
-          {error.errorMessage}
+          {error.message}
         </p>
       )}
-      {!loading.isLoading && !error.isError && otherProductContent}
+      {!isLoading && !isError && otherProductContent}
     </section>
   );
 };
