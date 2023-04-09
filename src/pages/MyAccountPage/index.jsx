@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { shallow } from 'zustand/shallow';
 
 import AccountDetails from 'components/MyAccount/AccountDetails';
-import useAxios from 'hooks/useAxios';
+import { useStore } from 'store/useStore';
 
 const MyAccount = () => {
-  const [user, setUser] = useState({});
-  const { requestHttp, loading } = useAxios();
+  const { user, getUser, isLoading, isError, error } = useStore(
+    (state) => ({
+      user: state.user,
+      getUser: state.getUser,
+      isLoading: state.isLoading,
+      isError: state.isError,
+      error: state.error,
+    }),
+    shallow
+  );
 
   useEffect(() => {
-    const decode = JSON.parse(localStorage.getItem('decode'));
-    requestHttp(
-      {
-        method: 'GET',
-        url: `users/${decode?.sub}`,
-      },
-      (data) => {
-        setUser(data);
-      }
-    );
-  }, [requestHttp]);
+    getUser();
+  }, []);
 
   return (
     <>
@@ -33,7 +33,12 @@ const MyAccount = () => {
           <span className='text-sm font-light'>{user.email}</span>
         </div>
       </section>
-      <AccountDetails {...user} loading={loading} />
+      <AccountDetails
+        {...user}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
+      />
     </>
   );
 };

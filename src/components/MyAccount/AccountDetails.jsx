@@ -1,13 +1,27 @@
 import React from 'react';
 
-const AccountDetails = ({ address, email, phone, name, loading }) => {
+const AccountDetails = ({
+  address,
+  email,
+  phone,
+  name,
+  isLoading,
+  isError,
+  error,
+}) => {
   return (
     <section className='mx-auto p-6'>
-      {loading.isLoading ? (
+      {isLoading && (
         <p className='w-full text-center text-dark-brown dark:text-white-bone'>
-          {loading.loadingMessage}
+          Loading...
         </p>
-      ) : (
+      )}
+      {isError && (
+        <p className='mx-auto py-6 text-center font-medium uppercase text-red-700'>
+          {error.message}
+        </p>
+      )}
+      {!isLoading && !isError && (
         <>
           <h2 className='mb-4 text-lg font-semibold dark:text-white-bone'>
             User Detail :
