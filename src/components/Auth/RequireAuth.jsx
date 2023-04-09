@@ -1,10 +1,10 @@
 import React from 'react';
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
 
-import { useAuth } from 'hooks/useStoreContext';
+import { useStore } from 'store/useStore';
 
 const RequireAuth = () => {
-  const { isAuth } = useAuth();
+  const isAuth = useStore((state) => state.isAuth);
   const location = useLocation();
 
   return isAuth ? (

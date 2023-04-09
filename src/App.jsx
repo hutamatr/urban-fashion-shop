@@ -11,10 +11,10 @@ import MyAccount from 'pages/MyAccountPage';
 import RequireAuth from 'components/Auth/RequireAuth';
 import Wishlist from 'components/Wishlist/Wishlist';
 import Layout from 'components/Layout/Layout';
-import { useAuth } from 'hooks/useStoreContext';
+import { useStore } from 'store/useStore';
 
 const App = () => {
-  const { isAuth } = useAuth();
+  const { isAuth } = useStore((state) => state);
 
   return (
     <Routes>
