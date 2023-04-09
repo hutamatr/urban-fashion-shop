@@ -2,11 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ProductItem from 'components/Shop/ProductItem';
-import { useWish } from '../../hooks/useStoreContext';
 import { Button } from 'components/UI';
+import { useStore } from 'store/useStore';
 
 const Wishlist = () => {
-  const { wishListItems } = useWish();
+  const wishlistItems = useStore((state) => state.wishlistItems);
   const navigate = useNavigate();
 
   const gotoShopHandler = () => {
@@ -21,13 +21,13 @@ const Wishlist = () => {
         </h1>
       </section>
       <section className='min-h-screen'>
-        {wishListItems.length < 1 ? (
+        {wishlistItems && wishlistItems.length < 1 ? (
           <div className='flex flex-col items-center justify-center'>
             <span className='my-6 grid place-items-center text-xl font-semibold dark:text-white-bone'>
               Wishlist Empty
             </span>
             <Button
-              className='bg-dark-brown py-2 px-6 text-white-bone dark:bg-white-bone dark:font-medium dark:text-dark-brown'
+              className='bg-dark-brown px-6 py-2 text-white-bone dark:bg-white-bone dark:font-medium dark:text-dark-brown'
               onClick={gotoShopHandler}
             >
               Shop
@@ -35,15 +35,16 @@ const Wishlist = () => {
           </div>
         ) : (
           <ul className='grid grid-cols-2 gap-4 bg-white-bone p-6 dark:bg-dark-brown sm:grid-cols-3 md:gap-16 lg:grid-cols-4'>
-            {wishListItems.map((item) => {
-              return (
-                <ProductItem
-                  key={item.id}
-                  product={item}
-                  linkTo={`/shop/${item.id}`}
-                />
-              );
-            })}
+            {wishlistItems &&
+              wishlistItems.map((item) => {
+                return (
+                  <ProductItem
+                    key={item.id}
+                    product={item}
+                    linkTo={`/shop/${item.id}`}
+                  />
+                );
+              })}
           </ul>
         )}
       </section>
