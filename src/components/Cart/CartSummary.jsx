@@ -62,7 +62,7 @@ const CartSummary = ({ totalCartItems }) => {
     } else {
       return;
     }
-  }, [setInput]);
+  }, [setInput, user]);
 
   const { fullName, email, street, phone, zipCode, city, province } = input;
 
