@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useMemo, useReducer } from 'react';
 
 import { WishlistContext } from './Context';
 
@@ -41,11 +41,14 @@ const WishlistProvider = ({ children }) => {
     dispatch({ type: 'DELETE_WISHLIST', payload: id });
   };
 
-  const value = {
-    wishListItems: wishListState.wishListItems,
-    addToWishList: addWishListHandler,
-    deleteWishList: deleteWishListHandler,
-  };
+  const value = useMemo(
+    () => ({
+      wishListItems: wishListState.wishListItems,
+      addToWishList: addWishListHandler,
+      deleteWishList: deleteWishListHandler,
+    }),
+    [wishListState.wishListItems, addWishListHandler, deleteWishListHandler]
+  );
 
   return (
     <WishlistContext.Provider value={value}>

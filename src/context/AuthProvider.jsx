@@ -1,4 +1,10 @@
-import React, { useReducer, useEffect, useState, useCallback } from 'react';
+import React, {
+  useReducer,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react';
 import jwt from 'jwt-decode';
 import { AuthContext } from './Context';
 
@@ -109,15 +115,23 @@ const AuthProvider = ({ children }) => {
     }
   }, [unAuthHandler, storageData]);
 
-  const value = {
+  const value = useMemo(() => {
+    return {
+      authSuccess,
+      setAuthSuccess,
+      unAuthSuccess,
+      setUnAuthSuccess,
+      isAuth: authState.isAuth,
+      auth: authHandler,
+      unAuth: unAuthHandler,
+    };
+  }, [
     authSuccess,
-    setAuthSuccess,
     unAuthSuccess,
-    setUnAuthSuccess,
-    isAuth: authState.isAuth,
-    auth: authHandler,
-    unAuth: unAuthHandler,
-  };
+    authState.isAuth,
+    authHandler,
+    unAuthHandler,
+  ]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

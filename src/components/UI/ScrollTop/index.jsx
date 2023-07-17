@@ -25,8 +25,8 @@ export const ScrollTop = () => {
 
   return (
     <Button
-      className={`fixed bottom-[5%] right-6 z-30 rounded-full bg-dark-brown p-3 opacity-70 duration-500 hover:-translate-y-2 hover:opacity-100 dark:bg-white-bone ${
-        scrollPosition > 500 ? 'block' : 'hidden'
+      className={`fixed bottom-0 right-0 z-30 m-6 rounded-full bg-dark-brown p-3 opacity-80 ring-2 ring-dark-brown duration-700 hover:-translate-y-2 hover:opacity-100 dark:bg-white-bone ${
+        scrollPosition > 500 ? 'block' : 'translate-y-96'
       }`}
       onClick={scrollTopHandler}
     >

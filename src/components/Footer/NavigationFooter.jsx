@@ -35,9 +35,9 @@ const NavigationFooter = () => {
           Category
         </h3>
         <ul className='flex flex-col gap-y-2 md:gap-y-1'>
-          {categories.map((category, index) => {
+          {categories.map((category) => {
             return (
-              <li key={index}>
+              <li key={category.id}>
                 <Link
                   to={`/${category}`}
                   className='font-manrope text-xs dark:text-white-bone'

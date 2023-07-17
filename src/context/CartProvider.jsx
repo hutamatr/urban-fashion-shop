@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useMemo, useReducer } from 'react';
 import { CartContext } from './Context';
 
 const initCart = {
@@ -117,13 +117,22 @@ const CartProvider = ({ children }) => {
 
   const { items, totalPriceAmount } = cartState;
 
-  const value = {
-    items,
-    totalPriceAmount,
-    addItem: addItemHandler,
-    decreaseItem: decreaseItemHandler,
-    deleteItem: deleteItemHandler,
-  };
+  const value = useMemo(
+    () => ({
+      items,
+      totalPriceAmount,
+      addItem: addItemHandler,
+      decreaseItem: decreaseItemHandler,
+      deleteItem: deleteItemHandler,
+    }),
+    [
+      items,
+      totalPriceAmount,
+      addItemHandler,
+      decreaseItemHandler,
+      deleteItemHandler,
+    ]
+  );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

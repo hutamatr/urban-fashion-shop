@@ -12,7 +12,7 @@ const MyAccount = () => {
     requestHttp(
       {
         method: 'GET',
-        url: `users/${decode.sub}`,
+        url: `users/${decode?.sub}`,
       },
       (data) => {
         setUser(data);
