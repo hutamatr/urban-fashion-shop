@@ -22,12 +22,12 @@ export const Rating = ({ onRating }) => {
 
   return (
     <div className='flex gap-x-1 py-2'>
-      {[...Array(5)].map((_, index) => {
+      {[...Array(5)].map((rate, index) => {
         index += 1;
         return (
           <Button
             type='button'
-            key={index}
+            key={rate}
             className={`bg-transparent duration-300 ${
               index <= (rating && hover) ? 'text-yellow-300' : 'text-white'
             }`}

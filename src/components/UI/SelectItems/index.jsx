@@ -16,8 +16,8 @@ export const SelectItems = ({
     }),
     option: (styles, { isFocused, isSelected }) => ({
       ...styles,
-      color: isFocused ? '#E6E1DC' : isSelected ? '#E6E1DC' : undefined,
-      background: isFocused ? '#3F362F' : isSelected ? '#3F362F' : undefined,
+      color: isFocused || isSelected ? '#E6E1DC' : undefined,
+      background: isFocused || isSelected ? '#3F362F' : undefined,
       zIndex: 1,
     }),
     menu: (base) => ({
@@ -28,7 +28,7 @@ export const SelectItems = ({
       ...base,
       background: '#E6E1DC',
       borderRadius: state.isFocused ? '3px 3px 0 0' : 3,
-      boxShadow: state.isFocused ? null : null,
+      boxShadow: state.isFocused ? null : undefined,
     }),
   };
 
