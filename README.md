@@ -29,8 +29,6 @@ Urban Fashion Shop is an online fashion store web application built with React. 
 
 ## Installation
 
-To install and run Urban Fashion Shop locally, follow these steps:
-
 1. Clone the repository:
 
    ```
@@ -70,7 +68,7 @@ Urban Fashion Shop provides an intuitive and seamless user experience for browsi
 
 ## Built with
 
-- [ReactJs](https://reactjs.org/)
+- [ReactJS](https://reactjs.org/)
 - [React Router](https://reactrouter.com/en/main)
 - [React Select](https://react-select.com/home)
 - [FakeStoreAPI](https://fakestoreapi.com/)
