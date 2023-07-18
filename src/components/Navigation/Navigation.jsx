@@ -25,7 +25,7 @@ const Navigation = () => {
     <nav className='relative mx-auto flex max-w-6xl flex-row items-center justify-between bg-white-bone p-4 dark:bg-dark-brown sm:static'>
       <Link to='/' replace={true} className='flex items-center gap-x-3'>
         <h1 className='font-noto text-2xl font-semibold text-dark-brown dark:text-white-bone'>
-          !unknown
+          urban fashion
         </h1>
       </Link>
       <div className='flex flex-row gap-x-6'>

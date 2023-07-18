@@ -30,14 +30,14 @@ const SocialsMedia = () => {
         </li>
       </ul>
       <div className='flex items-center justify-center py-4 px-6 dark:text-white-bone'>
-        <a href='mailto:!unknown@gmail.com'>!unknown@gmail.com</a>
+        <a href='mailto:urbanFashion@gmail.com'>urbanFashion@gmail.com</a>
       </div>
       <div className='flex flex-col items-center justify-center gap-y-6 gap-x-4 py-4 px-6 dark:text-white-bone md:flex-row md:justify-around md:gap-x-2'>
         <span>Privacy Policy</span>
         <span>Term & Conditions</span>
       </div>
       <div className='py-4 px-6 text-center dark:text-white-bone'>
-        <span>!unknown &#169; 2022</span>
+        <span>urban fashion &#169; {new Date().getFullYear()}</span>
       </div>
     </section>
   );
