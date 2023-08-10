@@ -30,7 +30,7 @@ export default function AddToCartModal({
         </h1>
         <div className='flex flex-row items-center justify-center gap-x-4'>
           <Image
-            src={`${import.meta.env.VITE_IMAGE_URL}${data?.attributes.image
+            src={`${import.meta.env.VITE_IMAGE_URL}${data?.attributes.images
               .data[0].attributes.url}`}
             alt={data?.attributes.name}
             className='w-32 rounded-sm object-contain ring-1 ring-dark-brown'
@@ -40,7 +40,7 @@ export default function AddToCartModal({
               {data?.attributes.name}
             </span>
             <span className='text-sm'>
-              {data?.attributes.categories.data[0].attributes.name}
+              {data?.attributes.category.data.attributes.name}
             </span>
           </div>
         </div>

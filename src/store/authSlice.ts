@@ -1,12 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AxiosError } from 'axios';
+import { AxiosResponse } from 'axios';
 
-import { login, register } from '@api/api';
+import { axiosPrivate, axiosPublic } from '@utils/axiosInterceptor';
 
-import { ILogin, IRegister, IUser } from 'types/types';
+import { RootState } from './store';
+
+import { IAccount, ILogin, IRefreshToken, IRegister, IUser } from 'types/types';
 
 export interface IAuthState {
   isAuthenticated: boolean;
+  accessToken: string | null;
   user: IUser | null;
   status: 'pending' | 'fulfilled' | 'rejected' | 'idle';
   errorMessage: string | null;
@@ -15,6 +18,7 @@ export interface IAuthState {
 
 const initialState: IAuthState = {
   isAuthenticated: false,
+  accessToken: null,
   user: null,
   status: 'idle',
   errorMessage: null,
@@ -23,37 +27,55 @@ const initialState: IAuthState = {
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
-  async ({ username, email, password }: IRegister, { rejectWithValue }) => {
-    try {
-      const response = await register({ username, email, password });
-      return response;
-    } catch (error) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message);
+  async ({ username, email, password }: IRegister) => {
+    const response: AxiosResponse<IAccount> = await axiosPublic.post(
+      '/auth/local/register',
+      {
+        username,
+        email,
+        password,
       }
-      if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data);
-      }
-      return rejectWithValue('Failed to register!');
-    }
+    );
+    return response.data;
   }
 );
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
-  async ({ email, password }: ILogin, { rejectWithValue }) => {
-    try {
-      const response = await login({ email, password });
-      return response;
-    } catch (error) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message);
+  async ({ email, password }: ILogin) => {
+    const response: AxiosResponse<IAccount> = await axiosPublic.post(
+      '/auth/local',
+      {
+        identifier: email,
+        password,
       }
-      if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data);
+    );
+    return response.data;
+  }
+);
+
+export const refreshToken = createAsyncThunk(
+  'auth/refreshToken',
+  async (_, { getState }) => {
+    const state = getState() as RootState;
+    const response: AxiosResponse<IRefreshToken> = await axiosPrivate.post(
+      '/token/refresh',
+      {
+        refreshToken: state.auth.accessToken,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${state.auth.accessToken}`,
+        },
       }
-      return rejectWithValue('Failed to login!');
-    }
+    );
+    const newUser: IAccount = {
+      user: {
+        ...(state.auth.user as IUser),
+      },
+      jwt: response.data?.jwt,
+    };
+    return newUser;
   }
 );
 
@@ -63,49 +85,65 @@ export const authSlice = createSlice({
   reducers: {
     logoutHandler: (state) => {
       state.isAuthenticated = false;
+      state.accessToken = null;
       state.user = null;
+      state.errorMessage = null;
+      state.successMessage = null;
       state.status = 'idle';
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(registerUser.pending, (state) => {
-      state.status = 'pending';
-      state.errorMessage = null;
-      state.successMessage = null;
-    });
-    builder.addCase(registerUser.fulfilled, (state, action) => {
-      state.status = 'fulfilled';
-      state.isAuthenticated = !!action.payload.data?.user?.email;
-      state.user = action.payload.data;
-      state.successMessage = 'Successfully registered new user!';
-    });
-    builder.addCase(registerUser.rejected, (state) => {
-      state.status = 'rejected';
-      state.isAuthenticated = false;
-      state.user = null;
-      state.errorMessage = 'Failed to register new user!';
-    });
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.status = 'pending';
+        state.errorMessage = null;
+        state.successMessage = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.status = 'fulfilled';
+        state.isAuthenticated = true;
+        state.accessToken = action.payload.jwt;
+        state.user = action.payload.user;
+        state.successMessage = 'Successfully registered new user!';
+      })
+      .addCase(registerUser.rejected, (state) => {
+        state.status = 'rejected';
+        state.isAuthenticated = false;
+        state.accessToken = null;
+        state.user = null;
+        state.errorMessage = 'Failed to register new user!';
+      })
 
-    builder.addCase(loginUser.pending, (state) => {
-      state.status = 'pending';
-      state.errorMessage = null;
-      state.successMessage = null;
-    });
-    builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.status = 'fulfilled';
-      state.isAuthenticated = !!action.payload.data?.user?.email;
-      state.user = action.payload.data;
-      state.successMessage = 'Successfully logged in!';
-    });
-    builder.addCase(loginUser.rejected, (state) => {
-      state.status = 'rejected';
-      state.isAuthenticated = false;
-      state.user = null;
-      state.errorMessage = 'Failed to login user!';
-    });
+      .addCase(loginUser.pending, (state) => {
+        state.status = 'pending';
+        state.errorMessage = null;
+        state.successMessage = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.status = 'fulfilled';
+        state.isAuthenticated = true;
+        state.accessToken = action.payload.jwt;
+        state.user = action.payload.user;
+        state.successMessage = 'Successfully logged in!';
+      })
+      .addCase(loginUser.rejected, (state) => {
+        state.status = 'rejected';
+        state.isAuthenticated = false;
+        state.accessToken = null;
+        state.user = null;
+        state.errorMessage = 'Failed to login user!';
+      })
+
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        state.isAuthenticated = true;
+        state.accessToken = action.payload.jwt;
+        state.user = action.payload.user as IAuthState['user'];
+      });
   },
 });
 
-export const { logoutHandler } = authSlice.actions;
+const { actions, reducer } = authSlice;
 
-export default authSlice.reducer;
+export const { logoutHandler } = actions;
+
+export default reducer;

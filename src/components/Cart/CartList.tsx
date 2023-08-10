@@ -3,8 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { addToCart, decreaseFromCart, removeFromCart } from '@store/cartSlice';
-
-import { useAppDispatch } from '@hooks/useReduxT';
+import { useAppDispatch } from '@store/store';
 
 import CartItem from './CartItem';
 

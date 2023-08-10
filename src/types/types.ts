@@ -11,20 +11,27 @@ export interface IRegister extends ILogin {
   username: string;
 }
 
-export interface IUser {
+export interface IRefreshToken {
   jwt: string;
-  user: {
-    id: number;
-    username: string;
-    email: string;
-    provider: string;
-    confirmed: boolean;
-    blocked: boolean;
-    createdAt: string;
-    updatedAt: string;
-    address: string;
-    phone_number: string;
-  };
+  refreshToken: string;
+}
+
+export interface IUser {
+  id: number;
+  username: string;
+  email: string;
+  provider: string;
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  address: string;
+  phone_number: string;
+}
+
+export interface IAccount {
+  jwt: string;
+  user: IUser;
 }
 
 export interface IImage {
@@ -80,11 +87,11 @@ export interface IProduct {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    image: {
+    images: {
       data: IImage[];
     };
-    categories: {
-      data: ICategory[];
+    category: {
+      data: ICategory;
     };
   };
 }

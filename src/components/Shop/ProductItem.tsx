@@ -13,7 +13,7 @@ export default function ProductItem({ product, linkTo }: IProductItemProps) {
   return (
     <li>
       <Link to={linkTo}>
-        <Figure product={product} classImage='' />
+        <Figure product={product} />
       </Link>
     </li>
   );

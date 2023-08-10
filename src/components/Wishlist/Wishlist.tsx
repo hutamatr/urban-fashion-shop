@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import ProductItem from '@components/Shop/ProductItem';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
 
 const Wishlist = () => {
   const navigate = useNavigate();

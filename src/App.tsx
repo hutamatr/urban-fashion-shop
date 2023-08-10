@@ -12,7 +12,7 @@ import Shop from '@pages/ProductPage';
 import SignIn from '@pages/SignInPage';
 import SignUp from '@pages/SignUpPage';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
 
 export default function App() {
   const isAuth = useAppSelector((state) => state.auth.isAuthenticated);

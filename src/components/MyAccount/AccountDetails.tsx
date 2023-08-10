@@ -2,13 +2,16 @@ import clsx from 'clsx';
 
 import Loading from '@components/UI/Loading';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
 
 import { IUser } from 'types/types';
 
-interface IAccountDetailsProps extends IUser {}
-
-export default function AccountDetails({ user }: IAccountDetailsProps) {
+export default function AccountDetails({
+  username,
+  email,
+  address,
+  phone_number,
+}: IUser) {
   const { status } = useAppSelector((state) => state.auth);
 
   return (
@@ -33,19 +36,19 @@ export default function AccountDetails({ user }: IAccountDetailsProps) {
             className={clsx('mb-6 flex items-center', 'dark:text-white-bone')}
           >
             <span className='w-24'>Name :</span>
-            <span>{user?.username}</span>
+            <span>{username}</span>
           </div>
           <div
             className={clsx('mb-6 flex items-center', 'dark:text-white-bone')}
           >
             <span className='w-24'>Email :</span>
-            <span>{user?.email}</span>
+            <span>{email}</span>
           </div>
           <div
             className={clsx('mb-6 flex items-center', 'dark:text-white-bone')}
           >
             <span className='w-24'>Phone :</span>
-            <span>{user?.phone_number}</span>
+            <span>{phone_number}</span>
           </div>
           {/* <h2
             className={clsx(
@@ -59,7 +62,7 @@ export default function AccountDetails({ user }: IAccountDetailsProps) {
             className={clsx('mb-6 flex items-center', 'dark:text-white-bone')}
           >
             <span className='w-24'>Address :</span>
-            <span>{user?.address}</span>
+            <span>{address}</span>
           </div>
         </>
       )}

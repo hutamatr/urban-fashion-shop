@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ProductItem from '@components/Shop/ProductItem';
 import Loading from '@components/UI/Loading';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
 
 export default function OtherProduct() {
   const { productId } = useParams();
@@ -26,8 +26,8 @@ export default function OtherProduct() {
       {products?.data
         ?.filter(
           (item) =>
-            item.attributes.categories.data[0].attributes.name ===
-              product?.data.attributes?.categories?.data[0]?.attributes?.name &&
+            item.attributes.category.data.attributes.name ===
+              product?.data.attributes.category.data.attributes.name &&
             item.id.toString() !== productId
         )
         .slice(0, 4)

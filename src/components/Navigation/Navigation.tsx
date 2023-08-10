@@ -6,7 +6,7 @@ import { Link, NavLink } from 'react-router-dom';
 import CartBadge from '@components/Cart/CartBadge';
 import { Image } from '@components/UI';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
 
 import LogoImg from '@assets/image/logo/logo-no-background.svg';
 
@@ -40,9 +40,6 @@ export default function Navigation() {
           alt='Urban Fashion'
           className={clsx('w-36', 'md:w-56')}
         />
-        {/* <h1 className='font-noto text-2xl font-semibold text-dark-brown dark:text-white-bone'>
-          urban fashion
-        </h1> */}
       </Link>
       <div className='flex flex-row gap-x-6'>
         <CartBadge
@@ -65,7 +62,7 @@ export default function Navigation() {
       </div>
       <ul
         className={clsx(
-          menuView ? 'top-0' : 'translate-x-96 sm:top-full',
+          menuView ? 'top-0' : 'translate-x-[999px] sm:top-full',
           'fixed right-0 top-16 flex h-screen w-[70vw] flex-col items-center gap-y-6 rounded-bl-xl bg-white-bone px-6 py-4 text-center font-manrope text-sm font-semibold uppercase text-neutral-500 shadow-md duration-700',
           'dark:bg-dark-brown',
           'sm:static sm:top-0 sm:h-fit sm:min-h-0 sm:w-auto sm:translate-x-0 sm:flex-row sm:items-center sm:gap-x-8 sm:bg-transparent sm:py-0 sm:opacity-100 sm:shadow-none sm:duration-75'

@@ -2,8 +2,7 @@ import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
 import { logoutHandler } from '@store/authSlice';
-
-import { useAppDispatch, useAppSelector } from '@hooks/useReduxT';
+import { useAppDispatch, useAppSelector } from '@store/store';
 
 export default function NavigationFooter() {
   const { isAuthenticated } = useAppSelector((state) => state.auth);

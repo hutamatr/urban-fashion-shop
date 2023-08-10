@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 import Loading from '@components/UI/Loading';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
 
 import TotalPricesOrder from './TotalPricesOrder';
 

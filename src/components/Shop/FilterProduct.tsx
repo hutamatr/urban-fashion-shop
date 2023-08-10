@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
+
 import { capitalizeWords } from '@utils/formatted';
 
 interface IFilterProductProps {

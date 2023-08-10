@@ -10,8 +10,7 @@ import ProductItem from '@components/Shop/ProductItem';
 import Loading from '@components/UI/Loading';
 
 import { fetchAllProducts } from '@store/productSlice';
-
-import { useAppDispatch, useAppSelector } from '@hooks/useReduxT';
+import { useAppDispatch, useAppSelector } from '@store/store';
 
 export default function Home() {
   const dispatch = useAppDispatch();

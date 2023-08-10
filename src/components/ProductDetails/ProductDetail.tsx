@@ -42,7 +42,7 @@ export default function ProductDetail({
         )}
         slideInterval={4000}
       >
-        {data?.attributes.image.data.map((img) => (
+        {data?.attributes.images.data.map((img) => (
           <Image
             key={img.id}
             src={`${import.meta.env.VITE_IMAGE_URL}${img.attributes.url}`}
@@ -142,7 +142,7 @@ export default function ProductDetail({
             'dark:text-white-bone'
           )}
         >
-          Category : {data?.attributes.categories.data[0].attributes.name}
+          Category : {data?.attributes.category.data.attributes.name}
         </span>
         <button
           className={clsx(

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import ProductItem from '@components/Shop/ProductItem';
 import Loading from '@components/UI/Loading';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
 
 export default function BestSellers() {
   const { products, status, errorMessage } = useAppSelector(

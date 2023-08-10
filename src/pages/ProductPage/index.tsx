@@ -4,8 +4,7 @@ import { useEffect } from 'react';
 import ProductList from '@components/Shop/ProductList';
 
 import { fetchAllProducts } from '@store/productSlice';
-
-import { useAppDispatch } from '@hooks/useReduxT';
+import { useAppDispatch } from '@store/store';
 
 export default function Product() {
   const dispatch = useAppDispatch();

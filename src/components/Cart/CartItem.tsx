@@ -30,7 +30,7 @@ export default function CartItem({
       )}
     >
       <Image
-        src={`${import.meta.env.VITE_IMAGE_URL}${product?.attributes.image
+        src={`${import.meta.env.VITE_IMAGE_URL}${product?.attributes.images
           .data[0].attributes.url}`}
         alt={product?.attributes.name}
         className={clsx(

@@ -9,8 +9,8 @@ import { z } from 'zod';
 import Input from '@components/UI/Input';
 
 import { loginUser } from '@store/authSlice';
+import { useAppDispatch, useAppSelector } from '@store/store';
 
-import { useAppDispatch, useAppSelector } from '@hooks/useReduxT';
 import { signInSchema } from '@utils/formSchema';
 
 type FormSchemaType = z.infer<typeof signInSchema>;
@@ -27,7 +27,7 @@ export default function Login() {
   });
 
   const dispatch = useAppDispatch();
-  const { status, errorMessage } = useAppSelector((state) => state.auth);
+  const { status } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const viewPasswordHandler = () => {
@@ -53,7 +53,9 @@ export default function Login() {
     }
 
     if (res.meta.requestStatus === 'rejected') {
-      toast.error(`${errorMessage}`, { duration: 3000 });
+      toast.error('Login failed! Invalid email or password', {
+        duration: 3000,
+      });
     }
 
     reset();

@@ -10,8 +10,7 @@ import Loading from '@components/UI/Loading';
 
 import { paymentOrder } from '@store/orderSlice';
 import { fetchProducts } from '@store/productSlice';
-
-import { useAppDispatch, useAppSelector } from '@hooks/useReduxT';
+import { useAppDispatch, useAppSelector } from '@store/store';
 
 import { INewProductToCart, IProduct } from 'types/types';
 
@@ -49,10 +48,10 @@ export default function Cart() {
       product_id: item.product_id,
       price: item.price,
       quantity: item.quantity,
-      email: user?.user.email as string,
+      email: user?.email as string,
       product: getProductById(products.data, item.product_id),
     }));
-  }, [cart, products?.data, user?.user.email]);
+  }, [cart, products?.data, user?.email]);
 
   const totalCartItems = useMemo(
     () =>
