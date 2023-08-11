@@ -9,8 +9,8 @@ import { z } from 'zod';
 import Input from '@components/UI/Input';
 
 import { registerUser } from '@store/authSlice';
+import { useAppDispatch } from '@store/store';
 
-import { useAppDispatch } from '@hooks/useReduxT';
 import { signUpSchema } from '@utils/formSchema';
 
 type FormSchemaType = z.infer<typeof signUpSchema>;

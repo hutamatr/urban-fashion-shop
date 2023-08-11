@@ -11,20 +11,27 @@ export interface IRegister extends ILogin {
   username: string;
 }
 
-export interface IUser {
+export interface IRefreshToken {
   jwt: string;
-  user: {
-    id: number;
-    username: string;
-    email: string;
-    provider: string;
-    confirmed: boolean;
-    blocked: boolean;
-    createdAt: string;
-    updatedAt: string;
-    address: string;
-    phone_number: string;
-  };
+  refreshToken: string;
+}
+
+export interface IUser {
+  id: number;
+  username: string;
+  email: string;
+  provider: string;
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  address: string;
+  phone_number: string;
+}
+
+export interface IAccount {
+  jwt: string;
+  user: IUser;
 }
 
 export interface IImage {
@@ -76,15 +83,15 @@ export interface IProduct {
   attributes: {
     name: string;
     description: string;
-    price: string;
+    price: number;
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    image: {
+    images: {
       data: IImage[];
     };
-    categories: {
-      data: ICategory[];
+    category: {
+      data: ICategory;
     };
   };
 }
@@ -113,9 +120,20 @@ export interface ICategoriesData extends IAllProductsMeta {
 }
 
 export interface INewProductToCart {
-  product_id: number;
-  price: string;
   quantity: number;
-  email?: string;
-  product?: IProduct;
+  product: IProduct;
+}
+
+export interface IProductsOrder {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+export interface IOrder {
+  user_id: number;
+  email: string;
+  total_price: number;
+  products_list: IProductsOrder[];
 }

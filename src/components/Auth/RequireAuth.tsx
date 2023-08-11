@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
 
 export default function RequireAuth() {
   const isAuth = useAppSelector((state) => state.auth.isAuthenticated);

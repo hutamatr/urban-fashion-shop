@@ -1,8 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { AxiosResponse } from 'axios';
 
-import { postPayment } from '@api/api';
+import { axiosPrivate } from '@utils/axiosInterceptor';
 
-import { INewProductToCart } from 'types/types';
+import { RootState } from './store';
+
+import { IOrder } from 'types/types';
 
 interface IOrderState {
   response: {
@@ -28,8 +31,22 @@ const initialState: IOrderState = {
 
 export const paymentOrder = createAsyncThunk(
   'order/payment',
-  async (products: INewProductToCart[]) => {
-    const response = await postPayment(products);
+  async (products: IOrder, { getState }) => {
+    const state = getState() as RootState;
+    const response: AxiosResponse<{
+      stripeSession: {
+        id: string;
+      };
+    }> = await axiosPrivate.post(
+      '/orders',
+      { products },
+      {
+        headers: {
+          Authorization: `Bearer ${state.auth?.accessToken}`,
+        },
+        withCredentials: true,
+      }
+    );
     return response.data;
   }
 );
@@ -39,20 +56,23 @@ export const orderSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(paymentOrder.pending, (state) => {
-      state.status = 'pending';
-      state.errorMessage = null;
-    });
-    builder.addCase(paymentOrder.fulfilled, (state, payload) => {
-      state.status = 'fulfilled';
-      state.response = payload.payload;
-      state.successMessage = 'Successfully placed order!';
-    });
-    builder.addCase(paymentOrder.rejected, (state) => {
-      state.status = 'rejected';
-      state.errorMessage = 'Failed to place order!';
-    });
+    builder
+      .addCase(paymentOrder.pending, (state) => {
+        state.status = 'pending';
+        state.errorMessage = null;
+      })
+      .addCase(paymentOrder.fulfilled, (state, payload) => {
+        state.status = 'fulfilled';
+        state.response = payload.payload;
+        state.successMessage = 'Successfully placed order!';
+      })
+      .addCase(paymentOrder.rejected, (state) => {
+        state.status = 'rejected';
+        state.errorMessage = 'Failed to place order!';
+      });
   },
 });
 
-export default orderSlice.reducer;
+const { reducer } = orderSlice;
+
+export default reducer;

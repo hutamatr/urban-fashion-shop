@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, unwrapResult } from '@reduxjs/toolkit';
+import { AxiosResponse } from 'axios';
 
-import { getCategories, getProduct, getProducts } from '@api/api';
+import { axiosPublic } from '@utils/axiosInterceptor';
 
 import { ICategoriesData, IProductData, IProductsData } from 'types/types';
 
@@ -25,43 +26,29 @@ const initialState: IProductsState = {
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
-    // try {
-    const response = await getProducts();
+    const response: AxiosResponse<IProductsData> = await axiosPublic.get(
+      '/products?populate=*'
+    );
     return response.data;
-    // } catch (error) {
-    //   if (error instanceof Error) {
-    //     return rejectWithValue(error.message);
-    //   }
-    //   if (error instanceof AxiosError) {
-    //     return rejectWithValue(error.response?.data);
-    //   }
-    //   return rejectWithValue('Failed to fetch products!');
-    // }
   }
 );
 
 export const fetchProduct = createAsyncThunk(
   'products/fetchProduct',
   async (productId: string) => {
-    // try {
-    const response = await getProduct(productId);
+    const response: AxiosResponse<IProductData> = await axiosPublic.get(
+      `/products/${productId}?populate=*`
+    );
     return response.data;
-    // } catch (error) {
-    //   if (error instanceof Error) {
-    //     return rejectWithValue(error.message);
-    //   }
-    //   if (error instanceof AxiosError) {
-    //     return rejectWithValue(error.response?.data);
-    //   }
-    //   return rejectWithValue('Failed to fetch product!');
-    // }
   }
 );
 
 export const fetchCategories = createAsyncThunk(
   'products/fetchCategories',
   async () => {
-    const response = await getCategories();
+    const response: AxiosResponse<ICategoriesData> = await axiosPublic.get(
+      '/categories'
+    );
     return response.data;
   }
 );
@@ -91,48 +78,51 @@ export const productSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchProducts.pending, (state) => {
-      state.status = 'pending';
-      state.errorMessage = null;
-    });
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.status = 'fulfilled';
-      state.products = action.payload;
-      state.successMessage = 'Successfully fetched products!';
-    });
-    builder.addCase(fetchProducts.rejected, (state) => {
-      state.status = 'rejected';
-      state.errorMessage = 'Failed to get products!';
-    });
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.status = 'pending';
+        state.errorMessage = null;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.status = 'fulfilled';
+        state.products = action.payload;
+        state.successMessage = 'Successfully fetched products!';
+      })
+      .addCase(fetchProducts.rejected, (state) => {
+        state.status = 'rejected';
+        state.errorMessage = 'Failed to get products!';
+      })
 
-    builder.addCase(fetchProduct.pending, (state) => {
-      state.status = 'pending';
-      state.errorMessage = null;
-    });
-    builder.addCase(fetchProduct.fulfilled, (state, action) => {
-      state.status = 'fulfilled';
-      state.product = action.payload;
-      state.successMessage = 'Successfully fetched product!';
-    });
-    builder.addCase(fetchProduct.rejected, (state) => {
-      state.status = 'rejected';
-      state.errorMessage = 'Failed to get product!';
-    });
+      .addCase(fetchProduct.pending, (state) => {
+        state.status = 'pending';
+        state.errorMessage = null;
+      })
+      .addCase(fetchProduct.fulfilled, (state, action) => {
+        state.status = 'fulfilled';
+        state.product = action.payload;
+        state.successMessage = 'Successfully fetched product!';
+      })
+      .addCase(fetchProduct.rejected, (state) => {
+        state.status = 'rejected';
+        state.errorMessage = 'Failed to get product!';
+      })
 
-    builder.addCase(fetchCategories.pending, (state) => {
-      state.status = 'pending';
-      state.errorMessage = null;
-    });
-    builder.addCase(fetchCategories.fulfilled, (state, action) => {
-      state.status = 'fulfilled';
-      state.categories = action.payload;
-      state.successMessage = 'Successfully fetched product!';
-    });
-    builder.addCase(fetchCategories.rejected, (state) => {
-      state.status = 'rejected';
-      state.errorMessage = 'Failed to get product!';
-    });
+      .addCase(fetchCategories.pending, (state) => {
+        state.status = 'pending';
+        state.errorMessage = null;
+      })
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.status = 'fulfilled';
+        state.categories = action.payload;
+        state.successMessage = 'Successfully fetched product!';
+      })
+      .addCase(fetchCategories.rejected, (state) => {
+        state.status = 'rejected';
+        state.errorMessage = 'Failed to get product!';
+      });
   },
 });
 
-export default productSlice.reducer;
+const { reducer } = productSlice;
+
+export default reducer;

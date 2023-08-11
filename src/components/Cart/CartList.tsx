@@ -3,8 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { addToCart, decreaseFromCart, removeFromCart } from '@store/cartSlice';
-
-import { useAppDispatch } from '@hooks/useReduxT';
+import { useAppDispatch } from '@store/store';
 
 import CartItem from './CartItem';
 
@@ -25,7 +24,7 @@ export default function CartList({ cartItems }: ICartListProps) {
   const gotoShopHandler = () => navigate('/shop', { replace: true });
 
   const increaseItemHandler = (id: number) => {
-    const newItem = cartItems.find((item) => item.product_id === id);
+    const newItem = cartItems.find((item) => item.product?.id === id);
     dispatch(addToCart({ ...newItem, quantity: 1 } as INewProductToCart));
   };
   const decreaseItemHandler = (id: number) => {
@@ -63,8 +62,9 @@ export default function CartList({ cartItems }: ICartListProps) {
           {cartItems.map((item) => {
             return (
               <CartItem
-                {...item}
-                key={item.product_id}
+                product={item.product}
+                quantity={item.quantity}
+                key={item.product?.id}
                 onIncrease={increaseItemHandler}
                 onDecrease={decreaseItemHandler}
                 onRemove={removeCartHandler}

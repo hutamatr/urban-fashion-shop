@@ -10,9 +10,8 @@ import Loading from '@components/UI/Loading';
 
 import { addToCart } from '@store/cartSlice';
 import { fetchAllProducts } from '@store/productSlice';
+import { useAppDispatch, useAppSelector } from '@store/store';
 import { addWishlist, removeWishlist } from '@store/wishlistSlice';
-
-import { useAppDispatch, useAppSelector } from '@hooks/useReduxT';
 
 import { INewProductToCart, IProduct, IProductData } from 'types/types';
 
@@ -53,9 +52,10 @@ export default function ProductDetails() {
 
   const addToCartHandler = useCallback(() => {
     const itemToCart: INewProductToCart = {
-      product_id: product?.data.id as number,
-      price: product?.data.attributes.price as string,
+      // product_id: product?.data.id as number,
+      // price: product?.data.attributes.price as string,
       quantity: +quantity,
+      product: product?.data as IProduct,
     };
     dispatch(addToCart(itemToCart));
     setIsModalShow(true);

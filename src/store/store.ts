@@ -1,4 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -6,16 +7,18 @@ import authReducer from './authSlice';
 import cartReducer from './cartSlice';
 import orderReducer from './orderSlice';
 import productsReducer from './productSlice';
+import userReducer from './userSlice';
 import wishlistReducer from './wishlistSlice';
 
 const rootPersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['products', 'order'],
+  blacklist: ['products', 'order', 'user'],
 };
 
 const reducers = combineReducers({
   auth: authReducer,
+  user: userReducer,
   cart: cartReducer,
   products: productsReducer,
   wishlist: wishlistReducer,
@@ -43,3 +46,6 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

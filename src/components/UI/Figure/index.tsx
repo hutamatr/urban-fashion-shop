@@ -22,12 +22,12 @@ export function Figure({ product, classImage }: IFigureProps) {
       )}
     >
       <Image
-        src={`${import.meta.env.VITE_IMAGE_URL}${product.attributes?.image
+        src={`${import.meta.env.VITE_IMAGE_URL}${product.attributes?.images
           .data[0].attributes.url}`}
         alt={product.attributes?.name}
         className={clsx(
           classImage,
-          'aspect-square border border-dark-brown duration-500',
+          'aspect-square w-full border border-dark-brown duration-500',
           'group-hover/card:scale-105'
         )}
       />

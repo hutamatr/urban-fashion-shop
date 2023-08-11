@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 import Loading from '@components/UI/Loading';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
 
 import TotalPricesOrder from './TotalPricesOrder';
 
@@ -59,9 +59,7 @@ export default function CartSummary({
         )}
         onClick={onPaymentHandler}
       >
-        {orderStatus === 'pending'
-          ? 'Loading...'
-          : '        Process to Checkout'}
+        {orderStatus === 'pending' ? 'Loading...' : 'Process to Checkout'}
       </button>
     </section>
   );

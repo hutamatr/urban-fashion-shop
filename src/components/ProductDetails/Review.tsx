@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 
 import { Rating } from '@components/UI';
 
-// import { useAppSelector } from '@hooks/useReduxT';
+// import { useAppSelector } from '@store/store';
 // import ReviewList from './ReviewList';
 
 export default function Review() {

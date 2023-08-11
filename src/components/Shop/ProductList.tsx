@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import Loading from '@components/UI/Loading';
 
-import { useAppSelector } from '@hooks/useReduxT';
+import { useAppSelector } from '@store/store';
 
 import FilterProduct from './FilterProduct';
 import ProductItem from './ProductItem';
@@ -37,7 +37,7 @@ export default function ProductList() {
     if (filterValue === 'all') return sortProductsByPrice;
     const filteredProducts = sortProductsByPrice?.filter(
       (product) =>
-        product?.attributes.categories.data[0].attributes.name === filterValue
+        product?.attributes.category.data.attributes.name === filterValue
     );
     return filteredProducts;
   }, [filterValue, sortProductsByPrice]);

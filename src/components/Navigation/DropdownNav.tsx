@@ -5,8 +5,7 @@ import { NavLink } from 'react-router-dom';
 import Avatar from '@components/UI/svg/Avatar';
 
 import { logoutHandler } from '@store/authSlice';
-
-import { useAppDispatch } from '@hooks/useReduxT';
+import { persistor, useAppDispatch } from '@store/store';
 
 interface IDropdownNavProps {
   onCloseMenu: () => void;
@@ -23,6 +22,10 @@ export default function DropdownNav({
 
   const logoutUserHandler = () => {
     dispatch(logoutHandler());
+    persistor.pause();
+    persistor.flush().then(() => {
+      return persistor.purge();
+    });
   };
 
   return (

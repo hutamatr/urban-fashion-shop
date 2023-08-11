@@ -1,6 +1,6 @@
 import { loadStripe } from '@stripe/stripe-js';
 import clsx from 'clsx';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,11 +9,9 @@ import CartSummary from '@components/Cart/CartSummary';
 import Loading from '@components/UI/Loading';
 
 import { paymentOrder } from '@store/orderSlice';
-import { fetchProducts } from '@store/productSlice';
+import { useAppDispatch, useAppSelector } from '@store/store';
 
-import { useAppDispatch, useAppSelector } from '@hooks/useReduxT';
-
-import { INewProductToCart, IProduct } from 'types/types';
+import { IOrder, IProductsOrder } from 'types/types';
 
 const stripePromise = loadStripe(
   'pk_test_51Ncl4SIAnOD2G6K2AeMVopSQwSHAIVZ6NIv3Ag2Zk0M7FtKFrM9jRO7CLUuWi04lomuazHhJWEsFzm4lFwE1gRe200V2395JAf'
@@ -24,35 +22,10 @@ export default function Cart() {
 
   const dispatch = useAppDispatch();
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
-  const { cart } = useAppSelector((state) => state.cart);
+  const { cart, totalPrice } = useAppSelector((state) => state.cart);
   const { products, status, errorMessage } = useAppSelector(
     (state) => state.products
   );
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-
-  const getProductById = (products: IProduct[], productId: number) => {
-    const productLookup = products.reduce<IProduct[]>((lookup, product) => {
-      lookup[product.id] = product;
-      return lookup;
-    }, {} as IProduct[]);
-    return productLookup[productId];
-  };
-
-  const cartWithProducts: INewProductToCart[] = useMemo(() => {
-    if (!products?.data) {
-      return [];
-    }
-    return cart.map((item) => ({
-      product_id: item.product_id,
-      price: item.price,
-      quantity: item.quantity,
-      email: user?.user.email as string,
-      product: getProductById(products.data, item.product_id),
-    }));
-  }, [cart, products?.data, user?.user.email]);
 
   const totalCartItems = useMemo(
     () =>
@@ -68,9 +41,23 @@ export default function Cart() {
       return;
     }
 
+    const productsToOrder: IProductsOrder[] = cart.map((product) => ({
+      id: product.product?.id,
+      name: product.product?.attributes.name,
+      price: product.product?.attributes.price,
+      quantity: product.quantity,
+    }));
+
+    const newOrder: IOrder = {
+      user_id: user?.id as number,
+      email: user?.email as string,
+      total_price: totalPrice,
+      products_list: productsToOrder,
+    };
+
     try {
       const stripe = await stripePromise;
-      const result = await dispatch(paymentOrder(cartWithProducts)).unwrap();
+      const result = await dispatch(paymentOrder(newOrder)).unwrap();
       await stripe?.redirectToCheckout({
         sessionId: result.stripeSession.id,
       });
@@ -110,13 +97,13 @@ export default function Cart() {
             'md:gap-x-4'
           )}
         >
-          {status === 'pending' && <Loading />}
-          {status === 'rejected' && (
+          {products && status === 'pending' && <Loading />}
+          {products && status === 'rejected' && (
             <p className='mx-auto py-6 text-center font-medium uppercase text-red-700'>
               {errorMessage}
             </p>
           )}
-          {status === 'fulfilled' && <CartList cartItems={cartWithProducts} />}
+          <CartList cartItems={cart} />
           {cart.length > 0 && (
             <>
               <CartSummary
