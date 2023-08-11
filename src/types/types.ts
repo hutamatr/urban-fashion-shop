@@ -83,7 +83,7 @@ export interface IProduct {
   attributes: {
     name: string;
     description: string;
-    price: string;
+    price: number;
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
@@ -120,9 +120,20 @@ export interface ICategoriesData extends IAllProductsMeta {
 }
 
 export interface INewProductToCart {
-  product_id: number;
-  price: string;
   quantity: number;
-  email?: string;
-  product?: IProduct;
+  product: IProduct;
+}
+
+export interface IProductsOrder {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+export interface IOrder {
+  user_id: number;
+  email: string;
+  total_price: number;
+  products_list: IProductsOrder[];
 }

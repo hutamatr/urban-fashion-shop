@@ -24,7 +24,7 @@ export const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<INewProductToCart>) => {
       const existingItemIndex = state.cart.findIndex(
-        (item) => item.product_id === action.payload.product_id
+        (item) => item.product?.id === action.payload.product?.id
       );
 
       const existingItem = state.cart[existingItemIndex];
@@ -35,16 +35,18 @@ export const cartSlice = createSlice({
         state.cart.push(action.payload);
       }
 
-      state.totalPrice += +action.payload.price * action.payload.quantity;
+      state.totalPrice +=
+        action.payload.product?.attributes.price * action.payload.quantity;
     },
     decreaseFromCart: (state, action: PayloadAction<number>) => {
       const existingItemIndex = state.cart.findIndex(
-        (item) => item.product_id === action.payload
+        (item) => item.product?.id === action.payload
       );
 
       const existingItem = state.cart[existingItemIndex];
 
-      const removedTotalPrice = state.totalPrice - +existingItem.price;
+      const removedTotalPrice =
+        state.totalPrice - existingItem.product?.attributes.price;
       const formattedRemovedTotalPrice = +removedTotalPrice.toFixed(2);
 
       state.cart[existingItemIndex].quantity = +existingItem.quantity - 1;
@@ -52,17 +54,18 @@ export const cartSlice = createSlice({
     },
     removeFromCart: (state, action: PayloadAction<number>) => {
       const existingItemIndex = state.cart.findIndex(
-        (item) => item.product_id === action.payload
+        (item) => item.product?.id === action.payload
       );
 
       const existingItem = state.cart[existingItemIndex];
 
       const removedTotalPrice =
-        state.totalPrice - +existingItem.price * existingItem.quantity;
+        state.totalPrice -
+        existingItem.product?.attributes.price * existingItem.quantity;
       const formattedRemovedTotalPrice = +removedTotalPrice.toFixed(2);
 
       state.cart = state.cart.filter(
-        (item) => item.product_id !== action.payload
+        (item) => item.product?.id !== action.payload
       );
       state.totalPrice = formattedRemovedTotalPrice;
     },

@@ -59,9 +59,7 @@ export default function CartSummary({
         )}
         onClick={onPaymentHandler}
       >
-        {orderStatus === 'pending'
-          ? 'Loading...'
-          : '        Process to Checkout'}
+        {orderStatus === 'pending' ? 'Loading...' : 'Process to Checkout'}
       </button>
     </section>
   );

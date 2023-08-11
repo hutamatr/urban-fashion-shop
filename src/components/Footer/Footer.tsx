@@ -16,7 +16,6 @@ export default function Footer() {
       <div className='layout'>
         <div className={clsx('md:flex')}>
           <BrandFooter />
-          {/* <NewsLetter /> */}
           <NavigationFooter />
         </div>
         <SocialsMedia />

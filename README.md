@@ -50,10 +50,10 @@ Urban Fashion Shop is an online fashion store web application built with React. 
 4. Start the development server:
 
    ```
-   yarn start
+   yarn dev
    ```
 
-   The app will be running at [http://localhost:3000](http://localhost:3000).
+   The app will be running at [http://localhost:5173](http://localhost:5173).
 
 ## Usage
 
@@ -69,12 +69,15 @@ Urban Fashion Shop provides an intuitive and seamless user experience for browsi
 ## Built with
 
 - [ReactJS](https://reactjs.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [TypeScript](https://www.typescriptlang.org/)
 - [React Router](https://reactrouter.com/en/main)
-- [React Select](https://react-select.com/home)
-- [FakeStoreAPI](https://fakestoreapi.com/)
-- [Axios](https://axios-http.com/)
+- [React Hook Form](https://react-hook-form.com/)
 - [TailwindCSS](https://tailwindcss.com/)
 - [Flowbite](https://flowbite.com/)
+- [Axios](https://axios-http.com/)
+- [Vite](https://vitejs.dev/)
+- [zod](https://zod.dev/)
 - Mobile-first workflow
 
 ### Editor
@@ -91,5 +94,3 @@ If you have any questions or suggestions regarding urban fashion shop, feel free
 
 - Email: [hutamatr@gmail.com](mailto:hutamatr@gmail.com)
 - GitHub: [hutamatr](https://github.com/hutamatr)
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -13,9 +13,7 @@ interface ICartItemProps extends INewProductToCart {
 }
 
 export default function CartItem({
-  product_id,
   quantity,
-  price,
   product,
   onDecrease,
   onIncrease,
@@ -23,7 +21,7 @@ export default function CartItem({
 }: ICartItemProps) {
   return (
     <li
-      key={product_id}
+      key={product?.id}
       className={clsx(
         'flex flex-row gap-x-4 border border-dark-brown',
         'dark:border-white-bone'
@@ -55,7 +53,7 @@ export default function CartItem({
               'disabled:invisible',
               'dark:text-white-bone'
             )}
-            onClick={onDecrease.bind(null, product_id)}
+            onClick={onDecrease.bind(null, product?.id)}
             disabled={quantity === 1}
           >
             -
@@ -68,7 +66,7 @@ export default function CartItem({
           />
           <button
             className={clsx('text-2xl font-bold', 'dark:text-white-bone')}
-            onClick={onIncrease.bind(null, product_id)}
+            onClick={onIncrease.bind(null, product?.id)}
           >
             +
           </button>
@@ -79,7 +77,7 @@ export default function CartItem({
             'dark:text-white-bone'
           )}
         >
-          {formatCurrencyToFixed(+price)} x {quantity}
+          {formatCurrencyToFixed(product?.attributes.price)} x {quantity}
         </span>
         <button
           className={clsx(
@@ -87,7 +85,7 @@ export default function CartItem({
             'hover:bg-dark-brown hover:text-white-bone',
             'dark:text-white-bone'
           )}
-          onClick={onRemove.bind(null, product_id)}
+          onClick={onRemove.bind(null, product?.id)}
         >
           Remove
         </button>

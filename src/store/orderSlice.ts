@@ -5,7 +5,7 @@ import { axiosPrivate } from '@utils/axiosInterceptor';
 
 import { RootState } from './store';
 
-import { INewProductToCart } from 'types/types';
+import { IOrder } from 'types/types';
 
 interface IOrderState {
   response: {
@@ -31,7 +31,7 @@ const initialState: IOrderState = {
 
 export const paymentOrder = createAsyncThunk(
   'order/payment',
-  async (products: INewProductToCart[], { getState }) => {
+  async (products: IOrder, { getState }) => {
     const state = getState() as RootState;
     const response: AxiosResponse<{
       stripeSession: {
@@ -44,6 +44,7 @@ export const paymentOrder = createAsyncThunk(
         headers: {
           Authorization: `Bearer ${state.auth?.accessToken}`,
         },
+        withCredentials: true,
       }
     );
     return response.data;
