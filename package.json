@@ -16,7 +16,7 @@
     "lint:fix": "eslint . --fix && yarn format",
     "lint:strict": "eslint --max-warnings=0 .",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./prettier.config.cjs",
-    "format:check": "prettier -c './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc.json",
+    "format:check": "prettier -c './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./prettier.config.cjs",
     "test-coverage": "yarn test --coverage --watchAll --collectCoverageFrom='src/components/**/*.{ts,tsx,js,jsx}' --collectCoverageFrom='!src/components/**/*.{types,stories,constants,test,spec}.{ts,tsx,js,jsx}'",
     "prepare": "husky install"
   },
@@ -67,11 +67,11 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
-      "eslint --max-warnings=0",
-      "prettier -w"
+      "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+      "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./prettier.config.cjs"
     ],
     "src/**/*.{json,css,scss,md,mdx}": [
-      "prettier -w"
+      "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./prettier.config.cjs"
     ]
   }
 }
