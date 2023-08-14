@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 
-import { axiosPrivate, axiosPublic } from '@utils/axiosInterceptor';
+import { axiosPublic } from '@utils/axiosInterceptor';
 
 import { RootState } from './store';
 
@@ -58,16 +58,14 @@ export const refreshToken = createAsyncThunk(
   'auth/refreshToken',
   async (_, { getState }) => {
     const state = getState() as RootState;
-    const response: AxiosResponse<IRefreshToken> = await axiosPrivate.post(
+    const response: AxiosResponse<IRefreshToken> = await axiosPublic.post(
       '/token/refresh',
       {
         refreshToken: state.auth.accessToken,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${state.auth.accessToken}`,
-        },
       }
+      // {
+      //   withCredentials: true,
+      // }
     );
     const newUser: IAccount = {
       user: {
