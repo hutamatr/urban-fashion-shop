@@ -29,8 +29,26 @@ export interface IUser {
   phone_number: string;
 }
 
+export interface IUserUpdate {
+  username: string;
+  email: string;
+  phone_number: string;
+  address: string;
+}
+
+export interface IChangePassword {
+  password: string;
+  currentPassword: string;
+  passwordConfirmation: string;
+}
+
+export interface IForgotPassword {
+  email: string;
+}
+
 export interface IAccount {
   jwt: string;
+  refreshToken: string;
   user: IUser;
 }
 
