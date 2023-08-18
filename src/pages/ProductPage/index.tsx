@@ -18,7 +18,7 @@ export default function Product() {
     <>
       <section
         className={clsx(
-          'flex min-h-[25vh] flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown p-6',
+          'mb-4 flex min-h-[25vh] flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown p-6',
           'dark:border-b-white-bone',
           'md:min-h-fit md:py-12'
         )}

@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage';
 
 import authReducer from './authSlice';
 import cartReducer from './cartSlice';
+import modalReducer from './modalSlice';
 import orderReducer from './orderSlice';
 import productsReducer from './productSlice';
 import userReducer from './userSlice';
@@ -23,6 +24,7 @@ const reducers = combineReducers({
   products: productsReducer,
   wishlist: wishlistReducer,
   order: orderReducer,
+  modal: modalReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, reducers);

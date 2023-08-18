@@ -5,7 +5,7 @@ import { axiosPrivate } from '@utils/axiosInterceptor';
 
 import { RootState } from './store';
 
-import { IUser } from 'types/types';
+import { IUser, IUserUpdate } from 'types/types';
 
 export interface IUserState {
   user: IUser | null;
@@ -34,6 +34,23 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
+export const updateUserDetail = createAsyncThunk(
+  'user/updateUserDetail',
+  async (userData: IUserUpdate, { getState }) => {
+    const state = getState() as RootState;
+    const response: AxiosResponse<IUser> = await axiosPrivate.put(
+      `/users/${state.user.user?.id}`,
+      userData,
+      {
+        headers: {
+          Authorization: `Bearer ${state.auth.accessToken}`,
+        },
+      }
+    );
+    return response.data;
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -54,6 +71,22 @@ export const userSlice = createSlice({
         state.status = 'rejected';
         state.user = null;
         state.errorMessage = 'Failed to get user!';
+      });
+
+    builder
+      .addCase(updateUserDetail.pending, (state) => {
+        state.status = 'pending';
+        state.errorMessage = null;
+        state.successMessage = null;
+      })
+      .addCase(updateUserDetail.fulfilled, (state, action) => {
+        state.status = 'fulfilled';
+        state.user = action.payload;
+        state.successMessage = 'User updated successfully';
+      })
+      .addCase(updateUserDetail.rejected, (state) => {
+        state.status = 'rejected';
+        state.errorMessage = 'Failed to update user detail!';
       });
   },
 });

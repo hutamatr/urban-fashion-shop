@@ -16,12 +16,7 @@ export default function Layout() {
       >
         <Navigation />
       </header>
-      <main
-        className={clsx(
-          'layout flex min-h-screen flex-col gap-y-5',
-          'dark:bg-dark-brown'
-        )}
-      >
+      <main className={clsx('layout flex flex-col', 'dark:bg-dark-brown')}>
         <Outlet />
       </main>
       <Footer />
