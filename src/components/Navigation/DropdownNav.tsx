@@ -4,8 +4,8 @@ import { NavLink } from 'react-router-dom';
 
 import Avatar from '@components/UI/svg/Avatar';
 
-import { logoutHandler } from '@store/authSlice';
-import { persistor, useAppDispatch } from '@store/store';
+import { logoutUser } from '@store/authSlice';
+import { useAppDispatch } from '@store/store';
 
 interface IDropdownNavProps {
   onCloseMenu: () => void;
@@ -21,11 +21,11 @@ export default function DropdownNav({
   // const { wishListItems } = useWish();
 
   const logoutUserHandler = () => {
-    dispatch(logoutHandler());
-    persistor.pause();
-    persistor.flush().then(() => {
-      return persistor.purge();
-    });
+    dispatch(logoutUser());
+    // persistor.pause();
+    // persistor.flush().then(() => {
+    //   return persistor.purge();
+    // });
   };
 
   return (
