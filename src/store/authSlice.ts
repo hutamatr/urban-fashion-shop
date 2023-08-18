@@ -1,15 +1,24 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 
-import { axiosPublic } from '@utils/axiosInterceptor';
+import { axiosPrivate, axiosPublic } from '@utils/axiosInterceptor';
 
 import { RootState } from './store';
 
-import { IAccount, ILogin, IRefreshToken, IRegister, IUser } from 'types/types';
+import {
+  IAccount,
+  IChangePassword,
+  IForgotPassword,
+  ILogin,
+  IRefreshToken,
+  IRegister,
+  IUser,
+} from 'types/types';
 
 export interface IAuthState {
   isAuthenticated: boolean;
   accessToken: string | null;
+  refreshToken: string | null;
   user: IUser | null;
   status: 'pending' | 'fulfilled' | 'rejected' | 'idle';
   errorMessage: string | null;
@@ -19,6 +28,7 @@ export interface IAuthState {
 const initialState: IAuthState = {
   isAuthenticated: false,
   accessToken: null,
+  refreshToken: null,
   user: null,
   status: 'idle',
   errorMessage: null,
@@ -54,6 +64,15 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
+  const response: AxiosResponse = await axiosPublic({
+    method: 'GET',
+    url: '/auth/logout',
+    withCredentials: true,
+  });
+  return response.data;
+});
+
 export const refreshToken = createAsyncThunk(
   'auth/refreshToken',
   async (_, { getState }) => {
@@ -61,19 +80,39 @@ export const refreshToken = createAsyncThunk(
     const response: AxiosResponse<IRefreshToken> = await axiosPublic.post(
       '/token/refresh',
       {
-        refreshToken: state.auth.accessToken,
+        refreshToken: state.auth.refreshToken,
       }
-      // {
-      //   withCredentials: true,
-      // }
     );
-    const newUser: IAccount = {
-      user: {
-        ...(state.auth.user as IUser),
-      },
-      jwt: response.data?.jwt,
-    };
-    return newUser;
+
+    return response.data;
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  'auth/changePassword',
+  async (passwordChanged: IChangePassword, { getState }) => {
+    const state = getState() as RootState;
+    const response: AxiosResponse<IAccount> = await axiosPrivate.post(
+      `/auth/change-password`,
+      passwordChanged,
+      {
+        headers: {
+          Authorization: `Bearer ${state.auth.accessToken}`,
+        },
+      }
+    );
+    return response.data;
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  'auth/forgotPassword',
+  async (userEmail: IForgotPassword) => {
+    const response: AxiosResponse = await axiosPublic.post(
+      `/auth/forgot-password`,
+      userEmail
+    );
+    return response.data;
   }
 );
 
@@ -81,13 +120,9 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logoutHandler: (state) => {
-      state.isAuthenticated = false;
-      state.accessToken = null;
-      state.user = null;
-      state.errorMessage = null;
-      state.successMessage = null;
-      state.status = 'idle';
+    addTokenHandler: (state, action: PayloadAction<IRefreshToken>) => {
+      state.accessToken = action.payload.jwt;
+      state.refreshToken = action.payload.refreshToken;
     },
   },
   extraReducers: (builder) => {
@@ -101,6 +136,7 @@ export const authSlice = createSlice({
         state.status = 'fulfilled';
         state.isAuthenticated = true;
         state.accessToken = action.payload.jwt;
+        state.refreshToken = action.payload.refreshToken;
         state.user = action.payload.user;
         state.successMessage = 'Successfully registered new user!';
       })
@@ -108,10 +144,12 @@ export const authSlice = createSlice({
         state.status = 'rejected';
         state.isAuthenticated = false;
         state.accessToken = null;
+        state.refreshToken = null;
         state.user = null;
         state.errorMessage = 'Failed to register new user!';
-      })
+      });
 
+    builder
       .addCase(loginUser.pending, (state) => {
         state.status = 'pending';
         state.errorMessage = null;
@@ -121,6 +159,7 @@ export const authSlice = createSlice({
         state.status = 'fulfilled';
         state.isAuthenticated = true;
         state.accessToken = action.payload.jwt;
+        state.refreshToken = action.payload.refreshToken;
         state.user = action.payload.user;
         state.successMessage = 'Successfully logged in!';
       })
@@ -128,20 +167,31 @@ export const authSlice = createSlice({
         state.status = 'rejected';
         state.isAuthenticated = false;
         state.accessToken = null;
+        state.refreshToken = null;
         state.user = null;
         state.errorMessage = 'Failed to login user!';
-      })
-
-      .addCase(refreshToken.fulfilled, (state, action) => {
-        state.isAuthenticated = true;
-        state.accessToken = action.payload.jwt;
-        state.user = action.payload.user as IAuthState['user'];
       });
+
+    builder.addCase(refreshToken.fulfilled, (state, action) => {
+      state.isAuthenticated = true;
+      state.accessToken = action.payload.jwt;
+      state.refreshToken = action.payload.refreshToken;
+    });
+
+    builder.addCase(logoutUser.fulfilled, (state) => {
+      state.isAuthenticated = false;
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.user = null;
+      state.errorMessage = null;
+      state.successMessage = null;
+      state.status = 'idle';
+    });
   },
 });
 
 const { actions, reducer } = authSlice;
 
-export const { logoutHandler } = actions;
+export const { addTokenHandler } = actions;
 
 export default reducer;

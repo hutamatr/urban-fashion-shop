@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
-import { logoutHandler } from '@store/authSlice';
+import { logoutUser } from '@store/authSlice';
 import { useAppDispatch, useAppSelector } from '@store/store';
 
 export default function NavigationFooter() {
@@ -11,7 +11,7 @@ export default function NavigationFooter() {
   const dispatch = useAppDispatch();
 
   const logOutUserHandler = () => {
-    dispatch(logoutHandler());
+    dispatch(logoutUser());
   };
 
   return (

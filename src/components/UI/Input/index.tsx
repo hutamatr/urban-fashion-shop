@@ -56,7 +56,7 @@ const Input = forwardRef<unknown, IInputFormProps>(
           ref={ref as LegacyRef<HTMLTextAreaElement>}
           className={clsx(
             className,
-            'w-full border-none bg-white-bone p-2 text-sm font-medium outline-none',
+            'w-full rounded border-2 bg-white-bone p-2 font-medium outline-none',
             'dark:bg-dark-brown dark:text-white-bone dark:placeholder:text-white-bone',
             'placeholder:text-sm focus:ring-0'
           )}

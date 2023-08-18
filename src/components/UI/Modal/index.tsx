@@ -7,6 +7,7 @@ interface IModalBackdropProps {
 
 interface IModalCardProps {
   children: React.ReactNode;
+  modalCardClassName: string;
 }
 
 type TModalProps = IModalBackdropProps & IModalCardProps;
@@ -14,26 +15,39 @@ type TModalProps = IModalBackdropProps & IModalCardProps;
 function ModalBackdrop({ onCloseModalHandler }: IModalBackdropProps) {
   return (
     <div
-      className='fixed left-0 top-0 z-20 min-h-full w-full bg-slate-900/75'
+      className='fixed left-0 top-0 z-[100] min-h-full w-full bg-slate-800/50'
       onClick={onCloseModalHandler}
     />
   );
 }
 
-function ModalCard({ children }: IModalCardProps) {
+function ModalCard({ children, modalCardClassName }: IModalCardProps) {
   return (
     <section
       className={clsx(
-        'fixed bottom-0 left-0 right-0 z-30 mx-auto flex max-h-full max-w-lg flex-col overflow-y-scroll rounded-md bg-white-bone p-5 shadow',
-        'sm:top-1/4 sm:max-h-fit'
+        'fixed bottom-0 z-[110] w-full',
+        'md:bottom-auto md:left-1/2 md:top-1/2 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2'
       )}
     >
-      {children}
+      <div
+        className={clsx(
+          modalCardClassName,
+          'flex flex-col rounded-t-2xl bg-white-bone p-4 shadow',
+          'dark:bg-dark-brown',
+          'md:rounded-md md:p-6'
+        )}
+      >
+        {children}
+      </div>
     </section>
   );
 }
 
-export const Modal = ({ children, onCloseModalHandler }: TModalProps) => {
+export const Modal = ({
+  children,
+  onCloseModalHandler,
+  modalCardClassName,
+}: TModalProps) => {
   return (
     <>
       {createPortal(
@@ -41,7 +55,9 @@ export const Modal = ({ children, onCloseModalHandler }: TModalProps) => {
         document.getElementById('modal-backdrop')!
       )}
       {createPortal(
-        <ModalCard>{children}</ModalCard>,
+        <ModalCard modalCardClassName={modalCardClassName}>
+          {children}
+        </ModalCard>,
         document.getElementById('modal-card')!
       )}
     </>
