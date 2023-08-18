@@ -49,8 +49,8 @@ export default function Home() {
       <Hero />
       <section
         className={clsx(
-          'grid min-h-max grid-cols-1 items-center gap-8',
-          'md:min-h-fit md:grid-cols-2 md:grid-rows-1 md:gap-10 md:p-10'
+          'mt-4 grid min-h-max grid-cols-1 items-center gap-8',
+          'md:mt-0 md:min-h-fit md:grid-cols-2 md:grid-rows-1 md:gap-10 md:p-10'
         )}
       >
         <div className='flex flex-col gap-y-8'>
