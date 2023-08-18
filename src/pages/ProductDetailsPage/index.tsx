@@ -9,6 +9,7 @@ import Review from '@components/ProductDetails/Review';
 import Loading from '@components/UI/Loading';
 
 import { addToCart } from '@store/cartSlice';
+import { showModalHandler } from '@store/modalSlice';
 import { fetchAllProducts } from '@store/productSlice';
 import { useAppDispatch, useAppSelector } from '@store/store';
 import { addWishlist, removeWishlist } from '@store/wishlistSlice';
@@ -17,7 +18,6 @@ import { INewProductToCart, IProduct, IProductData } from 'types/types';
 
 export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
-  const [isModalShow, setIsModalShow] = useState(false);
   const [isOnWishList, setIsOnWishList] = useState(false);
 
   const { productId } = useParams();
@@ -29,6 +29,7 @@ export default function ProductDetails() {
   );
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const { wishlist } = useAppSelector((state) => state.wishlist);
+  const { isModalShow } = useAppSelector((state) => state.modal);
 
   useEffect(() => {
     if (wishlist.find((item) => item.id === product?.data.id)) {
@@ -52,17 +53,15 @@ export default function ProductDetails() {
 
   const addToCartHandler = useCallback(() => {
     const itemToCart: INewProductToCart = {
-      // product_id: product?.data.id as number,
-      // price: product?.data.attributes.price as string,
       quantity: +quantity,
       product: product?.data as IProduct,
     };
     dispatch(addToCart(itemToCart));
-    setIsModalShow(true);
+    dispatch(showModalHandler());
   }, [quantity, product?.data, dispatch]);
 
   const closeModalBackdropHandler = () => {
-    setIsModalShow(false);
+    dispatch(showModalHandler());
   };
 
   const isOnWishListHandler = () => {
