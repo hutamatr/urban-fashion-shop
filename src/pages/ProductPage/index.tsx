@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import ProductList from '@components/Shop/ProductList';
 
-import { fetchAllProducts } from '@store/productSlice';
+import { fetchProducts } from '@store/productSlice';
 import { useAppDispatch } from '@store/store';
 
 export default function Product() {
@@ -14,7 +14,7 @@ export default function Product() {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchAllProducts({ skip: 0, limit: 0 }));
+    dispatch(fetchProducts({ skip: 0, limit: 0 }));
   }, [dispatch]);
 
   return (
