@@ -10,7 +10,7 @@ interface ITotalPricesOrderProps {
 export default function TotalPricesOrder({
   totalCartItems,
   totalPriceAmount,
-}: ITotalPricesOrderProps) {
+}: Readonly<ITotalPricesOrderProps>) {
   return (
     <>
       <div

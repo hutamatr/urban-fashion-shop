@@ -1,6 +1,6 @@
 import { SVGProps } from 'react';
 
-export default function Logo({ ...props }: SVGProps<SVGSVGElement>) {
+export default function Logo({ ...props }: Readonly<SVGProps<SVGSVGElement>>) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'

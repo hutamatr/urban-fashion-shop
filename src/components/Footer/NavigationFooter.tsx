@@ -5,7 +5,7 @@ import { logoutUser } from '@store/authSlice';
 import { useAppDispatch, useAppSelector } from '@store/store';
 
 export default function NavigationFooter() {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { isAuth } = useAppSelector((state) => state.auth);
   const { categories } = useAppSelector((state) => state.products);
 
   const dispatch = useAppDispatch();
@@ -32,17 +32,17 @@ export default function NavigationFooter() {
           Category
         </h3>
         <ul className={clsx('flex flex-col gap-y-2', 'md:gap-y-1')}>
-          {categories?.data.map((category) => {
+          {categories?.categories.map((category) => {
             return (
-              <li key={category?.id}>
+              <li key={category.id}>
                 <Link
-                  to={`/${category?.attributes.name}`}
+                  to={`/${category.category_name}`}
                   className={clsx(
                     'font-manrope text-xs',
                     'dark:text-white-bone'
                   )}
                 >
-                  {category?.attributes.name}
+                  {category.category_name}
                 </Link>
               </li>
             );
@@ -75,14 +75,14 @@ export default function NavigationFooter() {
               Shop
             </Link>
           </li>
-          {isAuthenticated && (
+          {isAuth && (
             <li>
               <Link to='/account' className='font-manrope text-xs'>
                 My Account
               </Link>
             </li>
           )}
-          {isAuthenticated ? (
+          {isAuth ? (
             <li>
               <Link
                 to='/'
@@ -94,8 +94,8 @@ export default function NavigationFooter() {
             </li>
           ) : (
             <li>
-              <Link to='/login' className='font-manrope text-xs'>
-                Login
+              <Link to='/signin' className='font-manrope text-xs'>
+                Sign In
               </Link>
             </li>
           )}

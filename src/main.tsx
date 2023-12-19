@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import Loading from '@components/UI/Loading';
+import { Loading } from '@components/UI';
 
 import './index.css';
 

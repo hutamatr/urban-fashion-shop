@@ -6,7 +6,7 @@ interface IRatingProps {
   onRating: (_rating: number) => void;
 }
 
-export function Rating({ onRating }: IRatingProps) {
+export function Rating({ onRating }: Readonly<IRatingProps>) {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
 

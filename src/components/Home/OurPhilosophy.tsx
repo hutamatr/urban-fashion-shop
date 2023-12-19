@@ -30,7 +30,7 @@ export default function OurPhilosophy() {
         src={philosophyImage}
         alt='You have a more interesting life if you wear impressive clothes.'
         className={clsx(
-          'ring-1 ring-dark-brown',
+          'rounded ring-1 ring-dark-brown',
           'dark:ring-white-bone',
           'md:object-contain'
         )}

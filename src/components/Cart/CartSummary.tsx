@@ -1,7 +1,5 @@
 import clsx from 'clsx';
 
-import Loading from '@components/UI/Loading';
-
 import { useAppSelector } from '@store/store';
 
 import TotalPricesOrder from './TotalPricesOrder';
@@ -14,10 +12,8 @@ interface ICartSummaryProps {
 export default function CartSummary({
   totalCartItems,
   onPaymentHandler,
-}: ICartSummaryProps) {
-  const { totalPrice, status, errorMessage } = useAppSelector(
-    (state) => state.cart
-  );
+}: Readonly<ICartSummaryProps>) {
+  const { totalPrice } = useAppSelector((state) => state.cart);
 
   const { status: orderStatus } = useAppSelector((state) => state.order);
 
@@ -38,12 +34,6 @@ export default function CartSummary({
           >
             Cart Totals
           </h3>
-          {status === 'pending' && <Loading />}
-          {status === 'rejected' && (
-            <span className='text-xs font-medium text-red-600'>
-              {errorMessage}
-            </span>
-          )}
         </div>
         <TotalPricesOrder
           totalCartItems={totalCartItems}

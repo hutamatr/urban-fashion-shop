@@ -2,7 +2,6 @@ import clsx from 'clsx';
 
 import BrandFooter from './BrandFooter';
 import NavigationFooter from './NavigationFooter';
-// import NewsLetter from './NewsLetter';
 import SocialsMedia from './SocialsMedia';
 
 export default function Footer() {
