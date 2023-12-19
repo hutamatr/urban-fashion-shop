@@ -2,45 +2,15 @@ import clsx from 'clsx';
 import { useParams } from 'react-router-dom';
 
 import ProductItem from '@components/Shop/ProductItem';
-import Loading from '@components/UI/Loading';
+import { LoadingProductSkeleton } from '@components/UI';
 
 import { useAppSelector } from '@store/store';
 
 export default function OtherProduct() {
   const { productId } = useParams();
 
-  const { products, product, status, errorMessage } = useAppSelector(
+  const { products, status, errorMessage } = useAppSelector(
     (state) => state.products
-  );
-
-  const otherProductContent = (
-    <ul
-      className={clsx(
-        'grid grid-cols-2 gap-4 bg-white-bone',
-        'dark:bg-dark-brown',
-        'sm:grid-cols-4',
-        'md:gap-8',
-        'lg:gap-16'
-      )}
-    >
-      {products?.data
-        ?.filter(
-          (item) =>
-            item.attributes.category.data.attributes.name ===
-              product?.data.attributes.category.data.attributes.name &&
-            item.id.toString() !== productId
-        )
-        .slice(0, 4)
-        .map((product) => {
-          return (
-            <ProductItem
-              key={product.id}
-              product={product}
-              linkTo={`/shop/${product.id}`}
-            />
-          );
-        })}
-    </ul>
   );
 
   return (
@@ -54,13 +24,29 @@ export default function OtherProduct() {
       >
         You May Also Like
       </h1>
-      {status === 'pending' && <Loading />}
+      <ul
+        className={clsx(
+          'grid grid-cols-2 gap-4 bg-white-bone',
+          'dark:bg-dark-brown',
+          'sm:grid-cols-4',
+          'md:gap-6',
+          'lg:gap-16'
+        )}
+      >
+        {status === 'pending' && <LoadingProductSkeleton length={4} />}
+        {status === 'fulfilled' &&
+          products?.products
+            ?.filter((item) => item.id.toString() !== productId)
+            .slice(0, 4)
+            .map((product) => {
+              return <ProductItem key={product.id} product={product} />;
+            })}
+      </ul>
       {status === 'rejected' && (
         <p className='text-center text-xl font-medium text-red-600'>
           {errorMessage}
         </p>
       )}
-      {status === 'fulfilled' && otherProductContent}
     </section>
   );
 }
