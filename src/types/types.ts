@@ -1,6 +1,4 @@
-export interface IAuth {
-  accessToken: string | null;
-}
+// Authentication
 
 export interface ILogin {
   email: string;
@@ -8,25 +6,27 @@ export interface ILogin {
 }
 
 export interface IRegister extends ILogin {
-  username: string;
+  confirmPassword: string;
+}
+
+export interface ISignOut {
+  sign_out: string;
+  message: string;
 }
 
 export interface IRefreshToken {
-  jwt: string;
-  refreshToken: string;
+  access_token: string;
 }
 
 export interface IUser {
   id: number;
-  username: string;
   email: string;
-  provider: string;
-  confirmed: boolean;
-  blocked: boolean;
-  createdAt: string;
-  updatedAt: string;
-  address: string;
-  phone_number: string;
+  created_at: string;
+  updated_at: string;
+  // username: string;
+  // confirmed: boolean;
+  // address: string;
+  // phone_number: string;
 }
 
 export interface IUserUpdate {
@@ -47,99 +47,94 @@ export interface IForgotPassword {
 }
 
 export interface IAccount {
-  jwt: string;
-  refreshToken: string;
+  access_token: string;
+  message: string;
   user: IUser;
 }
 
-export interface IImage {
-  id: number;
-  attributes: {
-    name: string;
-    alternativeText: string | null;
-    caption: string | null;
-    width: number;
-    height: number;
-    formats: {
-      thumbnail: {
-        name: string;
-        hash: string;
-        ext: string;
-        mime: string;
-        path: string | null;
-        width: number;
-        height: number;
-        size: number;
-        url: string;
-      };
-    };
-    hash: string;
-    ext: string;
-    mime: string;
-    size: number;
-    url: string;
-    previewUrl: string | null;
-    provider: string;
-    provider_metadata: string | null;
-    createdAt: string;
-    updatedAt: string;
-  };
+// Products
+
+export interface IProduct extends IProductCart {
+  category_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  category: ICategory;
 }
+
+export interface IProductsMeta {
+  total?: number;
+  skip?: number;
+  limit?: number;
+}
+
+export interface IProductsData extends IProductsMeta {
+  products: IProduct[];
+}
+
+export interface IProductData {
+  product: IProduct;
+}
+
+// Categories
 
 export interface ICategory {
   id: number;
-  attributes: {
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-  };
+  category_name: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface IProduct {
+export interface ICategoriesData {
+  categories: ICategory[];
+}
+
+// Carts
+
+export interface IProductCart extends ICartItem {
   id: number;
-  attributes: {
-    name: string;
-    description: string;
-    price: number;
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-    images: {
-      data: IImage[];
-    };
-    category: {
-      data: ICategory;
-    };
+  title: string;
+  description: string;
+  image_url: string;
+  price: number;
+  discount_percentage: number;
+  discount_price: number;
+  stock_quantity: number;
+}
+
+interface ICartItem {
+  cart_item: {
+    quantity: number;
   };
 }
 
-interface IAllProductsMeta {
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
+export interface ICartResponse {
+  message: string;
+}
+
+export interface ICartData {
+  cart: {
+    id: number;
+    user_id: number;
+    total_price: number;
+    products: IProductCart[];
   };
-}
-
-export interface IProductsData extends IAllProductsMeta {
-  data: IProduct[];
-}
-
-export interface IProductData extends IAllProductsMeta {
-  data: IProduct;
-}
-
-export interface ICategoriesData extends IAllProductsMeta {
-  data: ICategory[];
+  total_quantity: number;
+  total_products: number;
 }
 
 export interface INewProductToCart {
   quantity: number;
-  product: IProduct;
+  product: IProductCart;
+}
+
+// Order
+
+export interface IOrder {
+  user_id: number;
+  email: string;
+  total_price: number;
+  products_list: IProductsOrder[];
 }
 
 export interface IProductsOrder {
@@ -149,9 +144,33 @@ export interface IProductsOrder {
   quantity: number;
 }
 
-export interface IOrder {
+// Error
+
+export interface IError {
+  error: boolean;
+  statusCode: number;
+  message: string[];
+}
+
+// Wishlist
+
+export interface IWishlist extends IWishlistPost {
+  id: number;
   user_id: number;
-  email: string;
-  total_price: number;
-  products_list: IProductsOrder[];
+  created_at: string;
+  updated_at: string;
+  product: IProduct;
+}
+
+export interface IWishlistPost {
+  product_id: number;
+}
+
+export interface IWishlistData {
+  wishlists: IWishlist[];
+}
+
+export interface IWishlistResponse {
+  message: string;
+  wishlist?: IWishlist;
 }
