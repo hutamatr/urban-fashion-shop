@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 import ProductItem from '@components/Shop/ProductItem';
-import Loading from '@components/UI/Loading';
+import { LoadingProductSkeleton } from '@components/UI';
 
 import { useAppSelector } from '@store/store';
 
@@ -10,25 +10,6 @@ export default function BestSellers() {
     (state) => state.products
   );
 
-  const bestSellersContent = (
-    <ul
-      className={clsx(
-        'grid grid-cols-1 gap-6',
-        'sm:grid-cols-2 sm:grid-rows-1',
-        'lg:grid-cols-4 lg:gap-16'
-      )}
-    >
-      {products?.data.slice(0, 4).map((product) => {
-        return (
-          <ProductItem
-            key={product.id}
-            product={product}
-            linkTo={`shop/${product.id}`}
-          />
-        );
-      })}
-    </ul>
-  );
   return (
     <section
       className={clsx(
@@ -46,13 +27,28 @@ export default function BestSellers() {
       >
         BestSellers
       </h1>
-      {status === 'pending' && <Loading />}
-      {status === 'rejected' && (
-        <p className='mx-auto text-center font-manrope font-medium uppercase text-red-700'>
-          {errorMessage}
-        </p>
-      )}
-      {status === 'fulfilled' && bestSellersContent}
+      <ul
+        className={clsx(
+          'grid grid-cols-1 gap-6',
+          'sm:grid-cols-2 sm:grid-rows-1',
+          'lg:grid-cols-4 lg:gap-16'
+        )}
+      >
+        {status === 'pending' && <LoadingProductSkeleton length={4} />}
+        {status === 'fulfilled' &&
+          products?.products.slice(0, 4).map((product) => {
+            return <ProductItem key={product.id} product={product} />;
+          })}
+      </ul>
+      {status === 'rejected' &&
+        errorMessage?.map((error) => (
+          <p
+            key={error}
+            className='mx-auto text-center font-manrope font-medium uppercase text-red-700'
+          >
+            {error}
+          </p>
+        ))}
     </section>
   );
 }
