@@ -1,16 +1,22 @@
 import { createAsyncThunk, createSlice, unwrapResult } from '@reduxjs/toolkit';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 import { axiosPublic } from '@utils/axiosInterceptor';
 
-import { ICategoriesData, IProductData, IProductsData } from 'types/types';
+import {
+  ICategoriesData,
+  IError,
+  IProductData,
+  IProductsData,
+  IProductsMeta,
+} from 'types/types';
 
 interface IProductsState {
   products: IProductsData | null;
   categories: ICategoriesData | null;
   product: IProductData | null;
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  errorMessage: string | null;
+  errorMessage: string[] | null;
   successMessage: string | null;
 }
 
@@ -23,53 +29,93 @@ const initialState: IProductsState = {
   successMessage: null,
 };
 
-export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
-  async () => {
+export const fetchAllProducts = createAsyncThunk<
+  IProductsData,
+  IProductsMeta,
+  { rejectValue: IError }
+>('products/fetchProducts', async ({ skip, limit }, { rejectWithValue }) => {
+  try {
     const response: AxiosResponse<IProductsData> = await axiosPublic.get(
-      '/products?populate=*'
+      `/products?skip=${skip}?limit=${limit}`
     );
     return response.data;
-  }
-);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errors: AxiosError<IError> = error;
 
-export const fetchProduct = createAsyncThunk(
-  'products/fetchProduct',
-  async (productId: string) => {
+    return rejectWithValue(errors.response?.data as IError);
+  }
+});
+
+export const fetchProduct = createAsyncThunk<
+  IProductData,
+  number,
+  { rejectValue: IError }
+>('products/fetchProduct', async (productId, { rejectWithValue }) => {
+  try {
     const response: AxiosResponse<IProductData> = await axiosPublic.get(
-      `/products/${productId}?populate=*`
+      `/products/${productId}`
     );
     return response.data;
-  }
-);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errors: AxiosError<IError> = error;
 
-export const fetchCategories = createAsyncThunk(
-  'products/fetchCategories',
-  async () => {
-    const response: AxiosResponse<ICategoriesData> = await axiosPublic.get(
-      '/categories'
-    );
+    return rejectWithValue(errors.response?.data as IError);
+  }
+});
+
+export const fetchCategories = createAsyncThunk<
+  ICategoriesData,
+  void,
+  { rejectValue: IError }
+>('products/fetchCategories', async (_, { rejectWithValue }) => {
+  try {
+    const response: AxiosResponse<ICategoriesData> =
+      await axiosPublic.get('/categories');
     return response.data;
-  }
-);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errors: AxiosError<IError> = error;
 
-export const fetchAllProducts = createAsyncThunk(
+    return rejectWithValue(errors.response?.data as IError);
+  }
+});
+
+export const fetchProducts = createAsyncThunk(
   'products/fetchAllProducts',
-  async (productId: string | null, { dispatch }) => {
-    const promises = () => {
-      if (productId) {
-        return [
-          dispatch(fetchProducts()),
-          dispatch(fetchCategories()),
-          dispatch(fetchProduct(productId)),
-        ];
-      } else {
-        return [dispatch(fetchProducts()), dispatch(fetchCategories())];
-      }
-    };
+  async (
+    {
+      productId,
+      skip,
+      limit,
+    }: { productId?: number; skip: number; limit: number },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      const promises = () => {
+        if (productId) {
+          return [
+            dispatch(fetchAllProducts({ skip, limit })),
+            dispatch(fetchCategories()),
+            dispatch(fetchProduct(productId)),
+          ];
+        } else {
+          return [
+            dispatch(fetchAllProducts({ skip, limit })),
+            dispatch(fetchCategories()),
+          ];
+        }
+      };
 
-    const actions = await Promise.all(promises());
-    return actions.map(unwrapResult);
+      const actions = await Promise.all(promises());
+      return actions.map(unwrapResult);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const errors: AxiosError<IError> = error;
+
+      return rejectWithValue(errors.response?.data as IError);
+    }
   }
 );
 
@@ -79,18 +125,18 @@ export const productSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state) => {
+      .addCase(fetchAllProducts.pending, (state) => {
         state.status = 'pending';
         state.errorMessage = null;
       })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
+      .addCase(fetchAllProducts.fulfilled, (state, action) => {
         state.status = 'fulfilled';
         state.products = action.payload;
-        state.successMessage = 'Successfully fetched products!';
+        state.successMessage = 'Successfully get products!';
       })
-      .addCase(fetchProducts.rejected, (state) => {
+      .addCase(fetchAllProducts.rejected, (state, action) => {
         state.status = 'rejected';
-        state.errorMessage = 'Failed to get products!';
+        state.errorMessage = action.payload?.message as string[];
       })
 
       .addCase(fetchProduct.pending, (state) => {
@@ -100,11 +146,11 @@ export const productSlice = createSlice({
       .addCase(fetchProduct.fulfilled, (state, action) => {
         state.status = 'fulfilled';
         state.product = action.payload;
-        state.successMessage = 'Successfully fetched product!';
+        state.successMessage = 'Successfully get product!';
       })
-      .addCase(fetchProduct.rejected, (state) => {
+      .addCase(fetchProduct.rejected, (state, action) => {
         state.status = 'rejected';
-        state.errorMessage = 'Failed to get product!';
+        state.errorMessage = action.payload?.message as string[];
       })
 
       .addCase(fetchCategories.pending, (state) => {
@@ -114,11 +160,11 @@ export const productSlice = createSlice({
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.status = 'fulfilled';
         state.categories = action.payload;
-        state.successMessage = 'Successfully fetched product!';
+        state.successMessage = 'Successfully get categories!';
       })
-      .addCase(fetchCategories.rejected, (state) => {
+      .addCase(fetchCategories.rejected, (state, action) => {
         state.status = 'rejected';
-        state.errorMessage = 'Failed to get product!';
+        state.errorMessage = action.payload?.message as string[];
       });
   },
 });
