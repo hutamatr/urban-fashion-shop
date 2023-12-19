@@ -1,68 +1,25 @@
 import clsx from 'clsx';
-import { useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import Loading from '@components/UI/Loading';
+import { LoadingProductSkeleton } from '@components/UI';
 
-import { useAppSelector } from '@store/store';
+import useFIlterSortProduct from '@hooks/useFIlterSortProduct';
 
 import FilterProduct from './FilterProduct';
 import ProductItem from './ProductItem';
 import SortProduct from './SortProduct';
 
 export default function ProductList() {
-  const [filterValue, setFilterValue] = useState('all');
-  const { products, status, errorMessage } = useAppSelector(
-    (state) => state.products
-  );
+  const {
+    filterValue,
+    setFilterValue,
+    FilterProductHandler,
+    productStatus,
+    productErrorMessage,
+    isSortedProductList,
+  } = useFIlterSortProduct();
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-
-  const isSortedProductList = queryParams.get('sort') === 'low-to-high';
-
-  const sortProductsByPrice = useMemo(() => {
-    const sortedProducts = products?.data
-      ?.slice()
-      ?.sort((productA, productB) => {
-        const { price: priceA } = productA.attributes;
-        const { price: priceB } = productB.attributes;
-        return isSortedProductList ? +priceA - +priceB : +priceB - +priceA;
-      });
-    return sortedProducts;
-  }, [isSortedProductList, products?.data]);
-
-  const FilterProductHandler = useMemo(() => {
-    if (filterValue === 'all') return sortProductsByPrice;
-    const filteredProducts = sortProductsByPrice?.filter(
-      (product) =>
-        product?.attributes.category.data.attributes.name === filterValue
-    );
-    return filteredProducts;
-  }, [filterValue, sortProductsByPrice]);
-
-  const productContent = (
-    <ul
-      className={clsx(
-        'grid grid-cols-2 gap-4 bg-white-bone',
-        'dark:bg-dark-brown',
-        'sm:grid-cols-3',
-        'md:gap-6',
-        'lg:grid-cols-4'
-      )}
-    >
-      {FilterProductHandler?.map((product) => {
-        return (
-          <ProductItem
-            product={product}
-            linkTo={`${product.id}`}
-            key={product.id}
-          />
-        );
-      })}
-    </ul>
-  );
 
   return (
     <section className='mb-16 flex min-w-full flex-col'>
@@ -81,13 +38,30 @@ export default function ProductList() {
           onSortedProduct={isSortedProductList}
         />
       </div>
-      {status === 'pending' && <Loading />}
-      {status === 'rejected' && (
-        <p className='mx-auto py-6 text-center font-medium uppercase text-red-700'>
-          {errorMessage}
-        </p>
-      )}
-      {status === 'fulfilled' && productContent}
+      <ul
+        className={clsx(
+          'grid grid-cols-2 gap-4 bg-white-bone',
+          'dark:bg-dark-brown',
+          'sm:grid-cols-3',
+          'md:gap-6',
+          'lg:grid-cols-4'
+        )}
+      >
+        {productStatus === 'pending' && <LoadingProductSkeleton length={12} />}
+        {productStatus === 'fulfilled' &&
+          FilterProductHandler?.map((product) => {
+            return <ProductItem product={product} key={product.id} />;
+          })}
+      </ul>
+      {productStatus === 'rejected' &&
+        productErrorMessage?.map((error) => (
+          <p
+            key={error}
+            className='mx-auto py-6 text-center font-medium uppercase text-red-700'
+          >
+            {error}
+          </p>
+        ))}
     </section>
   );
 }
