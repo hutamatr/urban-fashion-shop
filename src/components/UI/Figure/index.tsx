@@ -11,33 +11,31 @@ interface IFigureProps {
   product: IProduct;
 }
 
-export function Figure({ product, classImage }: IFigureProps) {
+export function Figure({ product, classImage }: Readonly<IFigureProps>) {
   return (
     <figure
       id={product.id.toString()}
       className={clsx(
-        'group/card relative grid min-h-full grid-cols-1 gap-4 overflow-hidden border-b border-b-dark-brown duration-500',
-        'hover:bg-dark-brown hover:text-white-bone',
-        'dark:border-b-white-bone dark:bg-dark-brown dark:hover:ring-2 dark:hover:ring-white-bone'
+        'group/card relative grid min-h-full grid-cols-1 gap-4 overflow-hidden rounded-t border-b border-b-dark-brown duration-500',
+        'dark:border-b-white-bone dark:bg-dark-brown'
       )}
     >
       <Image
-        src={`${import.meta.env.VITE_IMAGE_URL}${product.attributes?.images
-          .data[0].attributes.url}`}
-        alt={product.attributes?.name}
+        src={product.image_url}
+        alt={product.title}
         className={clsx(
           classImage,
-          'aspect-square w-full border border-dark-brown duration-500',
+          'aspect-square w-full rounded border border-dark-brown duration-500',
           'group-hover/card:scale-105'
         )}
       />
       <figcaption
         className={clsx(
-          'px-2 text-sm font-semibold uppercase duration-500',
+          'px-2 text-left text-sm font-semibold uppercase duration-500',
           'dark:text-white-bone'
         )}
       >
-        {product.attributes?.name}
+        {product.title}
       </figcaption>
       <span
         className={clsx(
@@ -45,7 +43,7 @@ export function Figure({ product, classImage }: IFigureProps) {
           'dark:text-white-bone'
         )}
       >
-        {formatCurrencyToFixed(+product.attributes?.price)}
+        {formatCurrencyToFixed(product.price)}
       </span>
     </figure>
   );
