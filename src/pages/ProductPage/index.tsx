@@ -11,7 +11,10 @@ export default function Product() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    dispatch(fetchAllProducts(null));
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchAllProducts({ skip: 0, limit: 0 }));
   }, [dispatch]);
 
   return (
