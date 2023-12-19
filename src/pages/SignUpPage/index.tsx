@@ -13,6 +13,8 @@ import { useAppDispatch } from '@store/store';
 
 import { signUpSchema } from '@utils/formSchema';
 
+import { IError } from 'types/types';
+
 type FormSchemaType = z.infer<typeof signUpSchema>;
 
 export default function Register() {
@@ -26,7 +28,6 @@ export default function Register() {
     resolver: zodResolver(signUpSchema),
   });
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
 
   const viewPasswordHandler = () => {
@@ -39,21 +40,23 @@ export default function Register() {
     event?.preventDefault();
 
     const registerFormInput = {
-      username: data.username,
       email: data.email,
       password: data.password,
+      confirmPassword: data.confirmPassword,
     };
 
     const res = await dispatch(registerUser(registerFormInput));
 
     if (res.meta.requestStatus === 'fulfilled') {
+      reset();
       navigate('/', { replace: true });
     }
     if (res.meta.requestStatus === 'rejected') {
-      toast.error('Failed to register new user!', { duration: 3000 });
+      const payload = res.payload as IError;
+      payload.message.forEach((message: string) => {
+        toast.error(message, { duration: 3000 });
+      });
     }
-
-    reset();
   };
 
   return (
@@ -74,23 +77,6 @@ export default function Register() {
             onSubmit={handleSubmit(RegisterSubmitHandler)}
             className={clsx('flex flex-col gap-y-4', 'md:gap-y-5')}
           >
-            <Input
-              title='You Name'
-              type='text'
-              placeholder='Your Name'
-              {...register('username', {
-                required: true,
-              })}
-              aria-invalid={errors.username ? 'true' : 'false'}
-              errors={
-                errors.username && (
-                  <span className='block text-xs text-red-800'>
-                    {errors.username?.message}
-                  </span>
-                )
-              }
-            />
-
             <Input
               title='Your Email'
               type='email'
@@ -160,7 +146,7 @@ export default function Register() {
           <p className={clsx('text-center text-sm', 'dark:text-white-bone')}>
             Already have an account?{' '}
             <Link
-              to='/login'
+              to='/signin'
               className={clsx(
                 'font-semibold text-dark-brown underline',
                 'dark:text-white-bone'

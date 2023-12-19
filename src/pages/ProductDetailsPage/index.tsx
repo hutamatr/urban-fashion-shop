@@ -5,77 +5,121 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AddToCartModal from '@components/ProductDetails/AddToCartModal';
 import OtherProduct from '@components/ProductDetails/OtherProduct';
 import ProductDetail from '@components/ProductDetails/ProductDetail';
+import ProductDetailSkeleton from '@components/ProductDetails/ProductDetailSkeleton';
 import Review from '@components/ProductDetails/Review';
-import Loading from '@components/UI/Loading';
 
-import { addToCart } from '@store/cartSlice';
+import { addToCart, postCartItem } from '@store/cartSlice';
 import { showModalHandler } from '@store/modalSlice';
-import { fetchAllProducts } from '@store/productSlice';
+import { fetchProducts } from '@store/productSlice';
 import { useAppDispatch, useAppSelector } from '@store/store';
-import { addWishlist, removeWishlist } from '@store/wishlistSlice';
+import {
+  deleteWishlist,
+  getWishlist,
+  postWishlist,
+} from '@store/wishlistSlice';
 
-import { INewProductToCart, IProduct, IProductData } from 'types/types';
+import { IProduct, IProductCart, IProductData } from 'types/types';
 
 export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
-  const [isOnWishList, setIsOnWishList] = useState(false);
+  const [isWishlist, setIsWishlist] = useState(false);
 
   const { productId } = useParams();
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const { product, status, errorMessage } = useAppSelector(
-    (state) => state.products
-  );
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
-  const { wishlist } = useAppSelector((state) => state.wishlist);
+  const {
+    product,
+    status: productStatus,
+    errorMessage,
+  } = useAppSelector((state) => state.products);
+  const { isAuth } = useAppSelector((state) => state.auth);
   const { isModalShow } = useAppSelector((state) => state.modal);
 
   useEffect(() => {
-    if (wishlist.find((item) => item.id === product?.data.id)) {
-      setIsOnWishList(true);
-    } else {
-      setIsOnWishList(false);
-    }
-  }, [product?.data.id, wishlist]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (productId) {
-      dispatch(fetchAllProducts(productId));
-    }
-  }, [productId, dispatch]);
+    dispatch(
+      fetchProducts({
+        skip: 0,
+        limit: 0,
+        productId: Number(productId as string),
+      })
+    );
+  }, [dispatch, productId]);
 
-  const decreaseQuantityHandler = () =>
+  useEffect(() => {
+    const getWishlistData = async () => {
+      if (isAuth) {
+        const wishlistData = await dispatch(
+          getWishlist(Number(productId as string))
+        );
+        if (wishlistData.meta.requestStatus === 'fulfilled') {
+          setIsWishlist(true);
+        }
+        if (wishlistData.meta.requestStatus === 'rejected') {
+          setIsWishlist(false);
+        }
+      }
+    };
+
+    getWishlistData();
+  }, [dispatch, isAuth, productId]);
+
+  const decreaseQuantityHandler = () => {
     setQuantity((prevState) => prevState - 1);
-  const increaseQuantityHandler = () =>
+  };
+
+  const increaseQuantityHandler = () => {
     setQuantity((prevState) => prevState + 1);
+  };
 
   const addToCartHandler = useCallback(() => {
-    const itemToCart: INewProductToCart = {
-      quantity: +quantity,
-      product: product?.data as IProduct,
+    const itemToCart: IProductCart = {
+      id: product?.product.id as number,
+      title: product?.product.title as string,
+      description: product?.product.description as string,
+      image_url: product?.product.image_url as string,
+      price: product?.product.price as number,
+      discount_percentage: product?.product.discount_percentage as number,
+      discount_price: product?.product.discount_price as number,
+      stock_quantity: product?.product.stock_quantity as number,
+      cart_item: {
+        quantity: quantity,
+      },
     };
     dispatch(addToCart(itemToCart));
     dispatch(showModalHandler());
-  }, [quantity, product?.data, dispatch]);
+    dispatch(
+      postCartItem({
+        product_id: product?.product.id as number,
+        quantity: quantity,
+      })
+    );
+  }, [quantity, product?.product, dispatch]);
 
   const closeModalBackdropHandler = () => {
     dispatch(showModalHandler());
   };
 
-  const isOnWishListHandler = () => {
-    if (isAuthenticated) {
-      setIsOnWishList((prevState) => !prevState);
-    } else {
-      navigate('/login', { replace: true });
+  const isWishlistHandler = () => {
+    if (!isAuth) {
+      navigate('/signin', { replace: true });
+      setTimeout(() => {
+        toast.error('Please login first', { duration: 3000 });
+      }, 1000);
+      return;
     }
 
-    if (isOnWishList) {
-      dispatch(removeWishlist(product?.data.id as number));
+    if (isWishlist) {
+      setIsWishlist(false);
+      dispatch(deleteWishlist(product?.product.id as number));
       toast.success('Removed from wishlist', { duration: 3000 });
     } else {
-      dispatch(addWishlist(product?.data as IProduct));
+      setIsWishlist(true);
+      dispatch(postWishlist({ product_id: product?.product.id as number }));
       toast.success('Added to wishlist', { duration: 3000 });
     }
   };
@@ -83,20 +127,20 @@ export default function ProductDetails() {
   return (
     <>
       <Toaster position='top-center' />
-      {status === 'pending' && <Loading />}
-      {status === 'rejected' && (
+      {productStatus === 'pending' && <ProductDetailSkeleton />}
+      {productStatus === 'rejected' && (
         <p className='my-[25vh] min-h-[50vh] text-center text-xl font-bold text-red-600'>
           {errorMessage}
         </p>
       )}
-      {status === 'fulfilled' && (
+      {productStatus === 'fulfilled' && (
         <ProductDetail
-          {...(product as IProductData)}
+          product={product?.product as IProduct}
           onDecreaseQuantity={decreaseQuantityHandler}
           onIncreaseQuantity={increaseQuantityHandler}
           onAddToCart={addToCartHandler}
-          isOnWishList={isOnWishList}
-          onIsOnWishlist={isOnWishListHandler}
+          isWishlist={isWishlist}
+          onIsOnWishlist={isWishlistHandler}
           quantity={quantity}
         />
       )}

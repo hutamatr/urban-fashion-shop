@@ -1,20 +1,30 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Figure } from '@components/UI';
+
+import { useAppDispatch } from '@store/store';
+import { getWishlist } from '@store/wishlistSlice';
 
 import { IProduct } from 'types/types';
 
 interface IProductItemProps {
   product: IProduct;
-  linkTo: string;
 }
 
-export default function ProductItem({ product, linkTo }: IProductItemProps) {
+export default function ProductItem({ product }: Readonly<IProductItemProps>) {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const viewProductHandler = () => {
+    dispatch(getWishlist(product.id));
+    navigate(`/shop/${product.id}`);
+  };
+
   return (
     <li>
-      <Link to={linkTo}>
+      <button onClick={viewProductHandler}>
         <Figure product={product} />
-      </Link>
+      </button>
     </li>
   );
 }

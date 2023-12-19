@@ -44,7 +44,6 @@ export const paymentOrder = createAsyncThunk(
         headers: {
           Authorization: `Bearer ${state.auth?.accessToken}`,
         },
-        withCredentials: true,
       }
     );
     return response.data;

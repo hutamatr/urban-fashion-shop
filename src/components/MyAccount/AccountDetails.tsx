@@ -1,13 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import PhoneInput from 'react-phone-number-input';
 import { z } from 'zod';
 
+import { Loading } from '@components/UI';
 import Input from '@components/UI/Input';
-import Loading from '@components/UI/Loading';
 
 import { useAppDispatch, useAppSelector } from '@store/store';
 import { updateUserDetail } from '@store/userSlice';
@@ -29,29 +29,28 @@ export default function AccountDetails() {
     register,
     handleSubmit,
     formState: { isSubmitting },
-    setValue,
   } = useForm<FormSchemaType>({
     resolver: zodResolver(userDetailSchema),
   });
 
-  const { user, status } = useAppSelector((state) => state.user);
+  const { status } = useAppSelector((state) => state.user);
 
-  useEffect(() => {
-    if (user?.id) {
-      setValue('name', user.username);
-      setValue('email', user.email);
-      setValue('phone', user.phone_number);
-      setValue('address', user.address);
-      setPhoneNumber(user.phone_number);
-    }
-  }, [
-    setValue,
-    user?.id,
-    user?.username,
-    user?.email,
-    user?.phone_number,
-    user?.address,
-  ]);
+  // useEffect(() => {
+  //   if (user?.id) {
+  //     setValue('name', user.username);
+  //     setValue('email', user.email);
+  //     setValue('phone', user.phone_number);
+  //     setValue('address', user.address);
+  //     setPhoneNumber(user.phone_number);
+  //   }
+  // }, [
+  //   setValue,
+  //   user?.id,
+  //   user?.username,
+  //   user?.email,
+  //   user?.phone_number,
+  //   user?.address,
+  // ]);
 
   const updateUserHandler: SubmitHandler<FormSchemaType> = async (
     data,

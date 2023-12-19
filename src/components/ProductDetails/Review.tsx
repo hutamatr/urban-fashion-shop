@@ -13,7 +13,7 @@ export default function Review() {
 
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
-  // const { isAuthenticated } = useAppSelector((state) => state.auth);
+  // const { isAuth } = useAppSelector((state) => state.auth);
 
   // const showReviewInputHandler = () => {
   //   return setIsReviewShow((prevState) => !prevState);
@@ -66,7 +66,7 @@ export default function Review() {
       >
         Review
       </h1>
-      {/* {isAuthenticated && (
+      {/* {isAuth && (
         <button
           className={clsx(
             'w-full px-4 py-3 duration-300',

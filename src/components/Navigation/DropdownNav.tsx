@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import Avatar from '@components/UI/svg/Avatar';
 
 import { logoutUser } from '@store/authSlice';
-import { useAppDispatch } from '@store/store';
+import { persistor, useAppDispatch } from '@store/store';
 
 interface IDropdownNavProps {
   onCloseMenu: () => void;
@@ -15,17 +15,16 @@ interface IDropdownNavProps {
 export default function DropdownNav({
   onCloseMenu,
   className,
-}: IDropdownNavProps) {
+}: Readonly<IDropdownNavProps>) {
   const dispatch = useAppDispatch();
-
-  // const { wishListItems } = useWish();
 
   const logoutUserHandler = () => {
     dispatch(logoutUser());
-    // persistor.pause();
-    // persistor.flush().then(() => {
-    //   return persistor.purge();
-    // });
+    persistor.pause();
+    persistor.flush().then(() => {
+      return persistor.purge();
+    });
+    window.location.reload();
   };
 
   return (
@@ -49,10 +48,7 @@ export default function DropdownNav({
           )}
           onClick={onCloseMenu}
         >
-          <NavLink to='wishlist'>
-            Wishlist
-            {/* {wishListItems.length ? `(${wishListItems.length})` : null} */}
-          </NavLink>
+          <NavLink to='wishlist'>Wishlist</NavLink>
         </Dropdown.Item>
         <Dropdown.Item
           className={clsx(

@@ -24,7 +24,7 @@ const heroImage = [
 
 export default function Hero() {
   return (
-    <div className={clsx('h-56', 'sm:h-72', 'xl:h-[85vh]', '2xl:h-[50vh]')}>
+    <div className={clsx('h-56', 'sm:h-72', 'xl:h-[85vh]', '2xl:h-[70vh]')}>
       <Carousel>
         {heroImage.map((image, index) => (
           <Image src={image.image} alt={`hero-image-${index}`} key={image.id} />

@@ -53,7 +53,7 @@ export default function MyAccount() {
           )}
         >
           <span className='max-w-md text-lg font-medium uppercase'>
-            {user?.username}
+            {user?.email}
           </span>
           <span className='text-sm font-light'>{user?.email}</span>
         </div>

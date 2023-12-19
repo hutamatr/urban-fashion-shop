@@ -15,7 +15,7 @@ import SignUp from '@pages/SignUpPage';
 import { useAppSelector } from '@store/store';
 
 export default function App() {
-  const isAuth = useAppSelector((state) => state.auth.isAuthenticated);
+  const isAuth = useAppSelector((state) => state.auth.isAuth);
 
   return (
     <Routes>
@@ -24,8 +24,8 @@ export default function App() {
         <Route path='shop' element={<Shop />} />
         <Route path='shop/:productId' element={<ProductDetails />} />
         <Route path='cart' element={<Cart />} />
-        <Route path='login' element={isAuth ? <Home /> : <SignIn />} />
-        <Route path='register' element={isAuth ? <Home /> : <SignUp />} />
+        <Route path='signin' element={isAuth ? <Home /> : <SignIn />} />
+        <Route path='signup' element={isAuth ? <Home /> : <SignUp />} />
         <Route element={<RequireAuth />}>
           <Route path='account' element={<MyAccount />} />
           <Route path='wishlist' element={<Wishlist />} />

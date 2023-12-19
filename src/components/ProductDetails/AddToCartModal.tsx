@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Image, Modal } from '@components/UI';
 
 import { showModalHandler } from '@store/modalSlice';
-import { useAppDispatch } from '@store/store';
+import { useAppDispatch, useAppSelector } from '@store/store';
 
 import { IProductData } from 'types/types';
 
@@ -14,17 +14,28 @@ interface IAddToCartModalProps extends IProductData {
 }
 
 export default function AddToCartModal({
-  data,
+  product,
   onCloseModalHandler,
-}: IAddToCartModalProps) {
+}: Readonly<IAddToCartModalProps>) {
   const navigate = useNavigate();
+
+  const { categories } = useAppSelector((state) => state.products);
 
   const dispatch = useAppDispatch();
 
-  const toCartHandler = () => navigate('/cart');
+  const toCartHandler = () => {
+    dispatch(showModalHandler());
+    navigate('/cart');
+  };
 
   const modalHandler = () => {
     dispatch(showModalHandler());
+  };
+
+  const category = () => {
+    return categories?.categories.find(
+      (item) => item.id === product?.category_id
+    )?.category_name;
   };
 
   return (
@@ -50,9 +61,8 @@ export default function AddToCartModal({
         </h1>
         <div className='flex flex-row items-center justify-center gap-x-4'>
           <Image
-            src={`${import.meta.env.VITE_IMAGE_URL}${data?.attributes.images
-              .data[0].attributes.url}`}
-            alt={data?.attributes.name}
+            src={product?.image_url}
+            alt={product?.title}
             className='w-32 rounded-sm object-contain ring-1 ring-dark-brown'
           />
           <div
@@ -62,11 +72,9 @@ export default function AddToCartModal({
             )}
           >
             <span className={clsx('text-lg font-semibold', 'md:text-xl')}>
-              {data?.attributes.name}
+              {product?.title}
             </span>
-            <span className='text-sm'>
-              {data?.attributes.category.data.attributes.name}
-            </span>
+            <span className='text-sm'>{category()}</span>
           </div>
         </div>
         <button

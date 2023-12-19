@@ -16,11 +16,11 @@ import SwitcherTheme from './SwitcherTheme';
 export default function Navigation() {
   const [menuView, setMenuView] = useState(false);
 
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { isAuth } = useAppSelector((state) => state.auth);
   const { cart } = useAppSelector((state) => state.cart);
 
-  const cartItemsTotal = cart.reduce((curr, item) => {
-    return curr + item.quantity;
+  const cartItemsTotal = cart?.reduce((curr, item) => {
+    return curr + item?.cart_item.quantity;
   }, 0);
 
   const menuHandler = () => setMenuView((prevState) => !prevState);
@@ -46,7 +46,7 @@ export default function Navigation() {
           onCartItems={cartItemsTotal}
           className={clsx('dark:text-white-bone', 'sm:hidden')}
         />
-        {isAuthenticated && (
+        {isAuth && (
           <DropdownNav
             className={clsx('sm:hidden')}
             onCloseMenu={menuViewClose}
@@ -69,6 +69,7 @@ export default function Navigation() {
         )}
       >
         <li
+          onKeyDown={menuViewClose}
           onClick={menuViewClose}
           className={clsx(
             'w-fit rounded-sm px-2 py-1 text-dark-brown duration-300',
@@ -79,6 +80,7 @@ export default function Navigation() {
           <NavLink to='/'>Home</NavLink>
         </li>
         <li
+          onKeyDown={menuViewClose}
           onClick={menuViewClose}
           className={clsx(
             'w-fit rounded-sm px-2 py-1 text-dark-brown duration-300',
@@ -89,8 +91,9 @@ export default function Navigation() {
           <NavLink to='/shop'>Shop</NavLink>
         </li>
 
-        {!isAuthenticated && (
+        {!isAuth && (
           <li
+            onKeyDown={menuViewClose}
             onClick={menuViewClose}
             className={clsx(
               'w-fit rounded-sm px-2 py-1 text-dark-brown duration-300',
@@ -98,7 +101,7 @@ export default function Navigation() {
               'dark:text-white-bone dark:hover:bg-white-bone dark:hover:text-dark-brown'
             )}
           >
-            <NavLink to='/login'>Login</NavLink>
+            <NavLink to='/signin'>Sign In</NavLink>
           </li>
         )}
 
@@ -107,7 +110,7 @@ export default function Navigation() {
           className={clsx('hidden', 'dark:text-white-bone', 'sm:block')}
         />
 
-        {isAuthenticated && (
+        {isAuth && (
           <li>
             <DropdownNav
               onCloseMenu={menuViewClose}

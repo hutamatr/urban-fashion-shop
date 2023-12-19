@@ -1,72 +1,77 @@
-import { loadStripe } from '@stripe/stripe-js';
+// import { loadStripe } from '@stripe/stripe-js';
 import clsx from 'clsx';
-import { useMemo } from 'react';
-import { toast, Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import CartList from '@components/Cart/CartList';
 import CartSummary from '@components/Cart/CartSummary';
-import Loading from '@components/UI/Loading';
+import { Loading } from '@components/UI';
 
-import { paymentOrder } from '@store/orderSlice';
+import { getCartItem } from '@store/cartSlice';
+// import { paymentOrder } from '@store/orderSlice';
 import { useAppDispatch, useAppSelector } from '@store/store';
+import { getWishlists } from '@store/wishlistSlice';
 
-import { IOrder, IProductsOrder } from 'types/types';
+// import { IOrder, IProductsOrder } from 'types/types';
 
-const stripePromise = loadStripe(
-  'pk_test_51Ncl4SIAnOD2G6K2AeMVopSQwSHAIVZ6NIv3Ag2Zk0M7FtKFrM9jRO7CLUuWi04lomuazHhJWEsFzm4lFwE1gRe200V2395JAf'
-);
+// const stripePromise = loadStripe(
+//   'pk_test_51Ncl4SIAnOD2G6K2AeMVopSQwSHAIVZ6NIv3Ag2Zk0M7FtKFrM9jRO7CLUuWi04lomuazHhJWEsFzm4lFwE1gRe200V2395JAf'
+// );
 
 export default function Cart() {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
-  const { cart, totalPrice } = useAppSelector((state) => state.cart);
+  const { isAuth } = useAppSelector((state) => state.auth);
+  const { cart } = useAppSelector((state) => state.cart);
   const { products, status, errorMessage } = useAppSelector(
     (state) => state.products
   );
 
-  const totalCartItems = useMemo(
-    () =>
-      cart.reduce((curr, item) => {
-        return curr + item.quantity;
-      }, 0),
-    [cart]
-  );
-
-  const PaymentHandler = async () => {
-    if (!isAuthenticated) {
-      navigate('/login', { replace: true });
-      return;
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(getCartItem());
+      dispatch(getWishlists());
     }
+  }, [dispatch, isAuth]);
 
-    const productsToOrder: IProductsOrder[] = cart.map((product) => ({
-      id: product.product?.id,
-      name: product.product?.attributes.name,
-      price: product.product?.attributes.price,
-      quantity: product.quantity,
-    }));
+  const totalCartItems = cart?.reduce((curr, item) => {
+    return curr + item.cart_item.quantity;
+  }, 0);
 
-    const newOrder: IOrder = {
-      user_id: user?.id as number,
-      email: user?.email as string,
-      total_price: totalPrice,
-      products_list: productsToOrder,
-    };
+  // const PaymentHandler = async () => {
+  //   if (!isAuth) {
+  //     navigate('/signin', { replace: true });
+  //     return;
+  //   }
 
-    try {
-      const stripe = await stripePromise;
-      const result = await dispatch(paymentOrder(newOrder)).unwrap();
-      await stripe?.redirectToCheckout({
-        sessionId: result.stripeSession.id,
-      });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-      toast.error('Payment failed!', { duration: 3000 });
-    }
-  };
+  //   const productsToOrder: IProductsOrder[] = cart.map((product) => ({
+  //     id: product.product?.id,
+  //     name: product.product?.title,
+  //     price: product.product?.price,
+  //     quantity: product.quantity,
+  //   }));
+
+  //   const newOrder: IOrder = {
+  //     user_id: user?.id as number,
+  //     email: user?.email as string,
+  //     total_price: totalPrice,
+  //     products_list: productsToOrder,
+  //   };
+
+  //   try {
+  //     const stripe = await stripePromise;
+  //     const result = await dispatch(paymentOrder(newOrder)).unwrap();
+  //     await stripe?.redirectToCheckout({
+  //       sessionId: result.stripeSession.id,
+  //     });
+  //   } catch (error) {
+  //     // eslint-disable-next-line no-console
+  //     console.error(error);
+  //     toast.error('Payment failed!', { duration: 3000 });
+  //   }
+  // };
 
   return (
     <>
@@ -105,12 +110,10 @@ export default function Cart() {
           )}
           <CartList cartItems={cart} />
           {cart.length > 0 && (
-            <>
-              <CartSummary
-                totalCartItems={totalCartItems}
-                onPaymentHandler={PaymentHandler}
-              />
-            </>
+            <CartSummary
+              totalCartItems={totalCartItems}
+              onPaymentHandler={() => navigate('/checkout')}
+            />
           )}
         </div>
       </section>

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 import { axiosPrivate, axiosPublic } from '@utils/axiosInterceptor';
 
@@ -8,85 +8,126 @@ import { RootState } from './store';
 import {
   IAccount,
   IChangePassword,
+  IError,
   IForgotPassword,
   ILogin,
   IRefreshToken,
   IRegister,
-  IUser,
+  ISignOut,
 } from 'types/types';
 
 export interface IAuthState {
-  isAuthenticated: boolean;
+  isAuth: boolean;
   accessToken: string | null;
-  refreshToken: string | null;
-  user: IUser | null;
   status: 'pending' | 'fulfilled' | 'rejected' | 'idle';
-  errorMessage: string | null;
+  errorMessage: string[] | null;
   successMessage: string | null;
 }
 
 const initialState: IAuthState = {
-  isAuthenticated: false,
+  isAuth: false,
   accessToken: null,
-  refreshToken: null,
-  user: null,
   status: 'idle',
   errorMessage: null,
   successMessage: null,
 };
 
-export const registerUser = createAsyncThunk(
+export const registerUser = createAsyncThunk<
+  IAccount,
+  IRegister,
+  { rejectValue: IError }
+>(
   'auth/registerUser',
-  async ({ username, email, password }: IRegister) => {
+  async ({ email, password, confirmPassword }, { rejectWithValue }) => {
+    try {
+      const response: AxiosResponse<IAccount> = await axiosPublic.post(
+        '/signup',
+        {
+          email,
+          password,
+          confirmPassword,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const errors: AxiosError<IError> = error;
+
+      return rejectWithValue(errors.response?.data as IError);
+    }
+  }
+);
+
+export const loginUser = createAsyncThunk<
+  IAccount,
+  ILogin,
+  { rejectValue: IError }
+>('auth/loginUser', async ({ email, password }, { rejectWithValue }) => {
+  try {
     const response: AxiosResponse<IAccount> = await axiosPublic.post(
-      '/auth/local/register',
+      '/signin',
       {
-        username,
         email,
         password,
-      }
-    );
-    return response.data;
-  }
-);
-
-export const loginUser = createAsyncThunk(
-  'auth/loginUser',
-  async ({ email, password }: ILogin) => {
-    const response: AxiosResponse<IAccount> = await axiosPublic.post(
-      '/auth/local',
+      },
       {
-        identifier: email,
-        password,
+        withCredentials: true,
       }
     );
     return response.data;
-  }
-);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errors: AxiosError<IError> = error;
 
-export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
-  const response: AxiosResponse = await axiosPublic({
-    method: 'GET',
-    url: '/auth/logout',
-    withCredentials: true,
-  });
-  return response.data;
+    return rejectWithValue(errors.response?.data as IError);
+  }
 });
 
-export const refreshToken = createAsyncThunk(
-  'auth/refreshToken',
-  async (_, { getState }) => {
-    const state = getState() as RootState;
-    const response: AxiosResponse<IRefreshToken> = await axiosPublic.post(
-      '/token/refresh',
+export const logoutUser = createAsyncThunk<
+  ISignOut,
+  void,
+  { rejectValue: IError }
+>('auth/logoutUser', async (_, { rejectWithValue }) => {
+  try {
+    const response: AxiosResponse<ISignOut> = await axiosPublic.post(
+      '/signout',
+      {},
+      { withCredentials: true }
+    );
+    return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errors: AxiosError<IError> = error;
+
+    return rejectWithValue(errors.response?.data as IError);
+  }
+});
+
+export const refreshToken = createAsyncThunk<
+  IRefreshToken,
+  void,
+  { rejectValue: IError }
+>('auth/refresh', async (_, { rejectWithValue }) => {
+  // const state = getState() as RootState;
+  try {
+    const response: AxiosResponse<IRefreshToken> = await axiosPublic.get(
+      '/refresh',
       {
-        refreshToken: state.auth.refreshToken,
+        withCredentials: true,
       }
     );
 
     return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errors: AxiosError<IError> = error;
+    return rejectWithValue(errors.response?.data as IError);
   }
-);
+});
 
 export const changePassword = createAsyncThunk(
   'auth/changePassword',
@@ -121,8 +162,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     addTokenHandler: (state, action: PayloadAction<IRefreshToken>) => {
-      state.accessToken = action.payload.jwt;
-      state.refreshToken = action.payload.refreshToken;
+      state.accessToken = action.payload.access_token;
     },
   },
   extraReducers: (builder) => {
@@ -134,19 +174,15 @@ export const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.status = 'fulfilled';
-        state.isAuthenticated = true;
-        state.accessToken = action.payload.jwt;
-        state.refreshToken = action.payload.refreshToken;
-        state.user = action.payload.user;
-        state.successMessage = 'Successfully registered new user!';
+        state.isAuth = true;
+        state.accessToken = action.payload.access_token;
+        state.successMessage = action.payload.message;
       })
-      .addCase(registerUser.rejected, (state) => {
+      .addCase(registerUser.rejected, (state, action) => {
         state.status = 'rejected';
-        state.isAuthenticated = false;
+        state.isAuth = false;
         state.accessToken = null;
-        state.refreshToken = null;
-        state.user = null;
-        state.errorMessage = 'Failed to register new user!';
+        state.errorMessage = action.payload?.message as string[];
       });
 
     builder
@@ -157,34 +193,27 @@ export const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'fulfilled';
-        state.isAuthenticated = true;
-        state.accessToken = action.payload.jwt;
-        state.refreshToken = action.payload.refreshToken;
-        state.user = action.payload.user;
-        state.successMessage = 'Successfully logged in!';
+        state.isAuth = true;
+        state.accessToken = action.payload.access_token;
+        state.successMessage = action.payload.message;
       })
-      .addCase(loginUser.rejected, (state) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.status = 'rejected';
-        state.isAuthenticated = false;
+        state.isAuth = false;
         state.accessToken = null;
-        state.refreshToken = null;
-        state.user = null;
-        state.errorMessage = 'Failed to login user!';
+        state.errorMessage = action.payload?.message as string[];
       });
 
     builder.addCase(refreshToken.fulfilled, (state, action) => {
-      state.isAuthenticated = true;
-      state.accessToken = action.payload.jwt;
-      state.refreshToken = action.payload.refreshToken;
+      state.isAuth = true;
+      state.accessToken = action.payload.access_token;
     });
 
-    builder.addCase(logoutUser.fulfilled, (state) => {
-      state.isAuthenticated = false;
+    builder.addCase(logoutUser.fulfilled, (state, action) => {
+      state.isAuth = false;
       state.accessToken = null;
-      state.refreshToken = null;
-      state.user = null;
       state.errorMessage = null;
-      state.successMessage = null;
+      state.successMessage = action.payload.message;
       state.status = 'idle';
     });
   },

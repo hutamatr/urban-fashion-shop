@@ -1,8 +1,11 @@
 import clsx from 'clsx';
 import { Carousel } from 'flowbite-react';
 import { MdFavorite, MdFavoriteBorder, MdOutlineStar } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 import { Image } from '@components/UI';
+
+import { useAppSelector } from '@store/store';
 
 import { formatCurrencyToFixed } from '@utils/formatted';
 
@@ -13,19 +16,38 @@ interface IProductDetailProps extends IProductData {
   onDecreaseQuantity: () => void;
   onIncreaseQuantity: () => void;
   onAddToCart: () => void;
-  isOnWishList: boolean;
+  isWishlist: boolean;
   onIsOnWishlist: () => void;
 }
 
 export default function ProductDetail({
-  data,
+  product,
   quantity,
   onIncreaseQuantity,
   onDecreaseQuantity,
   onAddToCart,
-  isOnWishList,
+  isWishlist,
   onIsOnWishlist,
-}: IProductDetailProps) {
+}: Readonly<IProductDetailProps>) {
+  const { categories } = useAppSelector((state) => state.products);
+  const { isAuth } = useAppSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
+  const category = () => {
+    return categories?.categories.filter((category) => {
+      return category.id === product?.category_id;
+    });
+  };
+
+  const addToCartHandler = () => {
+    if (isAuth) {
+      onAddToCart();
+    } else {
+      navigate('/signin', { replace: true });
+    }
+  };
+
   return (
     <section
       className={clsx(
@@ -42,29 +64,25 @@ export default function ProductDetail({
         )}
         slideInterval={4000}
       >
-        {data?.attributes.images.data.map((img) => (
-          <Image
-            key={img.id}
-            src={`${import.meta.env.VITE_IMAGE_URL}${img.attributes.url}`}
-            alt={img.attributes.name}
-            className={clsx(
-              'w-full rounded-md object-contain object-center',
-              'md:h-96 md:w-auto'
-            )}
-          />
-        ))}
+        <Image
+          key={product?.id}
+          src={product?.image_url}
+          alt={product?.title}
+          className={clsx(
+            'w-full rounded-md object-contain object-center',
+            'md:h-96 md:w-auto'
+          )}
+        />
       </Carousel>
       <div className='flex flex-col items-start justify-center gap-y-6 p-5 text-dark-brown'>
         <div className={clsx('flex flex-col gap-y-2', 'dark:text-white-bone')}>
-          <h1 className='text-2xl font-semibold uppercase'>
-            {data?.attributes.name}
-          </h1>
+          <h1 className='text-2xl font-semibold uppercase'>{product?.title}</h1>
           <p className='flex items-center gap-x-1'>
             <MdOutlineStar /> <span>1/5</span>
           </p>
         </div>
         <span className={clsx('font-semibold', 'dark:text-white-bone')}>
-          {`${formatCurrencyToFixed(+data?.attributes.price) || '-'}`}
+          {`${formatCurrencyToFixed(product?.price || 0)}`}
         </span>
         <div
           className={clsx(
@@ -72,41 +90,52 @@ export default function ProductDetail({
             'md:w-full md:flex-row md:items-center md:justify-between'
           )}
         >
-          <div
-            className={clsx(
-              'flex max-w-fit border-2 border-dark-brown',
-              'dark:border-white-bone'
-            )}
-          >
-            <button
-              onClick={onDecreaseQuantity}
+          <div className='flex flex-row items-center gap-x-4'>
+            <div
               className={clsx(
-                'px-4 py-2 text-lg font-bold',
-                'dark:text-white-bone'
+                'flex max-w-fit border-2 border-dark-brown',
+                'dark:border-white-bone'
               )}
             >
-              -
-            </button>
-            <input
-              type='text'
-              value={quantity < 1 ? 1 : quantity}
-              min='1'
-              max='10'
-              readOnly
+              <button
+                onClick={onDecreaseQuantity}
+                className={clsx(
+                  'px-4 py-2 text-lg font-bold',
+                  'dark:text-white-bone'
+                )}
+              >
+                -
+              </button>
+              <input
+                type='text'
+                value={quantity < 1 ? 1 : quantity}
+                min='1'
+                max='10'
+                readOnly
+                className={clsx(
+                  'h-full w-10 border-none bg-white-bone text-center',
+                  'dark:bg-dark-brown dark:text-white-bone'
+                )}
+              />
+              <button
+                onClick={onIncreaseQuantity}
+                className={clsx(
+                  'px-4 py-2 text-lg font-bold',
+                  'dark:text-white-bone'
+                )}
+              >
+                +
+              </button>
+            </div>
+            <p
               className={clsx(
-                'h-full w-10 border-none bg-white-bone text-center',
-                'dark:bg-dark-brown dark:text-white-bone'
-              )}
-            />
-            <button
-              onClick={onIncreaseQuantity}
-              className={clsx(
-                'px-4 py-2 text-lg font-bold',
-                'dark:text-white-bone'
+                'text-sm',
+                'dark:text-white-bone',
+                'md:text-base'
               )}
             >
-              +
-            </button>
+              Stock: {product?.stock_quantity}
+            </p>
           </div>
 
           <button
@@ -116,7 +145,7 @@ export default function ProductDetail({
             )}
             onClick={onIsOnWishlist}
           >
-            {isOnWishList ? (
+            {isWishlist ? (
               <>
                 <MdFavorite
                   className={clsx('text-2xl', 'dark:text-dark-brown')}
@@ -134,7 +163,7 @@ export default function ProductDetail({
           </button>
         </div>
         <p className={clsx('text-sm', 'dark:text-white-bone')}>
-          {data?.attributes.description}
+          {product?.description}
         </p>
         <span
           className={clsx(
@@ -142,17 +171,17 @@ export default function ProductDetail({
             'dark:text-white-bone'
           )}
         >
-          Category : {data?.attributes.category.data.attributes.name}
+          Category : {category()?.map((category) => category?.category_name)}
         </span>
         <button
           className={clsx(
-            'w-full border border-dark-brown py-3 font-medium uppercase duration-300',
-            'hover:bg-dark-brown hover:text-white-bone',
+            'w-full cursor-pointer border border-dark-brown py-3 font-medium uppercase duration-300',
+            'hover:bg-dark-brown hover:text-white-bone disabled:opacity-75',
             'dark:border-white-bone dark:text-white-bone dark:hover:bg-white-bone dark:hover:text-dark-brown'
           )}
-          onClick={onAddToCart}
+          onClick={addToCartHandler}
         >
-          Add to Cart
+          {isAuth ? 'Add to Cart' : 'Login to Add to Cart'}
         </button>
       </div>
     </section>

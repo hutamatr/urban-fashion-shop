@@ -4,7 +4,9 @@ interface IRegisterNoteProps {
   placeholder: string;
 }
 
-export default function RegisterNote({ placeholder }: IRegisterNoteProps) {
+export default function RegisterNote({
+  placeholder,
+}: Readonly<IRegisterNoteProps>) {
   let note: React.JSX.Element | null = null;
   if (placeholder === 'Username') {
     note = (

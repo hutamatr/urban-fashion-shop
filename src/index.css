@@ -8,7 +8,7 @@
 
 @layer base {
   .layout {
-    @apply ml-auto mr-auto w-[90%] max-w-[68.75rem];
+    @apply ml-auto mr-auto w-[90%] max-w-7xl;
   }
 
   .grid-12 {

@@ -8,7 +8,10 @@ interface ICartBadgeProps {
   className?: string;
 }
 
-export default function CartBadge({ onCartItems, className }: ICartBadgeProps) {
+export default function CartBadge({
+  onCartItems,
+  className,
+}: Readonly<ICartBadgeProps>) {
   const [badgePulse, setBadgePulse] = useState(false);
 
   useEffect(() => {

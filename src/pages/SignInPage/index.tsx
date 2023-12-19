@@ -15,6 +15,8 @@ import { useAppDispatch, useAppSelector } from '@store/store';
 
 import { signInSchema } from '@utils/formSchema';
 
+import { IError } from 'types/types';
+
 type FormSchemaType = z.infer<typeof signInSchema>;
 
 export default function Login() {
@@ -56,16 +58,16 @@ export default function Login() {
 
     if (res.meta.requestStatus === 'fulfilled') {
       navigate('/', { replace: true });
-      toast.success('Successfully logged in!', { duration: 3000 });
+      toast.success(res.payload?.message as string, { duration: 3000 });
+      reset();
     }
 
     if (res.meta.requestStatus === 'rejected') {
-      toast.error('Login failed! Invalid email or password', {
-        duration: 3000,
+      const payload = res.payload as IError;
+      payload.message.forEach((message: string) => {
+        toast.error(message, { duration: 3000 });
       });
     }
-
-    reset();
   };
 
   return (
@@ -131,13 +133,13 @@ export default function Login() {
               disabled={isSubmitting || status === 'pending'}
               type='submit'
             >
-              {isSubmitting ? 'loading...' : 'Login'}
+              {isSubmitting ? 'loading...' : 'Sign In'}
             </button>
           </form>
           <p className={clsx('text-center text-sm', 'dark:text-white-bone')}>
             Don&apos;t have an account?{' '}
             <Link
-              to='/register'
+              to='/signup'
               className={clsx(
                 'font-semibold text-dark-brown underline',
                 'dark:text-white-bone'

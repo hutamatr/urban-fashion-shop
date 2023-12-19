@@ -7,41 +7,31 @@ import FashionProducts from '@components/Home/FashionProducts';
 import Hero from '@components/Home/Hero';
 import OurPhilosophy from '@components/Home/OurPhilosophy';
 import ProductItem from '@components/Shop/ProductItem';
-import Loading from '@components/UI/Loading';
+import { LoadingProductSkeleton } from '@components/UI';
 
-import { fetchAllProducts } from '@store/productSlice';
+import { getCartItem } from '@store/cartSlice';
+import { fetchProducts } from '@store/productSlice';
 import { useAppDispatch, useAppSelector } from '@store/store';
+import { getWishlists } from '@store/wishlistSlice';
 
 export default function Home() {
   const dispatch = useAppDispatch();
   const { products, status, errorMessage } = useAppSelector(
     (state) => state.products
   );
+  const { isAuth } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    dispatch(fetchAllProducts(null));
-  }, [dispatch]);
+  }, []);
 
-  const productContent = (
-    <ul
-      className={clsx(
-        'grid grid-cols-1 gap-3 bg-white-bone',
-        'dark:bg-dark-brown',
-        'md:grid-cols-2'
-      )}
-    >
-      {products?.data.slice(0, 2).map((product) => {
-        return (
-          <ProductItem
-            key={product.id}
-            product={product}
-            linkTo={`shop/${product.id}`}
-          />
-        );
-      })}
-    </ul>
-  );
+  useEffect(() => {
+    dispatch(fetchProducts({ skip: 0, limit: 6 }));
+    if (isAuth) {
+      dispatch(getCartItem());
+      dispatch(getWishlists());
+    }
+  }, [dispatch, isAuth]);
 
   return (
     <>
@@ -73,13 +63,28 @@ export default function Home() {
             -Joan Crawford
           </span>
         </div>
-        {status === 'pending' && <Loading />}
-        {status === 'rejected' && (
-          <p className='mx-auto text-center font-medium uppercase text-red-700'>
-            {errorMessage}
-          </p>
-        )}
-        {status === 'fulfilled' && productContent}
+        <ul
+          className={clsx(
+            'grid grid-cols-1 gap-3 gap-x-4 bg-white-bone',
+            'dark:bg-dark-brown',
+            'md:grid-cols-2'
+          )}
+        >
+          {status === 'pending' && <LoadingProductSkeleton length={2} />}
+          {status === 'fulfilled' &&
+            products?.products.slice(0, 2).map((product) => {
+              return <ProductItem key={product.id} product={product} />;
+            })}
+        </ul>
+        {status === 'rejected' &&
+          errorMessage?.map((error) => (
+            <p
+              key={error}
+              className='mx-auto text-center font-medium uppercase text-red-700'
+            >
+              {error}
+            </p>
+          ))}
       </section>
       <FashionProducts />
       <BestSellers />

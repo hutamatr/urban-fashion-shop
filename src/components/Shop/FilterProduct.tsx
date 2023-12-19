@@ -12,7 +12,7 @@ interface IFilterProductProps {
 export default function FilterProduct({
   filterValue,
   onFilteredProductValue,
-}: IFilterProductProps) {
+}: Readonly<IFilterProductProps>) {
   const { categories } = useAppSelector((state) => state.products);
 
   const FilterProductHandler = (
@@ -44,9 +44,9 @@ export default function FilterProduct({
         )}
       >
         <option value='all'>All</option>
-        {categories?.data.map((category) => (
-          <option key={category.id} value={category.attributes.name}>
-            {capitalizeWords(category.attributes.name)}
+        {categories?.categories.map((category) => (
+          <option key={category.id} value={category.category_name}>
+            {capitalizeWords(category.category_name)}
           </option>
         ))}
       </select>

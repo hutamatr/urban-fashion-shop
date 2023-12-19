@@ -10,7 +10,7 @@ interface ISortProductProps {
 export default function SortProduct({
   onNavigate,
   onSortedProduct,
-}: ISortProductProps) {
+}: Readonly<ISortProductProps>) {
   const [sortProduct, setSortProduct] = useState('');
 
   const sortProductHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
