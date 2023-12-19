@@ -3,18 +3,21 @@ import axios from 'axios';
 import { refreshToken } from '@store/authSlice';
 import { store } from '@store/store';
 
-export const axiosPublic = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+import { URL } from './constant';
+
+const axiosPublic = axios.create({
+  baseURL: URL,
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },
 });
 
-export const axiosPrivate = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+const axiosPrivate = axios.create({
+  baseURL: URL,
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },
+  withCredentials: true,
 });
 
 axiosPrivate.interceptors.request.use(
@@ -34,14 +37,17 @@ axiosPrivate.interceptors.response.use(
   async (error) => {
     const prevRequest = error?.config;
     if (
-      (error?.response?.status === 401 || error?.response?.status === 403) &&
+      error.response.data.message[0] === 'jwt expired' &&
       !prevRequest?.sent
     ) {
       prevRequest.sent = true;
       const newAccessToken = await store.dispatch(refreshToken()).unwrap();
-      prevRequest.headers['Authorization'] = `Bearer ${newAccessToken?.jwt}`;
+      prevRequest.headers['Authorization'] =
+        `Bearer ${newAccessToken?.access_token}`;
       return axiosPrivate(prevRequest);
     }
     return Promise.reject(error);
   }
 );
+
+export { axiosPrivate, axiosPublic };
