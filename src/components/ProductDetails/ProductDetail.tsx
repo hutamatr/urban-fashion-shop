@@ -9,8 +9,6 @@ import { useAppSelector } from '@store/store';
 
 import { formatCurrencyToFixed } from '@utils/formatted';
 
-import { IProductData } from 'types/types';
-
 interface IProductDetailProps extends IProductData {
   quantity: number;
   onDecreaseQuantity: () => void;

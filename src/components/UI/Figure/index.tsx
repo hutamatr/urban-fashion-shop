@@ -4,8 +4,6 @@ import { formatCurrencyToFixed } from '@utils/formatted';
 
 import { Image } from '..';
 
-import { IProduct } from 'types/types';
-
 interface IFigureProps {
   classImage?: string;
   product: IProduct;

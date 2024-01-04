@@ -23,24 +23,38 @@ export const signInSchema = z.object({
 });
 
 export const userDetailSchema = z.object({
-  name: z.string().min(4, 'Name is required'),
+  firstName: z.string().min(4, 'First name is required'),
+  lastName: z.string().min(4, 'Last name is required'),
   email: z.string().email('Invalid email').min(1, 'Email is required'),
-  phone: z.string().min(10, 'Phone number is required'),
   address: z.string().max(300, 'Address is required'),
 });
 
 export const changePasswordSchema = z.object({
   currentPassword: z
     .string()
-    .min(1, 'Password is required')
-    .min(8, 'Password must have more than 8 characters'),
+    .min(8, 'Old password must be at least 8 characters long')
+    .max(32, 'Old password must be less than 32 characters'),
   newPassword: z
     .string()
-    .min(1, 'Password is required')
-    .min(8, 'Password must have more than 8 characters'),
-  confirmNewPassword: z.string().min(1, 'Password confirmation is required'),
+    .min(8, 'New password must be at least 8 characters long')
+    .max(32, 'New password must be less than 32 characters'),
+  confirmNewPassword: z
+    .string()
+    .min(8, 'Confirm password must be at least 8 characters long')
+    .max(32, 'Confirm password must be less than 32 characters'),
 });
 
 export const forgotPasswordSchema = z.object({
   email: z.string().email('Invalid email').min(1, 'Email is required'),
+});
+
+export const resetPasswordSchema = z.object({
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters long')
+    .max(32, 'Password must be less than 32 characters'),
+  confirmPassword: z
+    .string()
+    .min(8, 'Confirm password must be at least 8 characters long')
+    .max(32, 'Confirm password must be less than 32 characters'),
 });

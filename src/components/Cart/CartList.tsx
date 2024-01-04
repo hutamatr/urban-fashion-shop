@@ -14,8 +14,6 @@ import { useAppDispatch, useAppSelector } from '@store/store';
 
 import CartItem from './CartItem';
 
-import { IProductCart } from 'types/types';
-
 interface ICartListProps {
   cartItems: IProductCart[];
 }

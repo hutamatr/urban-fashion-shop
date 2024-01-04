@@ -53,9 +53,13 @@ export default function MyAccount() {
           )}
         >
           <span className='max-w-md text-lg font-medium uppercase'>
-            {user?.email}
+            {user?.first_name && user.last_name
+              ? `${user.first_name} ${user.last_name}`
+              : user?.email}
           </span>
-          <span className='text-sm font-light'>{user?.email}</span>
+          <span className='text-sm font-light'>
+            {user?.first_name && user?.last_name ? user?.email : ''}
+          </span>
         </div>
       </section>
       <section className={clsx('grid grid-cols-1', 'md:grid-cols-12')}>

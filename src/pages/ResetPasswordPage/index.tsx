@@ -3,19 +3,19 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast, Toaster } from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
 
 import Input from '@components/UI/Input';
 
-import { registerUser } from '@store/authSlice';
+import { resetPassword } from '@store/authSlice';
 import { useAppDispatch } from '@store/store';
 
-import { signUpSchema } from '@utils/formSchema';
+import { resetPasswordSchema } from '@utils/formSchema';
 
-type FormSchemaType = z.infer<typeof signUpSchema>;
+type FormSchemaType = z.infer<typeof resetPasswordSchema>;
 
-export default function Register() {
+const ResetPasswordPage = () => {
   const [isPassView, setIsPassView] = useState(false);
   const {
     register,
@@ -23,32 +23,53 @@ export default function Register() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FormSchemaType>({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(resetPasswordSchema),
   });
-  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { id, token } = useParams();
 
   const viewPasswordHandler = () => {
     setIsPassView((prevState) => !prevState);
   };
-  const RegisterSubmitHandler: SubmitHandler<FormSchemaType> = async (
+
+  const resetPasswordHandler: SubmitHandler<FormSchemaType> = async (
     data,
     event
   ) => {
     event?.preventDefault();
 
-    const registerFormInput = {
-      email: data.email,
-      password: data.password,
-      confirmPassword: data.confirmPassword,
+    if (data.password.length < 7 || data.confirmPassword.length < 7) {
+      toast.error('Password must have at least 8 characters', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (data.password !== data.confirmPassword) {
+      toast.error('Passwords do not match!', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    const resetPasswordInput: IResetPassword = {
+      new_password: data.password,
+      token: token as string,
+      userId: Number(id as string),
     };
 
-    const res = await dispatch(registerUser(registerFormInput));
+    const res = await dispatch(resetPassword(resetPasswordInput));
 
     if (res.meta.requestStatus === 'fulfilled') {
+      navigate('/signin', { replace: true });
+      setTimeout(() => {
+        toast.success(res.payload?.message as string, { duration: 3000 });
+      }, 1000);
       reset();
-      navigate('/', { replace: true });
     }
+
     if (res.meta.requestStatus === 'rejected') {
       const payload = res.payload as IError;
       payload.message.forEach((message: string) => {
@@ -59,8 +80,8 @@ export default function Register() {
 
   return (
     <>
-      <Toaster position='top-center' />
-      <section className='grid min-h-[90vh] place-items-center'>
+      <Toaster position='top-center' reverseOrder={false} />
+      <section className='mx-6 grid min-h-[90vh] place-items-center'>
         <div className={clsx('flex w-full flex-col gap-y-4', 'md:max-w-xs')}>
           <h1
             className={clsx(
@@ -69,31 +90,14 @@ export default function Register() {
               'md:text-lg'
             )}
           >
-            Sign Up
+            Reset Password
           </h1>
           <form
-            onSubmit={handleSubmit(RegisterSubmitHandler)}
+            onSubmit={handleSubmit(resetPasswordHandler)}
             className={clsx('flex flex-col gap-y-4', 'md:gap-y-5')}
           >
             <Input
-              title='Your Email'
-              type='email'
-              placeholder='name@example.com'
-              {...register('email', {
-                required: true,
-              })}
-              aria-invalid={errors.email ? 'true' : 'false'}
-              errors={
-                errors.email && (
-                  <span className='block text-xs text-red-800'>
-                    {errors.email?.message}
-                  </span>
-                )
-              }
-            />
-
-            <Input
-              title='Password'
+              title='New Password'
               isPassword
               isPassView={isPassView}
               onViewPasswordHandler={viewPasswordHandler}
@@ -104,7 +108,7 @@ export default function Register() {
               })}
               aria-invalid={errors.password ? 'true' : 'false'}
               errors={
-                errors.password && (
+                errors?.password && (
                   <span className='block text-xs text-red-800'>
                     {errors.password?.message}
                   </span>
@@ -113,8 +117,7 @@ export default function Register() {
             />
 
             <Input
-              title='Confirm Password'
-              isPassView={isPassView}
+              title='Confirm New Password'
               type={isPassView ? 'text' : 'password'}
               placeholder='••••••••'
               {...register('confirmPassword', {
@@ -122,7 +125,7 @@ export default function Register() {
               })}
               aria-invalid={errors.confirmPassword ? 'true' : 'false'}
               errors={
-                errors.confirmPassword && (
+                errors?.confirmPassword && (
                   <span className='block text-xs text-red-800'>
                     {errors.confirmPassword?.message}
                   </span>
@@ -130,31 +133,21 @@ export default function Register() {
               }
             />
             <button
-              type='submit'
-              disabled={isSubmitting}
               className={clsx(
-                'bg-dark-brown py-3 text-xs font-light text-white',
-                'disabled:cursor-not-allowed disabled:bg-dark-brown/50',
-                'dark:bg-white-bone dark:font-medium dark:text-dark-brown'
+                'flex flex-row items-center justify-center gap-x-2 bg-dark-brown py-3 font-light text-white',
+                'disabled:cursor-not-allowed',
+                'dark:bg-white-bone dark:font-semibold dark:text-dark-brown'
               )}
+              disabled={isSubmitting}
+              type='submit'
             >
-              {isSubmitting ? 'Loading...' : 'Sign Up'}
+              {isSubmitting ? 'loading...' : 'Reset Password'}
             </button>
           </form>
-          <p className={clsx('text-center text-sm', 'dark:text-white-bone')}>
-            Already have an account?{' '}
-            <Link
-              to='/signin'
-              className={clsx(
-                'font-semibold text-dark-brown underline',
-                'dark:text-white-bone'
-              )}
-            >
-              Log In
-            </Link>
-          </p>
         </div>
       </section>
     </>
   );
-}
+};
+
+export default ResetPasswordPage;

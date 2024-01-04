@@ -5,8 +5,6 @@ import { Figure } from '@components/UI';
 import { useAppDispatch } from '@store/store';
 import { getWishlist } from '@store/wishlistSlice';
 
-import { IProduct } from 'types/types';
-
 interface IProductItemProps {
   product: IProduct;
 }

@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import PhoneInput from 'react-phone-number-input';
@@ -10,47 +10,42 @@ import { Loading } from '@components/UI';
 import Input from '@components/UI/Input';
 
 import { useAppDispatch, useAppSelector } from '@store/store';
-import { updateUserDetail } from '@store/userSlice';
+import { fetchUser, updateUserDetail } from '@store/userSlice';
 
 import { userDetailSchema } from '@utils/formSchema';
 
 import 'react-phone-number-input/style.css';
 
-import { IUserUpdate } from 'types/types';
-
 type FormSchemaType = z.infer<typeof userDetailSchema>;
 
 export default function AccountDetails() {
   const dispatch = useAppDispatch();
-  // const { status } = useAppSelector((state) => state.auth);
 
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
+    setValue,
   } = useForm<FormSchemaType>({
     resolver: zodResolver(userDetailSchema),
   });
 
-  const { status } = useAppSelector((state) => state.user);
+  const { status, user } = useAppSelector((state) => state.user);
 
-  // useEffect(() => {
-  //   if (user?.id) {
-  //     setValue('name', user.username);
-  //     setValue('email', user.email);
-  //     setValue('phone', user.phone_number);
-  //     setValue('address', user.address);
-  //     setPhoneNumber(user.phone_number);
-  //   }
-  // }, [
-  //   setValue,
-  //   user?.id,
-  //   user?.username,
-  //   user?.email,
-  //   user?.phone_number,
-  //   user?.address,
-  // ]);
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (user?.id) {
+      setValue('firstName', user.first_name);
+      setValue('lastName', user.last_name);
+      setValue('email', user.email);
+      setValue('address', user.address);
+      setPhoneNumber(user.phone_number);
+    }
+  }, [setValue, user]);
 
   const updateUserHandler: SubmitHandler<FormSchemaType> = async (
     data,
@@ -59,8 +54,8 @@ export default function AccountDetails() {
     event?.preventDefault();
 
     const updatedUser: IUserUpdate = {
-      username: data.name,
-      email: data.email,
+      first_name: data.firstName,
+      last_name: data.lastName,
       phone_number: phoneNumber,
       address: data.address,
     };
@@ -102,13 +97,20 @@ export default function AccountDetails() {
         >
           <div className={clsx('grid grid-cols-1 gap-4', 'md:grid-cols-3')}>
             <Input
-              title='Name'
+              title='First Name'
               type='text'
-              {...register('name', { required: true })}
+              {...register('firstName', { required: true })}
+            />
+            <Input
+              title='Last Name'
+              type='text'
+              {...register('lastName', { required: true })}
             />
             <Input
               title='Email'
               type='email'
+              disabled
+              readOnly
               {...register('email', { required: true })}
             />
             <div className='flex flex-col gap-y-1'>

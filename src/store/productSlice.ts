@@ -3,14 +3,6 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 import { axiosPublic } from '@utils/axiosInterceptor';
 
-import {
-  ICategoriesData,
-  IError,
-  IProductData,
-  IProductsData,
-  IProductsMeta,
-} from 'types/types';
-
 interface IProductsState {
   products: IProductsData | null;
   categories: ICategoriesData | null;

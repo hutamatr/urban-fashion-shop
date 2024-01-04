@@ -10,8 +10,6 @@ import { postWishlist } from '@store/wishlistSlice';
 
 import { formatCurrencyToFixed } from '@utils/formatted';
 
-import { INewProductToCart } from 'types/types';
-
 interface ICartItemProps extends INewProductToCart {
   onDecrease: (_id: number) => void;
   onIncrease: (_id: number) => void;

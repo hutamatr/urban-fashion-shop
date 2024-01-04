@@ -1,16 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 import { axiosPrivate } from '@utils/axiosInterceptor';
 
 import { RootState } from './store';
 
-import { IUser, IUserUpdate } from 'types/types';
-
 export interface IUserState {
   user: IUser | null;
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-  errorMessage: string | null;
+  errorMessage: string[] | null;
   successMessage: string | null;
 }
 
@@ -21,24 +19,38 @@ const initialState: IUserState = {
   successMessage: null,
 };
 
-export const fetchUser = createAsyncThunk(
-  'user/fetchUser',
-  async (_, { getState }) => {
+export const fetchUser = createAsyncThunk<
+  IUserResponse,
+  void,
+  { rejectValue: IError }
+>('user/fetchUser', async (_, { getState, rejectWithValue }) => {
+  try {
     const state = getState() as RootState;
-    const response: AxiosResponse<IUser> = await axiosPrivate.get('/users/me', {
-      headers: {
-        Authorization: `Bearer ${state.auth.accessToken}`,
-      },
-    });
+    const response: AxiosResponse<IUserResponse> = await axiosPrivate.get(
+      `/users/${state.auth.userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${state.auth.accessToken}`,
+        },
+      }
+    );
     return response.data;
-  }
-);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errors: AxiosError<IError> = error;
 
-export const updateUserDetail = createAsyncThunk(
-  'user/updateUserDetail',
-  async (userData: IUserUpdate, { getState }) => {
+    return rejectWithValue(errors.response?.data as IError);
+  }
+});
+
+export const updateUserDetail = createAsyncThunk<
+  IUserResponse,
+  IUserUpdate,
+  { rejectValue: IError }
+>('user/updateUserDetail', async (userData, { getState, rejectWithValue }) => {
+  try {
     const state = getState() as RootState;
-    const response: AxiosResponse<IUser> = await axiosPrivate.put(
+    const response: AxiosResponse<IUserResponse> = await axiosPrivate.put(
       `/users/${state.user.user?.id}`,
       userData,
       {
@@ -48,8 +60,13 @@ export const updateUserDetail = createAsyncThunk(
       }
     );
     return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errors: AxiosError<IError> = error;
+
+    return rejectWithValue(errors.response?.data as IError);
   }
-);
+});
 
 export const userSlice = createSlice({
   name: 'user',
@@ -64,13 +81,13 @@ export const userSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.status = 'fulfilled';
-        state.user = action.payload;
-        state.successMessage = 'Successfully fetched user!';
+        state.user = action.payload.user;
+        state.successMessage = action.payload.message;
       })
-      .addCase(fetchUser.rejected, (state) => {
+      .addCase(fetchUser.rejected, (state, action) => {
         state.status = 'rejected';
         state.user = null;
-        state.errorMessage = 'Failed to get user!';
+        state.errorMessage = action.payload?.message as string[];
       });
 
     builder
@@ -81,12 +98,12 @@ export const userSlice = createSlice({
       })
       .addCase(updateUserDetail.fulfilled, (state, action) => {
         state.status = 'fulfilled';
-        state.user = action.payload;
-        state.successMessage = 'User updated successfully';
+        state.user = action.payload.user;
+        state.successMessage = action.payload.message;
       })
-      .addCase(updateUserDetail.rejected, (state) => {
+      .addCase(updateUserDetail.rejected, (state, action) => {
         state.status = 'rejected';
-        state.errorMessage = 'Failed to update user detail!';
+        state.errorMessage = action.payload?.message as string[];
       });
   },
 });

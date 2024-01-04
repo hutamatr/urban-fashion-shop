@@ -9,8 +9,6 @@ import { getWishlists } from '@store/wishlistSlice';
 
 import WishlistItem from './WishlistItem';
 
-import { IWishlist } from 'types/types';
-
 const Wishlist = () => {
   const [wishlistsData, setWishlistsData] = useState<IWishlist[]>([]);
   const [isLoading, setIsLoading] = useState(true);

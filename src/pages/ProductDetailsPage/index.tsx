@@ -18,8 +18,6 @@ import {
   postWishlist,
 } from '@store/wishlistSlice';
 
-import { IProduct, IProductCart, IProductData } from 'types/types';
-
 export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
   const [isWishlist, setIsWishlist] = useState(false);

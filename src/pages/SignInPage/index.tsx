@@ -6,7 +6,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
-import ForgotPassword from '@components/MyAccount/ForgotPassword';
+import ForgotPassword from '@components/ResetPassword/ForgotPassword';
 import Input from '@components/UI/Input';
 
 import { loginUser } from '@store/authSlice';
@@ -14,8 +14,6 @@ import { showModalHandler } from '@store/modalSlice';
 import { useAppDispatch, useAppSelector } from '@store/store';
 
 import { signInSchema } from '@utils/formSchema';
-
-import { IError } from 'types/types';
 
 type FormSchemaType = z.infer<typeof signInSchema>;
 

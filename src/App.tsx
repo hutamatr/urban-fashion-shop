@@ -9,6 +9,7 @@ import Home from '@pages/HomePage';
 import MyAccount from '@pages/MyAccountPage';
 import ProductDetails from '@pages/ProductDetailsPage';
 import Shop from '@pages/ProductPage';
+import ResetPassword from '@pages/ResetPasswordPage';
 import SignIn from '@pages/SignInPage';
 import SignUp from '@pages/SignUpPage';
 
@@ -31,6 +32,7 @@ export default function App() {
           <Route path='wishlist' element={<Wishlist />} />
         </Route>
       </Route>
+      <Route path='reset-password/:id/:token' element={<ResetPassword />} />
     </Routes>
   );
 }
