@@ -9,8 +9,6 @@ import { axiosPrivate } from '@utils/axiosInterceptor';
 
 import { RootState } from './store';
 
-import { ICartData, ICartResponse, IError, IProductCart } from 'types/types';
-
 interface ICart {
   cart: IProductCart[];
   totalPrice: number;

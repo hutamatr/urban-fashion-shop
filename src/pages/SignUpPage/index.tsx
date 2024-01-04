@@ -13,8 +13,6 @@ import { useAppDispatch } from '@store/store';
 
 import { signUpSchema } from '@utils/formSchema';
 
-import { IError } from 'types/types';
-
 type FormSchemaType = z.infer<typeof signUpSchema>;
 
 export default function Register() {

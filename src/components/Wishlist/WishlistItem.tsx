@@ -10,8 +10,6 @@ import { deleteWishlist } from '@store/wishlistSlice';
 
 import { formatCurrencyToFixed } from '@utils/formatted';
 
-import { IProductCart, IWishlist } from 'types/types';
-
 interface IWishlistItemProps {
   wishlist: IWishlist;
   linkTo: string;
@@ -60,8 +58,8 @@ const WishlistItem = ({ wishlist, linkTo }: IWishlistItemProps) => {
       >
         <Link to={linkTo} className='flex flex-col gap-y-3'>
           <Image
-            src={wishlist.product.image_url}
-            alt={wishlist.product.title}
+            src={wishlist?.product?.image_url}
+            alt={wishlist?.product?.title}
             className={clsx(
               'aspect-square w-full rounded border border-dark-brown duration-500',
               'group-hover/card:scale-105'
@@ -73,17 +71,22 @@ const WishlistItem = ({ wishlist, linkTo }: IWishlistItemProps) => {
               'dark:text-white-bone'
             )}
           >
-            {wishlist.product.title}
+            {wishlist?.product?.title}
           </figcaption>
         </Link>
-        <span
-          className={clsx(
-            'flex items-center justify-self-end px-2 text-sm font-semibold',
-            'dark:text-white-bone'
-          )}
-        >
-          {formatCurrencyToFixed(wishlist.product.price)}
-        </span>
+        <div className='flex flex-row items-center justify-between'>
+          <span className='text-xs font-medium text-red-600'>
+            {wishlist?.product?.deleted_at && 'Product Deleted'}
+          </span>
+          <span
+            className={clsx(
+              'flex items-center justify-self-end px-2 text-sm font-semibold',
+              'dark:text-white-bone'
+            )}
+          >
+            {formatCurrencyToFixed(wishlist?.product?.price)}
+          </span>
+        </div>
         <div className='flex w-full flex-row items-center gap-x-4 pb-4'>
           <button
             className='w-full rounded bg-red-600 px-4 py-1 text-sm font-medium text-white-bone'
@@ -94,9 +97,11 @@ const WishlistItem = ({ wishlist, linkTo }: IWishlistItemProps) => {
           <button
             className={clsx(
               'w-full rounded bg-dark-brown px-4 py-1 text-sm font-medium text-white-bone',
+              'disabled:cursor-not-allowed disabled:bg-dark-brown/50 disabled:dark:bg-white-bone/50',
               'dark:bg-white-bone dark:text-dark-brown'
             )}
             onClick={addToCartHandler}
+            disabled={!!wishlist?.product?.deleted_at}
           >
             + Cart
           </button>

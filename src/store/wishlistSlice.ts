@@ -3,14 +3,6 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 import { axiosPrivate } from '@utils/axiosInterceptor';
 
-import {
-  IError,
-  IWishlist,
-  IWishlistData,
-  IWishlistPost,
-  IWishlistResponse,
-} from 'types/types';
-
 interface IWishListState {
   wishlists: IWishlist[];
   wishlist: IWishlist | null;

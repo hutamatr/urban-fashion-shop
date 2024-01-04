@@ -5,8 +5,6 @@ import { axiosPrivate } from '@utils/axiosInterceptor';
 
 import { RootState } from './store';
 
-import { IOrder } from 'types/types';
-
 interface IOrderState {
   response: {
     stripeSession: {

@@ -7,8 +7,6 @@ import { Image, Modal } from '@components/UI';
 import { showModalHandler } from '@store/modalSlice';
 import { useAppDispatch, useAppSelector } from '@store/store';
 
-import { IProductData } from 'types/types';
-
 interface IAddToCartModalProps extends IProductData {
   onCloseModalHandler: () => void;
 }
