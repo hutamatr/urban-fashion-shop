@@ -5,20 +5,10 @@ import { axiosPrivate, axiosPublic } from '@utils/axiosInterceptor';
 
 import { RootState } from './store';
 
-import {
-  IAccount,
-  IChangePassword,
-  IError,
-  IForgotPassword,
-  ILogin,
-  IRefreshToken,
-  IRegister,
-  ISignOut,
-} from 'types/types';
-
 export interface IAuthState {
   isAuth: boolean;
   accessToken: string | null;
+  userId: number | null;
   status: 'pending' | 'fulfilled' | 'rejected' | 'idle';
   errorMessage: string[] | null;
   successMessage: string | null;
@@ -27,6 +17,7 @@ export interface IAuthState {
 const initialState: IAuthState = {
   isAuth: false,
   accessToken: null,
+  userId: null,
   status: 'idle',
   errorMessage: null,
   successMessage: null,
@@ -112,7 +103,6 @@ export const refreshToken = createAsyncThunk<
   void,
   { rejectValue: IError }
 >('auth/refresh', async (_, { rejectWithValue }) => {
-  // const state = getState() as RootState;
   try {
     const response: AxiosResponse<IRefreshToken> = await axiosPublic.get(
       '/refresh',
@@ -129,31 +119,72 @@ export const refreshToken = createAsyncThunk<
   }
 });
 
-export const changePassword = createAsyncThunk(
+export const changePassword = createAsyncThunk<
+  IChangePasswordResponse,
+  IChangePassword,
+  { rejectValue: IError }
+>(
   'auth/changePassword',
-  async (passwordChanged: IChangePassword, { getState }) => {
-    const state = getState() as RootState;
-    const response: AxiosResponse<IAccount> = await axiosPrivate.post(
-      `/auth/change-password`,
-      passwordChanged,
-      {
-        headers: {
-          Authorization: `Bearer ${state.auth.accessToken}`,
-        },
-      }
-    );
-    return response.data;
+  async ({ new_password, current_password }, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootState;
+      const response: AxiosResponse<IChangePasswordResponse> =
+        await axiosPrivate.post(
+          `/change-password`,
+          {
+            new_password,
+            current_password,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${state.auth.accessToken}`,
+            },
+          }
+        );
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const errors: AxiosError<IError> = error;
+      return rejectWithValue(errors.response?.data as IError);
+    }
   }
 );
 
-export const forgotPassword = createAsyncThunk(
-  'auth/forgotPassword',
-  async (userEmail: IForgotPassword) => {
-    const response: AxiosResponse = await axiosPublic.post(
-      `/auth/forgot-password`,
-      userEmail
-    );
+export const forgotPasswordLink = createAsyncThunk<
+  IForgotPasswordResponse,
+  IForgotPassword,
+  { rejectValue: IError }
+>('auth/forgotPassword', async ({ email }, { rejectWithValue }) => {
+  try {
+    const response: AxiosResponse<IForgotPasswordResponse> =
+      await axiosPublic.post('/reset-password', { email });
     return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    const errors: AxiosError<IError> = error;
+    return rejectWithValue(errors.response?.data as IError);
+  }
+});
+
+export const resetPassword = createAsyncThunk<
+  IForgotPasswordResponse,
+  IResetPassword,
+  { rejectValue: IError }
+>(
+  'auth/resetPassword',
+  async ({ new_password, userId, token }, { rejectWithValue }) => {
+    try {
+      const response: AxiosResponse<IForgotPasswordResponse> =
+        await axiosPublic.post(`/reset-password/${userId}/${token}`, {
+          new_password,
+        });
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const errors: AxiosError<IError> = error;
+      return rejectWithValue(errors.response?.data as IError);
+    }
   }
 );
 
@@ -175,6 +206,7 @@ export const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.status = 'fulfilled';
         state.isAuth = true;
+        state.userId = action.payload.user.id;
         state.accessToken = action.payload.access_token;
         state.successMessage = action.payload.message;
       })
@@ -194,6 +226,7 @@ export const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'fulfilled';
         state.isAuth = true;
+        state.userId = action.payload.user.id;
         state.accessToken = action.payload.access_token;
         state.successMessage = action.payload.message;
       })
@@ -215,6 +248,48 @@ export const authSlice = createSlice({
       state.errorMessage = null;
       state.successMessage = action.payload.message;
       state.status = 'idle';
+    });
+
+    builder.addCase(changePassword.pending, (state) => {
+      state.status = 'pending';
+      state.errorMessage = null;
+      state.successMessage = null;
+    });
+    builder.addCase(changePassword.fulfilled, (state, action) => {
+      state.status = 'fulfilled';
+      state.successMessage = action.payload.message;
+    });
+    builder.addCase(changePassword.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.errorMessage = action.payload?.message as string[];
+    });
+
+    builder.addCase(forgotPasswordLink.pending, (state) => {
+      state.status = 'pending';
+      state.errorMessage = null;
+      state.successMessage = null;
+    });
+    builder.addCase(forgotPasswordLink.fulfilled, (state, action) => {
+      state.status = 'fulfilled';
+      state.successMessage = action.payload.message;
+    });
+    builder.addCase(forgotPasswordLink.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.errorMessage = action.payload?.message as string[];
+    });
+
+    builder.addCase(resetPassword.pending, (state) => {
+      state.status = 'pending';
+      state.errorMessage = null;
+      state.successMessage = null;
+    });
+    builder.addCase(resetPassword.fulfilled, (state, action) => {
+      state.status = 'fulfilled';
+      state.successMessage = action.payload.message;
+    });
+    builder.addCase(resetPassword.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.errorMessage = action.payload?.message as string[];
     });
   },
 });
