@@ -69,39 +69,39 @@ export default function Navigation() {
         )}
       >
         <li
-          onKeyDown={menuViewClose}
-          onClick={menuViewClose}
           className={clsx(
             'w-fit rounded-sm px-2 py-1 text-dark-brown duration-300',
             'hover:bg-dark-brown hover:text-white-bone',
             'dark:text-white-bone dark:hover:bg-white-bone dark:hover:text-dark-brown'
           )}
         >
-          <NavLink to='/'>Home</NavLink>
+          <button onKeyDown={menuViewClose} onClick={menuViewClose}>
+            <NavLink to='/'>Home</NavLink>
+          </button>
         </li>
         <li
-          onKeyDown={menuViewClose}
-          onClick={menuViewClose}
           className={clsx(
             'w-fit rounded-sm px-2 py-1 text-dark-brown duration-300',
             'hover:bg-dark-brown hover:text-white-bone',
             'dark:text-white-bone dark:hover:bg-white-bone dark:hover:text-dark-brown'
           )}
         >
-          <NavLink to='/shop'>Shop</NavLink>
+          <button onKeyDown={menuViewClose} onClick={menuViewClose}>
+            <NavLink to='/shop'>Shop</NavLink>
+          </button>
         </li>
 
         {!isAuth && (
           <li
-            onKeyDown={menuViewClose}
-            onClick={menuViewClose}
             className={clsx(
               'w-fit rounded-sm px-2 py-1 text-dark-brown duration-300',
               'hover:bg-dark-brown hover:text-white-bone',
               'dark:text-white-bone dark:hover:bg-white-bone dark:hover:text-dark-brown'
             )}
           >
-            <NavLink to='/signin'>Sign In</NavLink>
+            <button onKeyDown={menuViewClose} onClick={menuViewClose}>
+              <NavLink to='/signin'>Sign In</NavLink>
+            </button>
           </li>
         )}
 
