@@ -34,7 +34,7 @@ export default function Cart() {
   return (
     <>
       <Toaster position='top-center' />
-      <section className='mb-6 flex flex-col gap-y-4'>
+      <section className='mb-6 flex min-h-[80vh] flex-col gap-y-4'>
         <div
           className={clsx(
             'flex min-h-[10vh] flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown',

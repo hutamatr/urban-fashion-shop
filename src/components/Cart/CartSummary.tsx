@@ -15,8 +15,6 @@ export default function CartSummary({
 }: Readonly<ICartSummaryProps>) {
   const { totalPrice } = useAppSelector((state) => state.cart);
 
-  const { status: orderStatus } = useAppSelector((state) => state.order);
-
   return (
     <section>
       <div
@@ -32,7 +30,7 @@ export default function CartSummary({
               'dark:text-dark-brown'
             )}
           >
-            Cart Totals
+            Shopping Summary
           </h3>
         </div>
         <TotalPricesOrder
@@ -49,7 +47,7 @@ export default function CartSummary({
         )}
         onClick={onPaymentHandler}
       >
-        {orderStatus === 'pending' ? 'Loading...' : 'Process to Checkout'}
+        Process to Checkout
       </button>
     </section>
   );
