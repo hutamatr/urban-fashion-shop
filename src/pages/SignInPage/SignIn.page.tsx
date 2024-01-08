@@ -6,16 +6,18 @@ import { toast, Toaster } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
+import ForgotPassword from '@components/ResetPassword/ForgotPassword';
 import Input from '@components/UI/Input';
 
-import { registerUser } from '@store/authSlice';
-import { useAppDispatch } from '@store/store';
+import { loginUser } from '@store/auth.slice';
+import { showModalHandler } from '@store/modal.slice';
+import { useAppDispatch, useAppSelector } from '@store/store';
 
-import { signUpSchema } from '@utils/formSchema';
+import { signInSchema } from '@utils/formSchema';
 
-type FormSchemaType = z.infer<typeof signUpSchema>;
+type FormSchemaType = z.infer<typeof signInSchema>;
 
-export default function Register() {
+export default function SignIn() {
   const [isPassView, setIsPassView] = useState(false);
   const {
     register,
@@ -23,32 +25,41 @@ export default function Register() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FormSchemaType>({
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(signInSchema),
   });
-  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
+  const { status } = useAppSelector((state) => state.auth);
+  const { isModalShow } = useAppSelector((state) => state.modal);
+  const navigate = useNavigate();
 
   const viewPasswordHandler = () => {
     setIsPassView((prevState) => !prevState);
   };
-  const RegisterSubmitHandler: SubmitHandler<FormSchemaType> = async (
+
+  const showForgotPasswordHandler = () => {
+    dispatch(showModalHandler());
+  };
+
+  const loginSubmitHandler: SubmitHandler<FormSchemaType> = async (
     data,
     event
   ) => {
     event?.preventDefault();
 
-    const registerFormInput = {
+    const loginInput = {
       email: data.email,
       password: data.password,
-      confirmPassword: data.confirmPassword,
     };
 
-    const res = await dispatch(registerUser(registerFormInput));
+    const res = await dispatch(loginUser(loginInput));
 
     if (res.meta.requestStatus === 'fulfilled') {
-      reset();
       navigate('/', { replace: true });
+      toast.success(res.payload?.message as string, { duration: 3000 });
+      reset();
     }
+
     if (res.meta.requestStatus === 'rejected') {
       const payload = res.payload as IError;
       payload.message.forEach((message: string) => {
@@ -69,10 +80,10 @@ export default function Register() {
               'md:text-lg'
             )}
           >
-            Sign Up
+            Sign In
           </h1>
           <form
-            onSubmit={handleSubmit(RegisterSubmitHandler)}
+            onSubmit={handleSubmit(loginSubmitHandler)}
             className={clsx('flex flex-col gap-y-4', 'md:gap-y-5')}
           >
             <Input
@@ -111,50 +122,39 @@ export default function Register() {
                 )
               }
             />
-
-            <Input
-              title='Confirm Password'
-              isPassView={isPassView}
-              type={isPassView ? 'text' : 'password'}
-              placeholder='••••••••'
-              {...register('confirmPassword', {
-                required: true,
-              })}
-              aria-invalid={errors.confirmPassword ? 'true' : 'false'}
-              errors={
-                errors.confirmPassword && (
-                  <span className='block text-xs text-red-800'>
-                    {errors.confirmPassword?.message}
-                  </span>
-                )
-              }
-            />
             <button
-              type='submit'
-              disabled={isSubmitting}
               className={clsx(
-                'bg-dark-brown py-3 text-xs font-light text-white',
-                'disabled:cursor-not-allowed disabled:bg-dark-brown/50',
-                'dark:bg-white-bone dark:font-medium dark:text-dark-brown'
+                'flex flex-row items-center justify-center gap-x-2 bg-dark-brown py-3 font-light text-white',
+                'disabled:cursor-not-allowed',
+                'dark:bg-white-bone dark:font-semibold dark:text-dark-brown'
               )}
+              disabled={isSubmitting || status === 'pending'}
+              type='submit'
             >
-              {isSubmitting ? 'Loading...' : 'Sign Up'}
+              {isSubmitting ? 'loading...' : 'Sign In'}
             </button>
           </form>
           <p className={clsx('text-center text-sm', 'dark:text-white-bone')}>
-            Already have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link
-              to='/signin'
+              to='/signup'
               className={clsx(
                 'font-semibold text-dark-brown underline',
                 'dark:text-white-bone'
               )}
             >
-              Log In
+              Sign Up
             </Link>
           </p>
+          <button
+            className={clsx('text-center text-sm text-red-500 underline')}
+            onClick={showForgotPasswordHandler}
+          >
+            Forgot your password?
+          </button>
         </div>
       </section>
+      {isModalShow && <ForgotPassword />}
     </>
   );
 }

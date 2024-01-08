@@ -1,12 +1,13 @@
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { MdDeleteOutline, MdFavorite, MdFavoriteBorder } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 import { Image } from '@components/UI';
 
 import { useAppDispatch, useAppSelector } from '@store/store';
-import { postWishlist } from '@store/wishlistSlice';
+import { deleteWishlist, postWishlist } from '@store/wishlist.slice';
 
 import { formatCurrencyToFixed } from '@utils/formatted';
 
@@ -44,10 +45,13 @@ export default function CartItem({
       return;
     }
 
-    if (!isProductOnWishlist) {
+    if (!isWishlist) {
       setIsWishlist(true);
       dispatch(postWishlist({ product_id: product?.id }));
-      toast.success('Added to wishlist', { duration: 3000 });
+      toast.success('Added to wishlist', { duration: 1500 });
+    } else {
+      setIsWishlist(false);
+      dispatch(deleteWishlist(product?.id));
     }
   };
 
@@ -68,74 +72,137 @@ export default function CartItem({
           'md:h-full md:w-64'
         )}
       />
-      <div className='flex w-full flex-col gap-y-3 p-4'>
-        <p
-          className={clsx(
-            'text-sm font-medium uppercase',
-            'dark:text-white-bone'
-          )}
-        >
-          {product?.title}
-        </p>
-        <div className='flex flex-row gap-x-2'>
-          <button
+      <div className={clsx('grid w-full grid-cols-1 gap-y-3 py-2', 'md:p-4')}>
+        <div className={clsx('flex flex-col gap-y-1', 'md:gap-y-3')}>
+          <p
             className={clsx(
-              'text-2xl font-bold',
-              'disabled:invisible',
-              'dark:text-white-bone'
+              'text-sm font-semibold',
+              'dark:text-white-bone',
+              'md:text-base'
             )}
-            onClick={onDecrease.bind(null, product?.id)}
-            disabled={quantity === 1}
           >
-            -
-          </button>
-          <input
-            type='text'
-            value={quantity}
-            readOnly
-            className='max-w-[4rem] rounded p-1 text-center'
-          />
-          <button
-            className={clsx('text-2xl font-bold', 'dark:text-white-bone')}
-            onClick={onIncrease.bind(null, product?.id)}
-          >
-            +
-          </button>
+            {product?.title}
+          </p>
+          <div className='flex flex-row items-center gap-x-2'>
+            <span
+              className={clsx(
+                'text-sm font-semibold',
+                'dark:text-white-bone',
+                'md:text-base'
+              )}
+            >
+              {formatCurrencyToFixed(
+                product?.discount_percentage > 0
+                  ? product?.discounted_price
+                  : product?.price
+              )}
+            </span>
+            {product?.discount_percentage > 0 && (
+              <div className='flex flex-row items-center gap-x-1'>
+                <span
+                  className={clsx(
+                    'hidden h-6 w-fit items-center rounded bg-red-500/30 px-1 text-xs font-semibold text-red-600',
+                    'md:flex'
+                  )}
+                >
+                  {product.discount_percentage}%
+                </span>
+                <span
+                  className={clsx(
+                    'text-xs font-medium text-dark-brown/50 line-through',
+                    'dark:text-white-bone'
+                  )}
+                >
+                  {formatCurrencyToFixed(product.price)}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
-        <span
+        <div
           className={clsx(
-            'text-sm font-bold text-dark-brown',
-            'dark:text-white-bone'
+            'flex flex-row items-center justify-between gap-x-8',
+            'md:justify-end'
           )}
         >
-          {formatCurrencyToFixed(product?.price)} x {quantity}
-        </span>
-        <div className='flex flex-row items-center gap-x-4 self-end'>
-          <button
-            className={clsx(
-              'max-w-fit self-end rounded px-3 py-2 text-sm font-semibold duration-300',
-              `${
-                isWishlist
-                  ? 'text-dark-brown/50 dark:text-white-bone/50'
-                  : 'hover:bg-dark-brown hover:text-white-bone'
-              }`,
-              'dark:text-white-bone'
-            )}
-            disabled={isWishlist}
-            onClick={addWishlistHandler}
+          <div
+            className={clsx('flex flex-row items-center gap-x-2', 'md:gap-x-1')}
           >
-            {isWishlist ? 'Already in wishlist' : 'Add to wishlist'}
-          </button>
-          <button
-            className={clsx(
-              'max-w-fit self-end rounded px-3 py-2 text-sm font-semibold duration-300',
-              'hover:bg-dark-brown hover:text-white-bone',
-              'dark:text-white-bone'
-            )}
-            onClick={onRemove.bind(null, product?.id)}
-          >
-            Remove
-          </button>
+            <button
+              className={clsx('block', 'md:hidden')}
+              onClick={addWishlistHandler}
+            >
+              {isWishlist ? (
+                <MdFavorite className='cursor-pointer text-2xl text-red-600' />
+              ) : (
+                <MdFavoriteBorder className='cursor-pointer text-2xl text-dark-brown' />
+              )}
+            </button>
+            <button
+              className={clsx(
+                'hidden max-w-fit self-end rounded px-3 py-2 text-sm font-semibold duration-300',
+                `${
+                  isWishlist
+                    ? 'text-dark-brown/50 dark:text-white-bone/50'
+                    : 'hover:bg-dark-brown hover:text-white-bone'
+                }`,
+                'dark:text-white-bone',
+                'md:block'
+              )}
+              onClick={addWishlistHandler}
+            >
+              {isWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+            </button>
+            <span
+              className={clsx(
+                'hidden h-8 border-x border-x-dark-brown text-dark-brown',
+                'dark:border-x-white-bone dark:text-white-bone',
+                'md:block'
+              )}
+            ></span>
+            <MdDeleteOutline
+              className={clsx(
+                'cursor-pointer text-2xl text-red-600',
+                'dark:text-red-500'
+              )}
+              onClick={onRemove.bind(null, product?.id)}
+            />
+          </div>
+          <div className='mr-4 flex flex-row gap-x-2'>
+            <button
+              className={clsx(
+                'text-xl font-bold',
+                'disabled:text-dark-brown/50',
+                'dark:text-white-bone dark:disabled:text-white-bone/50',
+                'md:text-2xl'
+              )}
+              onClick={onDecrease.bind(null, product?.id)}
+              disabled={quantity === 1}
+            >
+              -
+            </button>
+            <input
+              type='text'
+              value={quantity}
+              readOnly
+              className={clsx(
+                'max-w-[3rem] rounded border-none bg-white-bone p-1 text-center text-sm font-semibold',
+                'md:text-base'
+              )}
+            />
+            <button
+              className={clsx(
+                'text-xl font-bold',
+                'disabled:text-dark-brown/50',
+                'dark:text-white-bone dark:disabled:text-white-bone/50',
+                'md:text-2xl'
+              )}
+              onClick={onIncrease.bind(null, product?.id)}
+              disabled={quantity === product?.stock_quantity}
+            >
+              +
+            </button>
+          </div>
         </div>
       </div>
     </li>

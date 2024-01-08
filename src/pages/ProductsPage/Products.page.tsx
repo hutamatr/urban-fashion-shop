@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import { useEffect } from 'react';
 
-import ProductList from '@components/Shop/ProductList';
+import ProductList from '@components/Products/ProductList';
 
-import { fetchProducts } from '@store/productSlice';
+import { fetchProducts } from '@store/product.slice';
 import { useAppDispatch } from '@store/store';
 
-export default function Product() {
+export default function Products() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {

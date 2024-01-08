@@ -1,20 +1,23 @@
 import clsx from 'clsx';
 
+import TotalPricesOrder from '@components/Cart/TotalPricesOrder';
+
 import { useAppSelector } from '@store/store';
 
-import TotalPricesOrder from './TotalPricesOrder';
-
-interface ICartSummaryProps {
+interface ICheckoutSummaryProps {
   totalCartItems: number;
-  onPaymentHandler: () => void;
+  isSubmitting: boolean;
+  isSnapShow: boolean;
+  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
 }
 
-export default function CartSummary({
+export default function CheckoutSummary({
   totalCartItems,
-  onPaymentHandler,
-}: Readonly<ICartSummaryProps>) {
+  isSubmitting,
+  isSnapShow,
+  status,
+}: Readonly<ICheckoutSummaryProps>) {
   const { totalPrice } = useAppSelector((state) => state.cart);
-
   return (
     <section>
       <div
@@ -40,14 +43,17 @@ export default function CartSummary({
       </div>
       <button
         className={clsx(
+          isSnapShow ? 'hidden' : 'block',
           'mt-4 w-full rounded-sm py-3 font-medium text-dark-brown ring-2 ring-dark-brown',
           'hover:bg-dark-brown hover:text-white-bone',
           'dark:hover:bg-white-bone dark:hover:text-dark-brown',
           'dark:text-white-bone dark:ring-white-bone'
         )}
-        onClick={onPaymentHandler}
+        type='submit'
+        form='checkout-form'
+        disabled={isSubmitting || status === 'pending'}
       >
-        Process to Checkout
+        Payment
       </button>
     </section>
   );

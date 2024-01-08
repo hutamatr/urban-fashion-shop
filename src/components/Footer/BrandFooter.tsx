@@ -10,11 +10,11 @@ export default function BrandFooter() {
       <Image
         src={LogoImg}
         alt='Urban Fashion'
-        className={clsx('mx-auto w-64', 'md:mx-0 md:w-72')}
+        className={clsx('w-64', 'md:mx-0 md:w-72')}
       />
       <p
         className={clsx(
-          'w-56 text-lg text-dark-brown/80',
+          'w-56 text-left text-lg text-dark-brown/80',
           'dark:text-white-bone/80'
         )}
       >

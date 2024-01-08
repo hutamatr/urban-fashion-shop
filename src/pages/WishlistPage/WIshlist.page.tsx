@@ -3,13 +3,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { LoadingProductSkeleton } from '@components/UI';
+import WishlistItem from '@components/Wishlist/WishlistItem';
 
 import { useAppDispatch, useAppSelector } from '@store/store';
-import { getWishlists } from '@store/wishlistSlice';
+import { getWishlists } from '@store/wishlist.slice';
 
-import WishlistItem from './WishlistItem';
-
-const Wishlist = () => {
+export default function Wishlist() {
   const [wishlistsData, setWishlistsData] = useState<IWishlist[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -116,6 +115,4 @@ const Wishlist = () => {
       </section>
     </>
   );
-};
-
-export default Wishlist;
+}

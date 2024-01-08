@@ -31,6 +31,8 @@ declare global {
     email: string;
     first_name: string;
     last_name: string;
+    city: string;
+    postal_code: string;
     address: string;
     phone_number: string;
     role: {
@@ -123,7 +125,7 @@ declare global {
     image_url: string;
     price: number;
     discount_percentage: number;
-    discount_price: number;
+    discounted_price: number;
     stock_quantity: number;
   }
 
@@ -154,10 +156,26 @@ declare global {
   }
 
   interface IOrder {
-    user_id: number;
-    email: string;
-    total_price: number;
-    products_list: IProductsOrder[];
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    city: string;
+    postal_code: string;
+    address: string;
+  }
+
+  interface IOrderResponse {
+    status: string;
+    message: string;
+    data: {
+      id: string;
+      status: 'PENDING_PAYMENT' | 'PAID' | 'CANCELED';
+      first_name: string;
+      last_name: string;
+      products: IProduct[];
+      snap_token: string;
+      snap_redirect_url: string;
+    };
   }
 
   interface IProductsOrder {
@@ -192,5 +210,21 @@ declare global {
   interface IWishlistResponse {
     message: string;
     wishlist?: IWishlist;
+  }
+
+  interface IMidtransResponse {
+    status_code: string;
+    status_message: string;
+    transaction_id: string;
+    order_id: string;
+    gross_amount: string;
+    payment_type: string;
+    transaction_time: string;
+    transaction_status: string;
+    fraud_status: string;
+    va_numbers: [{ bank: string; va_number: string }];
+    bca_va_number: string;
+    pdf_url: string;
+    finish_redirect_url: string;
   }
 }

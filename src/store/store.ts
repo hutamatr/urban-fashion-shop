@@ -5,13 +5,13 @@ import storage from 'redux-persist/lib/storage';
 
 import { isDevelopment } from '@utils/constant';
 
-import authReducer from './authSlice';
-import cartReducer from './cartSlice';
-import modalReducer from './modalSlice';
-import orderReducer from './orderSlice';
-import productsReducer from './productSlice';
-import userReducer from './userSlice';
-import wishlistReducer from './wishlistSlice';
+import authReducer from './auth.slice';
+import cartReducer from './cart.slice';
+import modalReducer from './modal.slice';
+import orderReducer from './order.slice';
+import productsReducer from './product.slice';
+import userReducer from './user.slice';
+import wishlistReducer from './wishlist.slice';
 
 const rootPersistConfig = {
   key: 'root',

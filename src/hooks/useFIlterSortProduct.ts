@@ -20,9 +20,11 @@ const useFIlterSortProduct = () => {
     const sortedProducts = products?.products
       ?.slice()
       ?.sort((productA, productB) => {
-        const { price: priceA } = productA;
-        const { price: priceB } = productB;
-        return isSortedProductList ? +priceA - +priceB : +priceB - +priceA;
+        const { discounted_price: discountedPriceA } = productA;
+        const { discounted_price: discountedPriceB } = productB;
+        return isSortedProductList
+          ? discountedPriceA - discountedPriceB
+          : discountedPriceB - discountedPriceA;
       });
     return sortedProducts;
   }, [isSortedProductList, products?.products]);

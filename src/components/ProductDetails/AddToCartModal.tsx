@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Image, Modal } from '@components/UI';
 
-import { showModalHandler } from '@store/modalSlice';
+import { showModalHandler } from '@store/modal.slice';
 import { useAppDispatch, useAppSelector } from '@store/store';
 
 interface IAddToCartModalProps extends IProductData {

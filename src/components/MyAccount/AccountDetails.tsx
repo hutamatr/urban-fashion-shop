@@ -10,7 +10,7 @@ import { Loading } from '@components/UI';
 import Input from '@components/UI/Input';
 
 import { useAppDispatch, useAppSelector } from '@store/store';
-import { fetchUser, updateUserDetail } from '@store/userSlice';
+import { fetchUser, updateUserDetail } from '@store/user.slice';
 
 import { userDetailSchema } from '@utils/formSchema';
 
@@ -127,6 +127,7 @@ export default function AccountDetails() {
                 placeholder='Enter phone number'
                 value={phoneNumber}
                 onChange={(value) => setPhoneNumber(value as string)}
+                defaultCountry='ID'
                 className={clsx(
                   'w-full rounded bg-white-bone font-medium',
                   'dark:bg-dark-brown dark:placeholder:text-white-bone',

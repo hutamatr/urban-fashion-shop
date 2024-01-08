@@ -9,7 +9,7 @@ import {
   deleteCartItem,
   removeFromCart,
   updateCartItem,
-} from '@store/cartSlice';
+} from '@store/cart.slice';
 import { useAppDispatch, useAppSelector } from '@store/store';
 
 import CartItem from './CartItem';

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useParams } from 'react-router-dom';
 
-import ProductItem from '@components/Shop/ProductItem';
+import ProductItem from '@components/Products/ProductItem';
 import { LoadingProductSkeleton } from '@components/UI';
 
 import { useAppSelector } from '@store/store';

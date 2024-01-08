@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { refreshToken } from '@store/authSlice';
+import { refreshToken } from '@store/auth.slice';
 import { store } from '@store/store';
 
 import { URL } from './constant';

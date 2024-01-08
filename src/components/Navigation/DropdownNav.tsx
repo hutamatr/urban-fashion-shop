@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 import Avatar from '@components/UI/svg/Avatar';
 
-import { logoutUser } from '@store/authSlice';
+import { logoutUser } from '@store/auth.slice';
 import { persistor, useAppDispatch } from '@store/store';
 
 interface IDropdownNavProps {
