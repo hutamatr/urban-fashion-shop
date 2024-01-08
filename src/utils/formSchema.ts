@@ -23,10 +23,57 @@ export const signInSchema = z.object({
 });
 
 export const userDetailSchema = z.object({
-  firstName: z.string().min(4, 'First name is required'),
-  lastName: z.string().min(4, 'Last name is required'),
-  email: z.string().email('Invalid email').min(1, 'Email is required'),
-  address: z.string().max(300, 'Address is required'),
+  firstName: z
+    .string({
+      required_error: 'First name is required',
+      invalid_type_error: 'First name is required',
+    })
+    .min(4, {
+      message: 'First name must have at least 4 characters',
+    }),
+  lastName: z
+    .string({
+      required_error: 'Last name is required',
+      invalid_type_error: 'Last name is required',
+    })
+    .min(4, {
+      message: 'Last name must have at least 4 characters',
+    }),
+  email: z
+    .string({
+      required_error: 'Email is required',
+      invalid_type_error: 'Email must be a string',
+    })
+    .email({
+      message: 'Email must be a valid email',
+    }),
+  postalCode: z
+    .string({
+      required_error: 'Postal Code is required',
+      invalid_type_error: 'Postal Code is required',
+    })
+    .min(4, {
+      message: 'Postal Code must have at least 4 characters',
+    }),
+  city: z
+    .string({
+      required_error: 'City is required',
+      invalid_type_error: 'City is required',
+    })
+    .min(4, {
+      message: 'City must have at least 4 characters',
+    }),
+  address: z
+    .string({
+      required_error: 'Address is required',
+      invalid_type_error: 'Address is required',
+    })
+    .min(4, {
+      message: 'Please enter a valid address',
+    })
+    .max(500, {
+      message: 'Address must be less than 500 characters',
+    }),
 });
 
 export const changePasswordSchema = z.object({
