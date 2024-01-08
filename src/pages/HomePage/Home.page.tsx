@@ -6,13 +6,13 @@ import BestSellers from '@components/Home/BestSellers';
 import FashionProducts from '@components/Home/FashionProducts';
 import Hero from '@components/Home/Hero';
 import OurPhilosophy from '@components/Home/OurPhilosophy';
-import ProductItem from '@components/Shop/ProductItem';
+import ProductItem from '@components/Products/ProductItem';
 import { LoadingProductSkeleton } from '@components/UI';
 
-import { getCartItem } from '@store/cartSlice';
-import { fetchProducts } from '@store/productSlice';
+import { getCartItem } from '@store/cart.slice';
+import { fetchProducts } from '@store/product.slice';
 import { useAppDispatch, useAppSelector } from '@store/store';
-import { getWishlists } from '@store/wishlistSlice';
+import { getWishlists } from '@store/wishlist.slice';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -28,8 +28,7 @@ export default function Home() {
   useEffect(() => {
     dispatch(fetchProducts({ skip: 0, limit: 6 }));
     if (isAuth) {
-      dispatch(getCartItem());
-      dispatch(getWishlists());
+      Promise.all([dispatch(getCartItem()), dispatch(getWishlists())]);
     }
   }, [dispatch, isAuth]);
 
@@ -65,7 +64,7 @@ export default function Home() {
         </div>
         <ul
           className={clsx(
-            'grid grid-cols-1 gap-3 gap-x-4 bg-white-bone',
+            'grid grid-cols-1 gap-3 gap-x-4 bg-white-bone pb-6',
             'dark:bg-dark-brown',
             'md:grid-cols-2'
           )}

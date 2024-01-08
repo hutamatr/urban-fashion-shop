@@ -8,8 +8,8 @@ import { z } from 'zod';
 import { Modal } from '@components/UI';
 import Input from '@components/UI/Input';
 
-import { forgotPasswordLink } from '@store/authSlice';
-import { showModalHandler } from '@store/modalSlice';
+import { forgotPasswordLink } from '@store/auth.slice';
+import { showModalHandler } from '@store/modal.slice';
 import { useAppDispatch } from '@store/store';
 
 import { forgotPasswordSchema } from '@utils/formSchema';

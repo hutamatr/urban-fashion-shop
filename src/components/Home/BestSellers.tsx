@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import ProductItem from '@components/Shop/ProductItem';
+import ProductItem from '@components/Products/ProductItem';
 import { LoadingProductSkeleton } from '@components/UI';
 
 import { useAppSelector } from '@store/store';
@@ -13,9 +13,9 @@ export default function BestSellers() {
   return (
     <section
       className={clsx(
-        'grid grid-cols-1 gap-y-4 border-b border-dark-brown p-6 text-dark-brown',
+        'grid grid-cols-1 gap-y-4 border-b border-dark-brown py-6 text-dark-brown',
         'dark:border-b-white-bone',
-        'md:grid-cols-1 md:p-10'
+        'md:grid-cols-1'
       )}
     >
       <h1

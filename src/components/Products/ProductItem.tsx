@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Figure } from '@components/UI';
 
 import { useAppDispatch } from '@store/store';
-import { getWishlist } from '@store/wishlistSlice';
+import { getWishlist } from '@store/wishlist.slice';
 
 interface IProductItemProps {
   product: IProduct;

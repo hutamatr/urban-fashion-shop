@@ -6,7 +6,7 @@ import AccountDetails from '@components/MyAccount/AccountDetails';
 import ChangePassword from '@components/MyAccount/ChangePassword';
 
 import { useAppDispatch, useAppSelector } from '@store/store';
-import { fetchUser } from '@store/userSlice';
+import { fetchUser } from '@store/user.slice';
 
 export default function MyAccount() {
   const [isChangePassword, setIsChangePassword] = useState(false);

@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 import { Image } from '@components/UI';
 
-import { addToCart, postCartItem } from '@store/cartSlice';
+import { addToCart, postCartItem } from '@store/cart.slice';
 import { useAppDispatch } from '@store/store';
-import { deleteWishlist } from '@store/wishlistSlice';
+import { deleteWishlist } from '@store/wishlist.slice';
 
 import { formatCurrencyToFixed } from '@utils/formatted';
 
@@ -32,7 +32,7 @@ const WishlistItem = ({ wishlist, linkTo }: IWishlistItemProps) => {
       image_url: wishlist.product.image_url,
       price: wishlist.product.price,
       discount_percentage: wishlist.product.discount_percentage,
-      discount_price: wishlist.product.discount_price,
+      discounted_price: wishlist.product.discounted_price,
       stock_quantity: wishlist.product.stock_quantity,
       cart_item: {
         quantity,
@@ -78,14 +78,27 @@ const WishlistItem = ({ wishlist, linkTo }: IWishlistItemProps) => {
           <span className='text-xs font-medium text-red-600'>
             {wishlist?.product?.deleted_at && 'Product Deleted'}
           </span>
-          <span
-            className={clsx(
-              'flex items-center justify-self-end px-2 text-sm font-semibold',
-              'dark:text-white-bone'
+          <div className='flex flex-col justify-self-end'>
+            <span
+              className={clsx('text-base font-bold', 'dark:text-white-bone')}
+            >
+              {formatCurrencyToFixed(
+                wishlist?.product?.discount_percentage > 0
+                  ? wishlist?.product?.discounted_price
+                  : wishlist?.product?.price
+              )}
+            </span>
+            {wishlist?.product.discount_percentage > 0 && (
+              <div className='flex flex-row items-center gap-x-2'>
+                <span className='text-xs font-medium text-dark-brown/50 line-through'>
+                  {formatCurrencyToFixed(wishlist?.product.price)}
+                </span>
+                <span className='text-xs font-bold text-red-600'>
+                  {wishlist?.product.discount_percentage}%
+                </span>
+              </div>
             )}
-          >
-            {formatCurrencyToFixed(wishlist?.product?.price)}
-          </span>
+          </div>
         </div>
         <div className='flex w-full flex-row items-center gap-x-4 pb-4'>
           <button

@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 import Input from '@components/UI/Input';
 
-import { changePassword, logoutUser } from '@store/authSlice';
+import { changePassword, logoutUser } from '@store/auth.slice';
 import { useAppDispatch } from '@store/store';
 
 import { changePasswordSchema } from '@utils/formSchema';

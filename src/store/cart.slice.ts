@@ -12,6 +12,7 @@ import { RootState } from './store';
 interface ICart {
   cart: IProductCart[];
   totalPrice: number;
+  totalCartItems: number;
   totalQuantity: number;
   totalProducts: number;
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
@@ -27,6 +28,7 @@ const initialState: ICart = {
   successMessage: null,
   totalQuantity: 0,
   totalProducts: 0,
+  totalCartItems: 0,
 };
 
 export const getCartItem = createAsyncThunk<
@@ -154,8 +156,14 @@ export const cartSlice = createSlice({
         state.cart.push(action.payload);
       }
 
-      state.totalPrice +=
-        action.payload.price * action.payload.cart_item.quantity;
+      let price;
+      if (action.payload?.discount_percentage > 0) {
+        price = action.payload?.discounted_price;
+      } else {
+        price = action.payload?.price;
+      }
+
+      state.totalPrice += price * action.payload.cart_item.quantity;
     },
     decreaseFromCart: (state, action: PayloadAction<number>) => {
       const existingItemIndex = state.cart.findIndex(
@@ -164,7 +172,15 @@ export const cartSlice = createSlice({
 
       const existingItem = state.cart[existingItemIndex];
 
-      const removedTotalPrice = state.totalPrice - existingItem.price;
+      let price;
+
+      if (existingItem?.discount_percentage > 0) {
+        price = existingItem?.discounted_price;
+      } else {
+        price = existingItem?.price;
+      }
+
+      const removedTotalPrice = state.totalPrice - price;
       const formattedRemovedTotalPrice = +removedTotalPrice.toFixed(2);
 
       state.cart[existingItemIndex].cart_item.quantity =
@@ -178,13 +194,27 @@ export const cartSlice = createSlice({
 
       const existingItem = state.cart[existingItemIndex];
 
+      let price;
+
+      if (existingItem?.discount_percentage > 0) {
+        price = existingItem?.discounted_price;
+      } else {
+        price = existingItem?.price;
+      }
+
       const removedTotalPrice =
-        state.totalPrice -
-        existingItem?.price * existingItem.cart_item.quantity;
+        state.totalPrice - price * existingItem.cart_item.quantity;
       const formattedRemovedTotalPrice = +removedTotalPrice.toFixed(2);
 
       state.cart = state.cart.filter((item) => item?.id !== action.payload);
       state.totalPrice = formattedRemovedTotalPrice;
+    },
+    totalCartHandler: (state) => {
+      const totalCartItems = state.cart?.reduce((curr, item) => {
+        return curr + item.cart_item.quantity;
+      }, 0);
+
+      state.totalCartItems = totalCartItems;
     },
   },
   extraReducers: (builder) => {
@@ -209,8 +239,6 @@ export const cartSlice = createSlice({
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
         state.status = 'fulfilled';
-        // state.cart = action.payload.cart;
-        // state.totalPrice = action.payload.totalPrice;
         state.successMessage = action.payload.message;
       })
       .addCase(updateCartItem.rejected, (state, action) => {
@@ -253,6 +281,7 @@ export const cartSlice = createSlice({
 
 const { actions, reducer } = cartSlice;
 
-export const { addToCart, decreaseFromCart, removeFromCart } = actions;
+export const { addToCart, decreaseFromCart, removeFromCart, totalCartHandler } =
+  actions;
 
 export default reducer;

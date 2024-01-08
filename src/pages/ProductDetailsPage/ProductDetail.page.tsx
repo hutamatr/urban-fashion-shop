@@ -8,15 +8,15 @@ import ProductDetail from '@components/ProductDetails/ProductDetail';
 import ProductDetailSkeleton from '@components/ProductDetails/ProductDetailSkeleton';
 import Review from '@components/ProductDetails/Review';
 
-import { addToCart, postCartItem } from '@store/cartSlice';
-import { showModalHandler } from '@store/modalSlice';
-import { fetchProducts } from '@store/productSlice';
+import { addToCart, postCartItem } from '@store/cart.slice';
+import { showModalHandler } from '@store/modal.slice';
+import { fetchProducts } from '@store/product.slice';
 import { useAppDispatch, useAppSelector } from '@store/store';
 import {
   deleteWishlist,
   getWishlist,
   postWishlist,
-} from '@store/wishlistSlice';
+} from '@store/wishlist.slice';
 
 export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
@@ -82,7 +82,7 @@ export default function ProductDetails() {
       image_url: product?.product.image_url as string,
       price: product?.product.price as number,
       discount_percentage: product?.product.discount_percentage as number,
-      discount_price: product?.product.discount_price as number,
+      discounted_price: product?.product.discounted_price as number,
       stock_quantity: product?.product.stock_quantity as number,
       cart_item: {
         quantity: quantity,

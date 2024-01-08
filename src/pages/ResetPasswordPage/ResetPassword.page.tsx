@@ -8,14 +8,14 @@ import { z } from 'zod';
 
 import Input from '@components/UI/Input';
 
-import { resetPassword } from '@store/authSlice';
+import { resetPassword } from '@store/auth.slice';
 import { useAppDispatch } from '@store/store';
 
 import { resetPasswordSchema } from '@utils/formSchema';
 
 type FormSchemaType = z.infer<typeof resetPasswordSchema>;
 
-const ResetPasswordPage = () => {
+export default function ResetPassword() {
   const [isPassView, setIsPassView] = useState(false);
   const {
     register,
@@ -148,6 +148,4 @@ const ResetPasswordPage = () => {
       </section>
     </>
   );
-};
-
-export default ResetPasswordPage;
+}
