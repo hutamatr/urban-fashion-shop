@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
-import { logoutUser } from '@store/authSlice';
+import { logoutUser } from '@store/auth.slice';
 import { useAppDispatch, useAppSelector } from '@store/store';
 
 export default function NavigationFooter() {
@@ -17,9 +17,8 @@ export default function NavigationFooter() {
   return (
     <section
       className={clsx(
-        'flex flex-col gap-y-6 p-6 text-center',
-        '',
-        'md:w-full md:flex-row md:justify-evenly md:text-start'
+        'flex flex-col items-start gap-y-6 text-left',
+        'md:w-full md:flex-row md:justify-evenly md:p-6 md:text-start'
       )}
     >
       <div className={clsx('flex flex-col gap-y-3 uppercase', 'md:gap-y-2')}>
