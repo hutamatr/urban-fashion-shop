@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Carousel } from 'flowbite-react';
-import { MdFavorite, MdFavoriteBorder, MdOutlineStar } from 'react-icons/md';
+import { MdFavorite, MdFavoriteBorder } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 import { Image } from '@components/UI';
@@ -72,16 +72,39 @@ export default function ProductDetail({
           )}
         />
       </Carousel>
-      <div className='flex flex-col items-start justify-center gap-y-6 p-5 text-dark-brown'>
+      <div
+        className={clsx(
+          'flex flex-col items-start justify-center gap-y-6 text-dark-brown',
+          'md:p-4'
+        )}
+      >
         <div className={clsx('flex flex-col gap-y-2', 'dark:text-white-bone')}>
-          <h1 className='text-2xl font-semibold uppercase'>{product?.title}</h1>
-          <p className='flex items-center gap-x-1'>
-            <MdOutlineStar /> <span>1/5</span>
-          </p>
+          <h1 className='text-xl font-bold uppercase'>{product?.title}</h1>
         </div>
-        <span className={clsx('font-semibold', 'dark:text-white-bone')}>
-          {`${formatCurrencyToFixed(product?.price || 0)}`}
-        </span>
+        <div className='flex flex-col gap-y-1'>
+          <span className={clsx('text-3xl font-bold', 'dark:text-white-bone')}>
+            {formatCurrencyToFixed(
+              product?.discount_percentage > 0
+                ? product?.discounted_price
+                : product?.price
+            )}
+          </span>
+          {product?.discount_percentage > 0 && (
+            <div className='flex flex-row items-center gap-x-1'>
+              <span className='flex h-6 w-fit items-center rounded bg-red-500/30 px-1 text-xs font-bold text-red-600'>
+                {product.discount_percentage}%
+              </span>
+              <span
+                className={clsx(
+                  'text-base font-semibold text-dark-brown/50 line-through',
+                  'dark:text-white-bone'
+                )}
+              >
+                {formatCurrencyToFixed(product.price)}
+              </span>
+            </div>
+          )}
+        </div>
         <div
           className={clsx(
             'flex flex-col-reverse gap-y-4',
@@ -173,7 +196,7 @@ export default function ProductDetail({
         </span>
         <button
           className={clsx(
-            'w-full cursor-pointer border border-dark-brown py-3 font-medium uppercase duration-300',
+            'w-full cursor-pointer rounded border border-dark-brown py-3 font-medium uppercase duration-300',
             'hover:bg-dark-brown hover:text-white-bone disabled:opacity-75',
             'dark:border-white-bone dark:text-white-bone dark:hover:bg-white-bone dark:hover:text-dark-brown'
           )}
