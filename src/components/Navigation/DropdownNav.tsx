@@ -52,6 +52,16 @@ export default function DropdownNav({
         </Dropdown.Item>
         <Dropdown.Item
           className={clsx(
+            'duration-500',
+            'hover:!bg-dark-brown hover:!text-white-bone',
+            'dark:hover:!bg-white-bone dark:hover:!text-dark-brown'
+          )}
+          onClick={onCloseMenu}
+        >
+          <NavLink to='orders'>Orders</NavLink>
+        </Dropdown.Item>
+        <Dropdown.Item
+          className={clsx(
             'whitespace-nowrap duration-500',
             'hover:!bg-dark-brown hover:!text-white-bone',
             'dark:hover:!bg-white-bone dark:hover:!text-dark-brown'

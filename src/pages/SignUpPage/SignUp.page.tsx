@@ -52,7 +52,7 @@ export default function SignUp() {
     if (res.meta.requestStatus === 'rejected') {
       const payload = res.payload as IError;
       payload.message.forEach((message: string) => {
-        toast.error(message, { duration: 3000 });
+        toast.error(message, { duration: 1500 });
       });
     }
   };

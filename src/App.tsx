@@ -7,6 +7,7 @@ import Cart from '@pages/CartPage/Cart.page';
 import Checkout from '@pages/CheckoutPage/Checkout.page';
 import Home from '@pages/HomePage/Home.page';
 import MyAccount from '@pages/MyAccountPage/MyAccount.page';
+import Orders from '@pages/OrdersPage/Orders.page';
 import OrderStatus from '@pages/OrderStatusPage/OrderStatus.page';
 import ProductDetails from '@pages/ProductDetailsPage/ProductDetail.page';
 import Products from '@pages/ProductsPage/Products.page';
@@ -33,6 +34,7 @@ export default function App() {
           <Route path='account' element={<MyAccount />} />
           <Route path='wishlist' element={<Wishlist />} />
           <Route path='checkout' element={<Checkout />} />
+          <Route path='orders' element={<Orders />} />
           <Route path='order-status' element={<OrderStatus />} />
         </Route>
       </Route>

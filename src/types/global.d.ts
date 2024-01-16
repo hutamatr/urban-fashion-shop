@@ -164,17 +164,46 @@ declare global {
     address: string;
   }
 
-  interface IOrderResponse {
+  interface IOrderItem {
+    transaction_item: {
+      quantity: number;
+    };
+  }
+
+  type IProductOrder = IProductCart & IOrderItem;
+
+  interface IOrders {
+    id: string;
+    user_id: number;
+    total_price: number;
+    status: 'PENDING_PAYMENT' | 'PAID' | 'CANCELED';
+    snap_token: string;
+    snap_redirect_url: string;
+    payment_method: string;
+    created_at: string;
+    updated_at: string;
+  }
+
+  interface IOrdersResponse {
     status: string;
     message: string;
-    data: {
+    transaction: IOrders[];
+  }
+
+  interface IOrderResponse {
+    status: string;
+    message?: string;
+    transaction: {
       id: string;
       status: 'PENDING_PAYMENT' | 'PAID' | 'CANCELED';
       first_name: string;
       last_name: string;
-      products: IProduct[];
+      email: string;
+      products: IProductOrder[];
       snap_token: string;
       snap_redirect_url: string;
+      payment_method: string;
+      created_at: string;
     };
   }
 

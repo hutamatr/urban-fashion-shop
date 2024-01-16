@@ -1,14 +1,30 @@
 import OrderDetailItem from './OrderDetailItem';
 
-export default function OrderDetails() {
+interface IOrderDetailsProps {
+  transactionId: string;
+  fullName: string;
+  email: string;
+  paymentMethod: string;
+  orderDate: string;
+  orderStatus: string;
+}
+
+export default function OrderDetails({
+  transactionId,
+  fullName,
+  email,
+  paymentMethod,
+  orderStatus,
+  orderDate,
+}: Readonly<IOrderDetailsProps>) {
   return (
     <>
-      <OrderDetailItem title='Transaction ID' value='UFS-hutamatr-hutamatr' />
-      <OrderDetailItem title='Full Name' value='Hutama Trirahmanto' />
-      <OrderDetailItem title='Email' value='hutamaaaa@gmail.com' />
-      <OrderDetailItem title='Payment Method' value='Bank Transfer' />
-      <OrderDetailItem title='Order Date' value='2022-12-08' />
-      <OrderDetailItem title='Order Status' value='Pending' />
+      <OrderDetailItem title='Transaction ID' value={transactionId} />
+      <OrderDetailItem title='Full Name' value={fullName} />
+      <OrderDetailItem title='Email' value={email} />
+      <OrderDetailItem title='Payment Method' value={paymentMethod} />
+      <OrderDetailItem title='Order Date' value={orderDate} />
+      <OrderDetailItem title='Order Status' value={orderStatus} />
     </>
   );
 }

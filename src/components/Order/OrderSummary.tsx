@@ -1,8 +1,19 @@
 import clsx from 'clsx';
 
-import OrderDetails from './OrderDetails';
+import { useAppSelector } from '@store/store';
+
+import OrderDetailItem from './OrderDetailItem';
 
 export default function OrderSummary() {
+  const {
+    orderStatus,
+    customerFullName,
+    customerEmail,
+    transactionId,
+    paymentMethod,
+    orderDate,
+  } = useAppSelector((state) => state.order);
+
   return (
     <section>
       <div
@@ -21,7 +32,15 @@ export default function OrderSummary() {
             Transaction Details
           </h3>
         </div>
-        <OrderDetails />
+        <OrderDetailItem title='Transaction ID' value={transactionId} />
+        <OrderDetailItem title='Full Name' value={customerFullName} />
+        <OrderDetailItem title='Email' value={customerEmail} />
+        <OrderDetailItem title='Payment Method' value={paymentMethod} />
+        <OrderDetailItem
+          title='Order Date'
+          value={new Date(orderDate).toLocaleString()}
+        />
+        <OrderDetailItem title='Order Status' value={orderStatus} />
       </div>
     </section>
   );

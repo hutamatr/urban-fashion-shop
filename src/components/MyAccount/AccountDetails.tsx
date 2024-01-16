@@ -63,12 +63,12 @@ export default function AccountDetails() {
     const res = await dispatch(updateUserDetail(updatedUser));
 
     if (res.meta.requestStatus === 'fulfilled') {
-      toast.success('Update user successfully!', { duration: 3000 });
+      toast.success('Update user successfully!', { duration: 1500 });
     }
 
     if (res.meta.requestStatus === 'rejected') {
       toast.error('Update user detail failed!', {
-        duration: 3000,
+        duration: 1500,
       });
     }
   };

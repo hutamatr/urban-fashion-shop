@@ -45,13 +45,13 @@ export default function ForgotPassword() {
     const res = await dispatch(forgotPasswordLink(emailUser));
 
     if (res.meta.requestStatus === 'fulfilled') {
-      toast.success(res.payload?.message as string, { duration: 3000 });
+      toast.success(res.payload?.message as string, { duration: 1500 });
       modalHandler();
       reset();
     }
 
     if (res.meta.requestStatus === 'rejected') {
-      toast.error('Something went wrong, try again later', { duration: 3000 });
+      toast.error('Something went wrong, try again later', { duration: 1500 });
     }
   };
 

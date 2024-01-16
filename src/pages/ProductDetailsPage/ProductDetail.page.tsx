@@ -106,7 +106,7 @@ export default function ProductDetails() {
     if (!isAuth) {
       navigate('/signin', { replace: true });
       setTimeout(() => {
-        toast.error('Please login first', { duration: 3000 });
+        toast.error('Please login first', { duration: 1500 });
       }, 1000);
       return;
     }
@@ -114,11 +114,11 @@ export default function ProductDetails() {
     if (isWishlist) {
       setIsWishlist(false);
       dispatch(deleteWishlist(product?.product.id as number));
-      toast.success('Removed from wishlist', { duration: 3000 });
+      toast.success('Removed from wishlist', { duration: 1500 });
     } else {
       setIsWishlist(true);
       dispatch(postWishlist({ product_id: product?.product.id as number }));
-      toast.success('Added to wishlist', { duration: 3000 });
+      toast.success('Added to wishlist', { duration: 1500 });
     }
   };
 
