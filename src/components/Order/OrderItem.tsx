@@ -5,7 +5,7 @@ import { Image } from '@components/UI';
 import { formatCurrencyToFixed } from '@utils/formatted';
 
 interface IOrderItemProps {
-  product: IProductCart;
+  product: IProductOrder;
 }
 
 export default function OrderItem({ product }: Readonly<IOrderItemProps>) {
@@ -44,7 +44,7 @@ export default function OrderItem({ product }: Readonly<IOrderItemProps>) {
                 'dark:text-white-bone'
               )}
             >
-              {product?.cart_item?.quantity} x
+              {product?.transaction_item?.quantity} x
             </span>
             <span
               className={clsx(
