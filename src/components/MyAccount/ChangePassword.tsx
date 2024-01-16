@@ -50,7 +50,7 @@ export default function ChangePassword() {
         .then(() => {
           setTimeout(() => {
             toast.success('Change password successfully!', {
-              duration: 3000,
+              duration: 1500,
             });
           }, 1000);
         });
@@ -58,7 +58,7 @@ export default function ChangePassword() {
 
     if (res.meta.requestStatus === 'rejected') {
       toast.error('Change password failed!', {
-        duration: 3000,
+        duration: 1500,
       });
     }
 

@@ -42,14 +42,14 @@ export default function ResetPassword() {
 
     if (data.password.length < 7 || data.confirmPassword.length < 7) {
       toast.error('Password must have at least 8 characters', {
-        duration: 3000,
+        duration: 1500,
       });
       return;
     }
 
     if (data.password !== data.confirmPassword) {
       toast.error('Passwords do not match!', {
-        duration: 3000,
+        duration: 1500,
       });
       return;
     }
@@ -65,7 +65,7 @@ export default function ResetPassword() {
     if (res.meta.requestStatus === 'fulfilled') {
       navigate('/signin', { replace: true });
       setTimeout(() => {
-        toast.success(res.payload?.message as string, { duration: 3000 });
+        toast.success(res.payload?.message as string, { duration: 1500 });
       }, 1000);
       reset();
     }
@@ -73,7 +73,7 @@ export default function ResetPassword() {
     if (res.meta.requestStatus === 'rejected') {
       const payload = res.payload as IError;
       payload.message.forEach((message: string) => {
-        toast.error(message, { duration: 3000 });
+        toast.error(message, { duration: 1500 });
       });
     }
   };

@@ -40,7 +40,7 @@ export default function CartItem({
     if (!isAuth) {
       navigate('/signin', { replace: true });
       setTimeout(() => {
-        toast.error('Please login first', { duration: 3000 });
+        toast.error('Please login first', { duration: 1500 });
       }, 1000);
       return;
     }

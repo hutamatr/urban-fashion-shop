@@ -56,14 +56,14 @@ export default function SignIn() {
 
     if (res.meta.requestStatus === 'fulfilled') {
       navigate('/', { replace: true });
-      toast.success(res.payload?.message as string, { duration: 3000 });
+      toast.success(res.payload?.message as string, { duration: 1500 });
       reset();
     }
 
     if (res.meta.requestStatus === 'rejected') {
       const payload = res.payload as IError;
       payload.message.forEach((message: string) => {
-        toast.error(message, { duration: 3000 });
+        toast.error(message, { duration: 1500 });
       });
     }
   };

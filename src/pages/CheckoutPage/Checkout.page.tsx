@@ -82,7 +82,7 @@ export default function Checkout() {
     if (res.meta.requestStatus === 'fulfilled') {
       setSnapShow(true);
       const payload = res.payload as IOrderResponse;
-      snapEmbed(payload.data.snap_token, 'snap-container', {
+      snapEmbed(payload.transaction.snap_token, 'snap-container', {
         onSuccess: (result) => {
           setSnapShow(false);
           navigate(`/order-status?transaction_id=${result?.order_id}`, {
@@ -103,7 +103,7 @@ export default function Checkout() {
         },
         onClose: () => {
           setSnapShow(false);
-          navigate(`/order-status?transaction_id=${payload.data.id}`, {
+          navigate(`/order-status?transaction_id=${payload.transaction.id}`, {
             replace: true,
           });
           toast.error('Payment failed', { duration: 1500 });
@@ -115,7 +115,7 @@ export default function Checkout() {
     if (res.meta.requestStatus === 'rejected') {
       const payload = res.payload as IError;
       payload.message.forEach((message: string) => {
-        toast.error(message, { duration: 3000 });
+        toast.error(message, { duration: 1500 });
       });
     }
   };
