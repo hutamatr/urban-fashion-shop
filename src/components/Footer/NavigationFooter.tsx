@@ -31,7 +31,7 @@ export default function NavigationFooter() {
           Category
         </h3>
         <ul className={clsx('flex flex-col gap-y-2', 'md:gap-y-1')}>
-          {categories?.categories.map((category) => {
+          {categories?.categories?.map((category) => {
             return (
               <li key={category.id}>
                 <Link
