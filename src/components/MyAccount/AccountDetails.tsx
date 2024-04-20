@@ -6,23 +6,20 @@ import { toast } from 'react-hot-toast';
 import PhoneInput from 'react-phone-number-input';
 import { z } from 'zod';
 
+import { Loading } from '@components/UI';
 import Input from '@components/UI/Input';
-import Loading from '@components/UI/Loading';
 
 import { useAppDispatch, useAppSelector } from '@store/store';
-import { updateUserDetail } from '@store/userSlice';
+import { fetchUser, updateUserDetail } from '@store/user.slice';
 
 import { userDetailSchema } from '@utils/formSchema';
 
 import 'react-phone-number-input/style.css';
 
-import { IUserUpdate } from 'types/types';
-
 type FormSchemaType = z.infer<typeof userDetailSchema>;
 
 export default function AccountDetails() {
   const dispatch = useAppDispatch();
-  // const { status } = useAppSelector((state) => state.auth);
 
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const {
@@ -34,24 +31,21 @@ export default function AccountDetails() {
     resolver: zodResolver(userDetailSchema),
   });
 
-  const { user, status } = useAppSelector((state) => state.user);
+  const { status, user } = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
 
   useEffect(() => {
     if (user?.id) {
-      setValue('name', user.username);
+      setValue('firstName', user.first_name);
+      setValue('lastName', user.last_name);
       setValue('email', user.email);
-      setValue('phone', user.phone_number);
       setValue('address', user.address);
       setPhoneNumber(user.phone_number);
     }
-  }, [
-    setValue,
-    user?.id,
-    user?.username,
-    user?.email,
-    user?.phone_number,
-    user?.address,
-  ]);
+  }, [setValue, user]);
 
   const updateUserHandler: SubmitHandler<FormSchemaType> = async (
     data,
@@ -60,8 +54,8 @@ export default function AccountDetails() {
     event?.preventDefault();
 
     const updatedUser: IUserUpdate = {
-      username: data.name,
-      email: data.email,
+      first_name: data.firstName,
+      last_name: data.lastName,
       phone_number: phoneNumber,
       address: data.address,
     };
@@ -69,12 +63,12 @@ export default function AccountDetails() {
     const res = await dispatch(updateUserDetail(updatedUser));
 
     if (res.meta.requestStatus === 'fulfilled') {
-      toast.success('Update user successfully!', { duration: 3000 });
+      toast.success('Update user successfully!', { duration: 1500 });
     }
 
     if (res.meta.requestStatus === 'rejected') {
       toast.error('Update user detail failed!', {
-        duration: 3000,
+        duration: 1500,
       });
     }
   };
@@ -103,13 +97,20 @@ export default function AccountDetails() {
         >
           <div className={clsx('grid grid-cols-1 gap-4', 'md:grid-cols-3')}>
             <Input
-              title='Name'
+              title='First Name'
               type='text'
-              {...register('name', { required: true })}
+              {...register('firstName', { required: true })}
+            />
+            <Input
+              title='Last Name'
+              type='text'
+              {...register('lastName', { required: true })}
             />
             <Input
               title='Email'
               type='email'
+              disabled
+              readOnly
               {...register('email', { required: true })}
             />
             <div className='flex flex-col gap-y-1'>
@@ -126,6 +127,7 @@ export default function AccountDetails() {
                 placeholder='Enter phone number'
                 value={phoneNumber}
                 onChange={(value) => setPhoneNumber(value as string)}
+                defaultCountry='ID'
                 className={clsx(
                   'w-full rounded bg-white-bone font-medium',
                   'dark:bg-dark-brown dark:placeholder:text-white-bone',

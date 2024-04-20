@@ -13,14 +13,12 @@ export default function SwitcherTheme() {
   };
 
   return (
-    <>
-      <DarkModeSwitch
-        checked={darkTheme}
-        onChange={toggleThemeHandler}
-        size={22}
-        sunColor='#FC9601'
-        moonColor='#FEFCD7 '
-      />
-    </>
+    <DarkModeSwitch
+      checked={darkTheme}
+      onChange={toggleThemeHandler}
+      size={22}
+      sunColor='#FC9601'
+      moonColor='#FEFCD7 '
+    />
   );
 }

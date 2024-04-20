@@ -1,21 +1,27 @@
 import clsx from 'clsx';
+import { debounce } from 'lodash';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { addToCart, decreaseFromCart, removeFromCart } from '@store/cartSlice';
-import { useAppDispatch } from '@store/store';
+import {
+  addToCart,
+  decreaseFromCart,
+  deleteCartItem,
+  removeFromCart,
+  updateCartItem,
+} from '@store/cart.slice';
+import { useAppDispatch, useAppSelector } from '@store/store';
 
 import CartItem from './CartItem';
 
-import { INewProductToCart } from 'types/types';
-
 interface ICartListProps {
-  cartItems: INewProductToCart[];
+  cartItems: IProductCart[];
 }
 
-export default function CartList({ cartItems }: ICartListProps) {
+export default function CartList({ cartItems }: Readonly<ICartListProps>) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { wishlists } = useAppSelector((state) => state.wishlist);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -23,16 +29,40 @@ export default function CartList({ cartItems }: ICartListProps) {
 
   const gotoShopHandler = () => navigate('/shop', { replace: true });
 
+  const isInWishlistHandler = (productId: number) => {
+    return wishlists?.some((wishlist) => wishlist.product_id === productId);
+  };
+
   const increaseItemHandler = (id: number) => {
-    const newItem = cartItems.find((item) => item.product?.id === id);
-    dispatch(addToCart({ ...newItem, quantity: 1 } as INewProductToCart));
+    const newItem = cartItems.find((item) => item.id === id);
+
+    dispatch(
+      addToCart({ ...(newItem as IProductCart), cart_item: { quantity: 1 } })
+    );
+    debounce(() => {
+      dispatch(
+        updateCartItem({
+          productId: id,
+          plus: 1,
+        })
+      );
+    }, 1500)();
   };
   const decreaseItemHandler = (id: number) => {
     dispatch(decreaseFromCart(id));
+    debounce(() => {
+      dispatch(
+        updateCartItem({
+          productId: id,
+          minus: 1,
+        })
+      );
+    }, 1500)();
   };
 
   const removeCartHandler = (id: number) => {
     dispatch(removeFromCart(id));
+    dispatch(deleteCartItem({ productId: id }));
   };
 
   return (
@@ -59,15 +89,16 @@ export default function CartList({ cartItems }: ICartListProps) {
         </div>
       ) : (
         <ul className='flex max-h-screen flex-col gap-y-4 overflow-auto'>
-          {cartItems.map((item) => {
+          {cartItems?.map((item) => {
             return (
               <CartItem
-                product={item.product}
-                quantity={item.quantity}
-                key={item.product?.id}
+                product={item}
+                quantity={item.cart_item.quantity}
+                key={item.id}
                 onIncrease={increaseItemHandler}
                 onDecrease={decreaseItemHandler}
                 onRemove={removeCartHandler}
+                onWishlistHandler={isInWishlistHandler}
               />
             );
           })}

@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
-import { logoutUser } from '@store/authSlice';
+import { logoutUser } from '@store/auth.slice';
 import { useAppDispatch, useAppSelector } from '@store/store';
 
 export default function NavigationFooter() {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { isAuth } = useAppSelector((state) => state.auth);
   const { categories } = useAppSelector((state) => state.products);
 
   const dispatch = useAppDispatch();
@@ -17,9 +17,8 @@ export default function NavigationFooter() {
   return (
     <section
       className={clsx(
-        'flex flex-col gap-y-6 p-6 text-center',
-        '',
-        'md:w-full md:flex-row md:justify-evenly md:text-start'
+        'flex flex-col items-start gap-y-6 text-left',
+        'md:w-full md:flex-row md:justify-evenly md:p-6 md:text-start'
       )}
     >
       <div className={clsx('flex flex-col gap-y-3 uppercase', 'md:gap-y-2')}>
@@ -32,17 +31,17 @@ export default function NavigationFooter() {
           Category
         </h3>
         <ul className={clsx('flex flex-col gap-y-2', 'md:gap-y-1')}>
-          {categories?.data.map((category) => {
+          {categories?.categories?.map((category) => {
             return (
-              <li key={category?.id}>
+              <li key={category.id}>
                 <Link
-                  to={`/${category?.attributes.name}`}
+                  to={`/${category.category_name}`}
                   className={clsx(
                     'font-manrope text-xs',
                     'dark:text-white-bone'
                   )}
                 >
-                  {category?.attributes.name}
+                  {category.category_name}
                 </Link>
               </li>
             );
@@ -75,14 +74,14 @@ export default function NavigationFooter() {
               Shop
             </Link>
           </li>
-          {isAuthenticated && (
+          {isAuth && (
             <li>
               <Link to='/account' className='font-manrope text-xs'>
                 My Account
               </Link>
             </li>
           )}
-          {isAuthenticated ? (
+          {isAuth ? (
             <li>
               <Link
                 to='/'
@@ -94,8 +93,8 @@ export default function NavigationFooter() {
             </li>
           ) : (
             <li>
-              <Link to='/login' className='font-manrope text-xs'>
-                Login
+              <Link to='/signin' className='font-manrope text-xs'>
+                Sign In
               </Link>
             </li>
           )}

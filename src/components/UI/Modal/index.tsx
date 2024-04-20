@@ -12,16 +12,20 @@ interface IModalCardProps {
 
 type TModalProps = IModalBackdropProps & IModalCardProps;
 
-function ModalBackdrop({ onCloseModalHandler }: IModalBackdropProps) {
+function ModalBackdrop({ onCloseModalHandler }: Readonly<IModalBackdropProps>) {
   return (
     <div
       className='fixed left-0 top-0 z-[100] min-h-full w-full bg-slate-800/50'
       onClick={onCloseModalHandler}
+      onKeyDown={onCloseModalHandler}
     />
   );
 }
 
-function ModalCard({ children, modalCardClassName }: IModalCardProps) {
+function ModalCard({
+  children,
+  modalCardClassName,
+}: Readonly<IModalCardProps>) {
   return (
     <section
       className={clsx(

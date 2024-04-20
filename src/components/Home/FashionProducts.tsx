@@ -21,7 +21,7 @@ export default function FashionProducts() {
       <Image
         src={imageHome}
         alt='Fashion Products'
-        className={clsx('hidden object-contain', 'md:block')}
+        className={clsx('hidden rounded object-contain', 'md:block')}
       />
       <div
         className={clsx(
@@ -55,7 +55,7 @@ export default function FashionProducts() {
         </div>
         <button
           className={clsx(
-            'border border-dark-brown bg-transparent bg-white-bone py-4 uppercase text-dark-brown',
+            'rounded border border-dark-brown bg-transparent bg-white-bone py-4 uppercase text-dark-brown',
             'hover:bg-dark-brown hover:text-white-bone',
             'dark:border-white-bone dark:bg-dark-brown dark:text-white-bone dark:hover:bg-white-bone dark:hover:text-dark-brown ',
             'md:duration-300'

@@ -7,12 +7,10 @@ import { z } from 'zod';
 
 import Input from '@components/UI/Input';
 
-import { changePassword, logoutUser } from '@store/authSlice';
+import { changePassword, logoutUser } from '@store/auth.slice';
 import { useAppDispatch } from '@store/store';
 
 import { changePasswordSchema } from '@utils/formSchema';
-
-import { IChangePassword } from 'types/types';
 
 type FormSchemaType = z.infer<typeof changePasswordSchema>;
 
@@ -40,9 +38,8 @@ export default function ChangePassword() {
     event?.preventDefault();
 
     const changedPassword: IChangePassword = {
-      currentPassword: data.currentPassword,
-      password: data.newPassword,
-      passwordConfirmation: data.confirmNewPassword,
+      current_password: data.currentPassword,
+      new_password: data.newPassword,
     };
 
     const res = await dispatch(changePassword(changedPassword));
@@ -53,7 +50,7 @@ export default function ChangePassword() {
         .then(() => {
           setTimeout(() => {
             toast.success('Change password successfully!', {
-              duration: 3000,
+              duration: 1500,
             });
           }, 1000);
         });
@@ -61,7 +58,7 @@ export default function ChangePassword() {
 
     if (res.meta.requestStatus === 'rejected') {
       toast.error('Change password failed!', {
-        duration: 3000,
+        duration: 1500,
       });
     }
 
@@ -113,7 +110,7 @@ export default function ChangePassword() {
         </div>
       </form>
       <span className={clsx('text-xs text-dark-brown', 'dark:text-white-bone')}>
-        * you will be logged in again after changing your password
+        * you will be automatically logout after changing password successfully
       </span>
     </section>
   );

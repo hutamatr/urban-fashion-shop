@@ -19,7 +19,7 @@ interface IReviewListProps {
   ];
 }
 
-export default function ReviewList({ reviewData }: IReviewListProps) {
+export default function ReviewList({ reviewData }: Readonly<IReviewListProps>) {
   return (
     <ul className='flex max-h-60 w-full flex-col gap-y-4 overflow-y-auto p-4'>
       {reviewData?.map((review) => {
