@@ -8,6 +8,11 @@ declare global {
    * or augment existing declarations in the global namespace.
    */
 
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    snap: any;
+  }
+
   interface ILogin {
     email: string;
     password: string;
