@@ -25,7 +25,7 @@ export default function AccountDetails() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
     setValue,
   } = useForm<FormSchemaType>({
     resolver: zodResolver(userDetailSchema),
@@ -52,6 +52,18 @@ export default function AccountDetails() {
     event
   ) => {
     event?.preventDefault();
+
+    if (
+      user?.first_name === data.firstName &&
+      user?.last_name === data.lastName &&
+      user?.address === data.address &&
+      user.phone_number === phoneNumber
+    ) {
+      toast.error('No changes detected!', {
+        duration: 2000,
+      });
+      return;
+    }
 
     const updatedUser: IUserUpdate = {
       first_name: data.firstName,
@@ -100,11 +112,27 @@ export default function AccountDetails() {
               title='First Name'
               type='text'
               {...register('firstName', { required: true })}
+              aria-invalid={errors.firstName ? 'true' : 'false'}
+              errors={
+                errors.firstName && (
+                  <span className='block text-xs text-red-800'>
+                    {errors.firstName?.message}
+                  </span>
+                )
+              }
             />
             <Input
               title='Last Name'
               type='text'
               {...register('lastName', { required: true })}
+              aria-invalid={errors.lastName ? 'true' : 'false'}
+              errors={
+                errors.lastName && (
+                  <span className='block text-xs text-red-800'>
+                    {errors.lastName?.message}
+                  </span>
+                )
+              }
             />
             <Input
               title='Email'
@@ -112,6 +140,14 @@ export default function AccountDetails() {
               disabled
               readOnly
               {...register('email', { required: true })}
+              aria-invalid={errors.email ? 'true' : 'false'}
+              errors={
+                errors.email && (
+                  <span className='block text-xs text-red-800'>
+                    {errors.email?.message}
+                  </span>
+                )
+              }
             />
             <div className='flex flex-col gap-y-1'>
               <label
@@ -140,6 +176,14 @@ export default function AccountDetails() {
             title='Address'
             isTextArea={true}
             {...register('address', { required: true })}
+            aria-invalid={errors.address ? 'true' : 'false'}
+            errors={
+              errors.address && (
+                <span className='block text-xs text-red-800'>
+                  {errors.address?.message}
+                </span>
+              )
+            }
           />
           <div className='flex flex-col gap-y-2'>
             <button

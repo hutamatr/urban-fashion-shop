@@ -51,7 +51,7 @@ export default function ForgotPassword() {
     }
 
     if (res.meta.requestStatus === 'rejected') {
-      toast.error('Something went wrong, try again later', { duration: 1500 });
+      toast.error(res.payload?.message as string, { duration: 1500 });
     }
   };
 
