@@ -16,11 +16,11 @@ import { useAppDispatch, useAppSelector } from '@store/store';
 import { fetchUser } from '@store/user.slice';
 
 import useMidtransSnap from '@hooks/useMidtransSnap';
-import { userDetailSchema } from '@utils/formSchema';
+import { checkoutFormSchema } from '@utils/formSchema';
 
 import 'react-phone-number-input/style.css';
 
-type FormSchemaType = z.infer<typeof userDetailSchema>;
+type FormSchemaType = z.infer<typeof checkoutFormSchema>;
 
 export default function Checkout() {
   const [snapShow, setSnapShow] = useState<boolean>(false);
@@ -32,7 +32,7 @@ export default function Checkout() {
     formState: { errors, isSubmitting },
     setValue,
   } = useForm<FormSchemaType>({
-    resolver: zodResolver(userDetailSchema),
+    resolver: zodResolver(checkoutFormSchema),
   });
 
   const { user, status: userStatus } = useAppSelector((state) => state.user);
@@ -51,9 +51,9 @@ export default function Checkout() {
       setValue('firstName', user.first_name);
       setValue('lastName', user.last_name);
       setValue('email', user.email);
-      setValue('address', user.address);
-      setValue('city', user.city);
       setValue('postalCode', user.postal_code);
+      setValue('city', user.city);
+      setValue('address', user.address);
       setPhoneNumber(user.phone_number);
     }
   }, [setValue, user]);
