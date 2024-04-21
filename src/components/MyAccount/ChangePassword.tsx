@@ -20,7 +20,7 @@ export default function ChangePassword() {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(changePasswordSchema),
   });
@@ -53,6 +53,7 @@ export default function ChangePassword() {
               duration: 1500,
             });
           }, 1000);
+          reset();
         });
     }
 
@@ -61,8 +62,6 @@ export default function ChangePassword() {
         duration: 1500,
       });
     }
-
-    reset();
   };
 
   return (
@@ -89,11 +88,27 @@ export default function ChangePassword() {
           title='New Password'
           type={isPassView ? 'text' : 'password'}
           {...register('newPassword', { required: true })}
+          aria-invalid={errors.newPassword ? 'true' : 'false'}
+          errors={
+            errors.newPassword && (
+              <span className='block text-xs text-red-800'>
+                {errors.newPassword?.message}
+              </span>
+            )
+          }
         />
         <Input
           title='Confirm New Password'
           type={isPassView ? 'text' : 'password'}
           {...register('confirmNewPassword', { required: true })}
+          aria-invalid={errors.confirmNewPassword ? 'true' : 'false'}
+          errors={
+            errors.confirmNewPassword && (
+              <span className='block text-xs text-red-800'>
+                {errors.confirmNewPassword?.message}
+              </span>
+            )
+          }
         />
         <div className='flex flex-col gap-y-2'>
           <button
