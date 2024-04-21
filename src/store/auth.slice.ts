@@ -130,7 +130,7 @@ export const changePassword = createAsyncThunk<
       const state = getState() as RootState;
       const response: AxiosResponse<IChangePasswordResponse> =
         await axiosPrivate.post(
-          `/change-password`,
+          `/change-password/${state.auth.userId}`,
           {
             new_password,
             current_password,

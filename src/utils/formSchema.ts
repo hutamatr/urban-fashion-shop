@@ -47,22 +47,22 @@ export const userDetailSchema = z.object({
     .email({
       message: 'Email must be a valid email',
     }),
-  postalCode: z
-    .string({
-      required_error: 'Postal Code is required',
-      invalid_type_error: 'Postal Code is required',
-    })
-    .min(4, {
-      message: 'Postal Code must have at least 4 characters',
-    }),
-  city: z
-    .string({
-      required_error: 'City is required',
-      invalid_type_error: 'City is required',
-    })
-    .min(4, {
-      message: 'City must have at least 4 characters',
-    }),
+  // postalCode: z
+  //   .string({
+  //     required_error: 'Postal Code is required',
+  //     invalid_type_error: 'Postal Code is required',
+  //   })
+  //   .min(4, {
+  //     message: 'Postal Code must have at least 4 characters',
+  //   }),
+  // city: z
+  //   .string({
+  //     required_error: 'City is required',
+  //     invalid_type_error: 'City is required',
+  //   })
+  //   .min(4, {
+  //     message: 'City must have at least 4 characters',
+  //   }),
   address: z
     .string({
       required_error: 'Address is required',
@@ -76,20 +76,45 @@ export const userDetailSchema = z.object({
     }),
 });
 
-export const changePasswordSchema = z.object({
-  currentPassword: z
-    .string()
-    .min(8, 'Old password must be at least 8 characters long')
-    .max(32, 'Old password must be less than 32 characters'),
-  newPassword: z
-    .string()
-    .min(8, 'New password must be at least 8 characters long')
-    .max(32, 'New password must be less than 32 characters'),
-  confirmNewPassword: z
-    .string()
-    .min(8, 'Confirm password must be at least 8 characters long')
-    .max(32, 'Confirm password must be less than 32 characters'),
-});
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z
+      .string({
+        required_error: 'Old password is required',
+        invalid_type_error: 'Old password must be a string',
+      })
+      .trim()
+      .min(8, 'Old password must be at least 8 characters long')
+      .max(32, 'Old password must be less than 32 characters'),
+    newPassword: z
+      .string({
+        required_error: 'New password is required',
+        invalid_type_error: 'New password must be a string',
+      })
+      .trim()
+      .min(8, { message: 'New password must be at least 8 characters long' })
+      .max(32, { message: 'New password must be less than 32 characters' })
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,32}$/,
+        {
+          message:
+            'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character',
+        }
+      ),
+    confirmNewPassword: z
+      .string()
+      .trim()
+      .min(8, 'Confirm password must be at least 8 characters long')
+      .max(32, 'Confirm password must be less than 32 characters'),
+  })
+  .refine((data) => data.currentPassword !== data.newPassword, {
+    path: ['newPassword'],
+    message: 'Password same as old password',
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    path: ['confirmNewPassword'],
+    message: 'Password do not match',
+  });
 
 export const forgotPasswordSchema = z.object({
   email: z.string().email('Invalid email').min(1, 'Email is required'),
