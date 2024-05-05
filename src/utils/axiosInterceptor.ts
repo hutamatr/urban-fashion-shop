@@ -29,7 +29,7 @@ axiosPrivate.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(new Error(error))
 );
 
 axiosPrivate.interceptors.response.use(
@@ -46,7 +46,7 @@ axiosPrivate.interceptors.response.use(
         `Bearer ${newAccessToken?.access_token}`;
       return axiosPrivate(prevRequest);
     }
-    return Promise.reject(error);
+    return Promise.reject(new Error(error));
   }
 );
 

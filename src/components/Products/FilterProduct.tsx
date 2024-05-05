@@ -44,7 +44,7 @@ export default function FilterProduct({
         )}
       >
         <option value='all'>All</option>
-        {categories?.categories.map((category) => (
+        {categories?.categories?.map((category) => (
           <option key={category.id} value={category.category_name}>
             {capitalizeWords(category.category_name)}
           </option>
