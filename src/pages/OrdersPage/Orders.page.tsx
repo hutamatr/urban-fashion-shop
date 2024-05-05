@@ -79,7 +79,7 @@ export default function Orders() {
                 </Table.HeadCell>
               </Table.Head>
               <Table.Body className='divide-y'>
-                {userOrders.map((order) => (
+                {userOrders?.map((order) => (
                   <Table.Row
                     key={order.id}
                     className='bg-white dark:border-gray-700 dark:bg-gray-800'

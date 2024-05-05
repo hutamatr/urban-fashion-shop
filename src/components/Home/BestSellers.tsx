@@ -36,7 +36,7 @@ export default function BestSellers() {
       >
         {status === 'pending' && <LoadingProductSkeleton length={4} />}
         {status === 'fulfilled' &&
-          products?.products?.slice(0, 4).map((product) => {
+          products?.products?.slice(0, 4)?.map((product) => {
             return <ProductItem key={product.id} product={product} />;
           })}
       </ul>

@@ -71,7 +71,7 @@ export default function Home() {
         >
           {status === 'pending' && <LoadingProductSkeleton length={2} />}
           {status === 'fulfilled' &&
-            products?.products?.slice(0, 2).map((product) => {
+            products?.products?.slice(0, 2)?.map((product) => {
               return <ProductItem key={product.id} product={product} />;
             })}
         </ul>

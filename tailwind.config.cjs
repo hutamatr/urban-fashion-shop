@@ -1,3 +1,5 @@
+import flowbite from 'flowbite-react/tailwind';
+
 /** @type {import('tailwindcss').Config} */
 // eslint-disable-next-line no-undef
 module.exports = {
@@ -6,6 +8,7 @@ module.exports = {
     './index.html',
     './src/**/*.{js,ts,jsx,tsx}',
     'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
+    flowbite.content(),
   ],
   theme: {
     extend: {
@@ -23,5 +26,5 @@ module.exports = {
       },
     },
   },
-  plugins: ['prettier-plugin-tailwindcss', require('flowbite/plugin')],
+  plugins: ['prettier-plugin-tailwindcss', flowbite.plugin()],
 };
