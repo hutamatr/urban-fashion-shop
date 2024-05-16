@@ -3,8 +3,6 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 import { axiosPrivate } from '@utils/axiosInterceptor';
 
-import { RootState } from './store';
-
 interface IWishListState {
   wishlists: IWishlist[];
   wishlist: IWishlist | null;
@@ -46,12 +44,10 @@ export const getWishlists = createAsyncThunk<
   IWishlistData,
   void,
   { rejectValue: IError }
->('wishlist/getWishlists', async (_, { getState, rejectWithValue }) => {
+>('wishlist/getWishlists', async (_, { rejectWithValue }) => {
   try {
-    const state = getState() as RootState;
-    const response: AxiosResponse<IWishlistData> = await axiosPrivate.get(
-      `/wishlists/${state.auth.userId}`
-    );
+    const response: AxiosResponse<IWishlistData> =
+      await axiosPrivate.get(`/wishlists`);
 
     return response.data;
 
