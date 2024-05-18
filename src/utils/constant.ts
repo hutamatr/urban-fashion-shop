@@ -7,3 +7,6 @@ export const shippingFlatRate = 15000;
 export const PENDING_PAYMENT = 'PENDING_PAYMENT';
 export const PAID = 'PAID';
 export const CANCELED = 'CANCELED';
+export const PROCESSING = 'PROCESSING';
+export const SHIPPING = 'SHIPPING';
+export const DELIVERED = 'DELIVERED';
