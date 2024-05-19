@@ -26,6 +26,16 @@ export default function AddToCartModal({
     navigate('/cart');
   };
 
+  const toCheckOutHandler = () => {
+    dispatch(showModalHandler());
+    navigate('/checkout');
+  };
+
+  const toShopHandler = () => {
+    dispatch(showModalHandler());
+    navigate('/shop');
+  };
+
   const modalHandler = () => {
     dispatch(showModalHandler());
   };
@@ -77,13 +87,32 @@ export default function AddToCartModal({
         </div>
         <button
           className={clsx(
-            'rounded-sm border-2 border-dark-brown bg-dark-brown py-3 font-semibold uppercase text-white-bone',
-            'hover:bg-white-bone hover:text-dark-brown',
-            'dark:bg-white-bone dark:text-dark-brown dark:hover:border-white-bone dark:hover:bg-transparent dark:hover:text-white-bone'
+            'rounded border-2 border-dark-brown py-3 font-semibold text-dark-brown',
+            'hover:shadow-md',
+            'dark:border-white-bone dark:text-white-bone'
           )}
           onClick={toCartHandler}
         >
-          to Cart
+          View cart
+        </button>
+        <button
+          className={clsx(
+            'rounded bg-dark-brown py-3 font-semibold text-white-bone',
+            'hover:shadow-md',
+            'dark:bg-white-bone dark:text-dark-brown'
+          )}
+          onClick={toCheckOutHandler}
+        >
+          Check out
+        </button>
+        <button
+          className={clsx(
+            'text-lg text-dark-brown underline',
+            'dark:text-white-bone'
+          )}
+          onClick={toShopHandler}
+        >
+          Continue shopping
         </button>
       </div>
     </Modal>
