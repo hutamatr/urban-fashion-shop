@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { Table } from 'flowbite-react';
 import { useEffect } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { cancelPayment, fetchUserOrders } from '@store/order.slice';
 import { useAppDispatch, useAppSelector } from '@store/store';
@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '@store/store';
 import { formatCurrencyToFixed } from '@utils/formatted';
 
 export default function Orders() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { userOrders } = useAppSelector((state) => state.order);
 
@@ -34,22 +35,25 @@ export default function Orders() {
     }
   };
 
+  const viewOrderHandler = (transactionId: string) => {
+    navigate(`/order-status?transaction_id=${transactionId}`);
+  };
+
   return (
     <>
       <Toaster position='top-center' reverseOrder={false} />
-      <section className='mb-6 flex min-h-[80vh] flex-col gap-y-4'>
+      <section className='layout mb-6 flex min-h-[80vh] flex-col gap-y-4'>
         <div
           className={clsx(
-            'flex min-h-[10vh] flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown',
-            'dark:border-b-white-bone',
-            'md:min-h-fit md:py-12'
+            'my-6 flex flex-col items-start justify-center gap-y-4',
+            'md:my-16 md:min-h-fit'
           )}
         >
           <h1
             className={clsx(
-              'font-noto text-3xl uppercase',
+              'font-noto text-4xl uppercase',
               'dark:text-white-bone',
-              'md:text-4xl'
+              'md:text-5xl'
             )}
           >
             Orders
@@ -74,9 +78,7 @@ export default function Orders() {
                 <Table.HeadCell>Date</Table.HeadCell>
                 <Table.HeadCell>Status</Table.HeadCell>
                 <Table.HeadCell>Total</Table.HeadCell>
-                <Table.HeadCell>
-                  <span className='sr-only'>Edit</span>
-                </Table.HeadCell>
+                <Table.HeadCell></Table.HeadCell>
               </Table.Head>
               <Table.Body className='divide-y'>
                 {userOrders?.map((order) => (
@@ -94,7 +96,16 @@ export default function Orders() {
                     <Table.Cell>
                       {formatCurrencyToFixed(order.total_price)}
                     </Table.Cell>
-                    <Table.Cell>
+                    <Table.Cell className='flex flex-row items-center justify-center gap-x-4'>
+                      <button
+                        className={clsx(
+                          'font-medium text-cyan-600',
+                          'hover:underline dark:text-cyan-500'
+                        )}
+                        onClick={viewOrderHandler.bind(null, order.id)}
+                      >
+                        View
+                      </button>
                       {order.status === 'PENDING_PAYMENT' && (
                         <div className='flex flex-row items-center gap-x-3'>
                           <Link
