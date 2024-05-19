@@ -19,7 +19,12 @@ export default function CheckoutSummary({
 }: Readonly<ICheckoutSummaryProps>) {
   const { totalPrice } = useAppSelector((state) => state.cart);
   return (
-    <section>
+    <section
+      className={clsx(
+        'lg:border-l lg:border-l-dark-brown lg:p-6',
+        'dark:lg:border-l-white-bone'
+      )}
+    >
       <div
         className={clsx(
           'flex h-fit flex-col gap-y-4 rounded bg-dark-brown p-4',
@@ -33,7 +38,7 @@ export default function CheckoutSummary({
               'dark:text-dark-brown'
             )}
           >
-            Shopping Summary
+            Checkout Summary
           </h3>
         </div>
         <TotalPricesOrder
@@ -53,7 +58,7 @@ export default function CheckoutSummary({
         form='checkout-form'
         disabled={isSubmitting || status === 'pending'}
       >
-        Payment
+        Pay now
       </button>
     </section>
   );
