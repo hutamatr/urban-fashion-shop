@@ -71,7 +71,7 @@ export default function SignIn() {
   return (
     <>
       <Toaster position='top-center' />
-      <section className='grid min-h-[90vh] place-items-center'>
+      <section className='layout grid min-h-[90vh] place-items-center'>
         <div className={clsx('flex w-full flex-col gap-y-4', 'md:max-w-xs')}>
           <h1
             className={clsx(

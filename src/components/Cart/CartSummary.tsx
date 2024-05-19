@@ -38,17 +38,27 @@ export default function CartSummary({
           totalPriceAmount={totalPrice}
         />
       </div>
-      <button
-        className={clsx(
-          'mt-4 w-full rounded-sm py-3 font-medium text-dark-brown ring-2 ring-dark-brown',
-          'hover:bg-dark-brown hover:text-white-bone',
-          'dark:hover:bg-white-bone dark:hover:text-dark-brown',
-          'dark:text-white-bone dark:ring-white-bone'
-        )}
-        onClick={onPaymentHandler}
-      >
-        Process to Checkout
-      </button>
+      <div className='mt-4 flex flex-col gap-y-4'>
+        <button
+          className={clsx(
+            'w-full rounded-sm py-3 font-medium text-dark-brown ring-2 ring-dark-brown',
+            'hover:bg-dark-brown hover:text-white-bone',
+            'dark:hover:bg-white-bone dark:hover:text-dark-brown',
+            'dark:text-white-bone dark:ring-white-bone'
+          )}
+          onClick={onPaymentHandler}
+        >
+          Process to Checkout
+        </button>
+        <span
+          className={clsx(
+            'text-right text-xs font-medium',
+            'dark:text-white-bone'
+          )}
+        >
+          Taxes and shipping calculated at checkout
+        </span>
+      </div>
     </section>
   );
 }

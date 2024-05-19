@@ -25,19 +25,18 @@ export default function OrderStatus() {
   }, [dispatch]);
 
   return (
-    <section className='mb-6 flex flex-col gap-y-4'>
+    <section className='layout mb-6 flex flex-col gap-y-4'>
       <div
         className={clsx(
-          'flex min-h-[10vh] flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown',
-          'dark:border-b-white-bone',
-          'md:min-h-fit md:py-12'
+          'my-6 flex flex-col items-start justify-center gap-y-4',
+          'md:my-16 md:min-h-fit'
         )}
       >
         <h1
           className={clsx(
-            'font-noto text-3xl uppercase',
+            'font-noto text-4xl uppercase',
             'dark:text-white-bone',
-            'md:text-4xl'
+            'md:text-5xl'
           )}
         >
           Order Status

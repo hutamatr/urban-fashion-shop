@@ -38,7 +38,7 @@ export default function Home() {
       <Hero />
       <section
         className={clsx(
-          'mt-4 grid min-h-max grid-cols-1 items-center gap-8',
+          'layout mt-4 grid min-h-max grid-cols-1 items-center gap-8',
           'md:mt-0 md:min-h-fit md:grid-cols-2 md:grid-rows-1 md:gap-10 md:p-10'
         )}
       >

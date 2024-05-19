@@ -13,7 +13,7 @@ export default function BestSellers() {
   return (
     <section
       className={clsx(
-        'grid grid-cols-1 gap-y-4 border-b border-dark-brown py-6 text-dark-brown',
+        'layout grid grid-cols-1 gap-y-4 border-b border-dark-brown py-6 text-dark-brown',
         'dark:border-b-white-bone',
         'md:grid-cols-1'
       )}

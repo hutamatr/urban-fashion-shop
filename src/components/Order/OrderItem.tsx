@@ -21,7 +21,7 @@ export default function OrderItem({ product }: Readonly<IOrderItemProps>) {
         src={product?.image_url}
         alt={product?.title}
         className={clsx(
-          'w-32 border-r border-r-dark-brown object-contain',
+          'w-40 border-r border-r-dark-brown object-contain',
           'dark:border-r-white-bone',
           'md:h-fit'
         )}
