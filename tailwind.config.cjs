@@ -22,6 +22,8 @@ module.exports = {
       },
       colors: {
         'dark-brown': '#3F362F',
+        'pastel-brown': '#E5DDC5',
+        'pastel-dark-brown': '#776B5D',
         'white-bone': '#E6E1DC',
       },
     },

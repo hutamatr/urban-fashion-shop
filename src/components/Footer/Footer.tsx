@@ -8,8 +8,8 @@ export default function Footer() {
   return (
     <footer
       className={clsx(
-        'border-t border-t-dark-brown',
-        'dark:border-t-white-bone'
+        'border-t border-t-dark-brown bg-pastel-brown',
+        'dark:border-t-white-bone dark:bg-pastel-dark-brown'
       )}
     >
       <div className='layout'>

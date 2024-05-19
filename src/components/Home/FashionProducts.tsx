@@ -13,7 +13,7 @@ export default function FashionProducts() {
   return (
     <section
       className={clsx(
-        'flex min-h-screen flex-col bg-home-image bg-cover',
+        'layout flex min-h-screen flex-col bg-home-image bg-cover',
         'md:grid md:min-h-fit md:grid-cols-2 md:flex-row md:bg-none',
         'lg:min-h-[50vh]'
       )}

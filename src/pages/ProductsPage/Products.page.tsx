@@ -21,16 +21,15 @@ export default function Products() {
     <>
       <section
         className={clsx(
-          'mb-4 flex min-h-[25vh] flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown p-6',
-          'dark:border-b-white-bone',
-          'md:min-h-fit md:py-12'
+          'layout my-6 flex flex-col items-start justify-center gap-y-4',
+          'md:my-16 md:min-h-fit'
         )}
       >
         <h1
           className={clsx(
-            'font-noto text-3xl uppercase',
+            'font-noto text-4xl uppercase',
             'dark:text-white-bone',
-            'md:text-4xl'
+            'md:text-5xl'
           )}
         >
           Shop

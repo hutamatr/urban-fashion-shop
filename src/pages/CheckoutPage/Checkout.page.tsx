@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import CheckoutSummary from '@components/Checkout/CheckoutSummary';
+import Payment from '@components/Checkout/Payment';
 import { Loading } from '@components/UI';
 import Input from '@components/UI/Input';
 
@@ -124,30 +125,29 @@ export default function Checkout() {
     <>
       <Toaster position='top-center' reverseOrder={false} />
 
-      <section className='mb-6 flex flex-col gap-y-4'>
+      <section className={clsx('layout mb-6 flex flex-col gap-y-4', 'lg:mb-0')}>
         <div
           className={clsx(
-            'flex min-h-[10vh] flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown',
-            'dark:border-b-white-bone',
-            'md:min-h-fit md:py-12'
+            'my-6 flex flex-col items-start justify-center gap-y-4',
+            'md:my-16 md:min-h-fit'
           )}
         >
           <h1
             className={clsx(
-              'font-noto text-3xl uppercase',
+              'font-noto text-4xl uppercase',
               'dark:text-white-bone',
-              'md:text-4xl'
+              'md:text-5xl'
             )}
           >
             Checkout
           </h1>
         </div>
 
-        <div
+        <section
           className={clsx(
-            'md:grid-cols-[3fr_1.5fr]',
             'grid grid-rows-1 gap-y-8',
-            'md:gap-x-4'
+            'lg:grid-cols-[3fr_1.5fr] lg:border-t lg:border-t-dark-brown',
+            'dark:lg:border-t-white-bone'
           )}
         >
           {!snapShow && (
@@ -155,128 +155,148 @@ export default function Checkout() {
               {userStatus === 'pending' ? (
                 <Loading />
               ) : (
-                <form
-                  className='flex flex-col gap-y-4'
-                  onSubmit={handleSubmit(onPaymentHandler)}
-                  id='checkout-form'
-                >
-                  <div
-                    className={clsx('grid grid-cols-1 gap-4', 'md:grid-cols-2')}
+                <div className={clsx('flex flex-col gap-y-8', 'lg:p-6')}>
+                  <form
+                    className='flex flex-col gap-y-4'
+                    onSubmit={handleSubmit(onPaymentHandler)}
+                    id='checkout-form'
                   >
-                    <Input
-                      title='First name'
-                      type='text'
-                      {...register('firstName', { required: true })}
-                      aria-invalid={errors.firstName ? 'true' : 'false'}
-                      errors={
-                        errors.firstName && (
-                          <span className='block text-xs text-red-800'>
-                            {errors.firstName?.message}
-                          </span>
-                        )
-                      }
-                    />
-                    <Input
-                      title='Last name'
-                      type='text'
-                      {...register('lastName', { required: true })}
-                      aria-invalid={errors.lastName ? 'true' : 'false'}
-                      errors={
-                        errors.lastName && (
-                          <span className='block text-xs text-red-800'>
-                            {errors.lastName?.message}
-                          </span>
-                        )
-                      }
-                    />
-                  </div>
-
-                  <div
-                    className={clsx('grid grid-cols-1 gap-4', 'md:grid-cols-2')}
-                  >
-                    <Input
-                      type='email'
-                      title='Email'
-                      {...register('email', { required: true })}
-                      aria-invalid={errors.email ? 'true' : 'false'}
-                      errors={
-                        errors.email && (
-                          <span className='block text-xs text-red-800'>
-                            {errors.email?.message}
-                          </span>
-                        )
-                      }
-                    />
-                    <div className='flex flex-col gap-y-1'>
-                      <label
-                        htmlFor='phone'
-                        className={clsx(
-                          'text-xs font-medium text-dark-brown',
-                          'dark:text-white-bone'
-                        )}
-                      >
-                        Phone Number
-                      </label>
-                      <PhoneInput
-                        placeholder='Enter phone number'
-                        value={phoneNumber}
-                        onChange={(value) => setPhoneNumber(value as string)}
-                        defaultCountry='ID'
-                        className={clsx(
-                          'w-full rounded bg-white-bone font-medium',
-                          'dark:bg-dark-brown dark:placeholder:text-white-bone',
-                          'placeholder:text-sm focus:ring-0'
-                        )}
+                    <h2
+                      className={clsx(
+                        'text-2xl font-semibold',
+                        'dark:text-white-bone'
+                      )}
+                    >
+                      Delivery
+                    </h2>
+                    <div
+                      className={clsx(
+                        'grid grid-cols-1 gap-4',
+                        'md:grid-cols-2'
+                      )}
+                    >
+                      <Input
+                        title='First name'
+                        type='text'
+                        {...register('firstName', { required: true })}
+                        aria-invalid={errors.firstName ? 'true' : 'false'}
+                        errors={
+                          errors.firstName && (
+                            <span className='block text-xs text-red-800'>
+                              {errors.firstName?.message}
+                            </span>
+                          )
+                        }
+                      />
+                      <Input
+                        title='Last name'
+                        type='text'
+                        {...register('lastName', { required: true })}
+                        aria-invalid={errors.lastName ? 'true' : 'false'}
+                        errors={
+                          errors.lastName && (
+                            <span className='block text-xs text-red-800'>
+                              {errors.lastName?.message}
+                            </span>
+                          )
+                        }
                       />
                     </div>
-                  </div>
 
-                  <div
-                    className={clsx('grid grid-cols-1 gap-4', 'md:grid-cols-2')}
-                  >
+                    <div
+                      className={clsx(
+                        'grid grid-cols-1 gap-4',
+                        'md:grid-cols-2'
+                      )}
+                    >
+                      <Input
+                        type='email'
+                        title='Email'
+                        {...register('email', { required: true })}
+                        aria-invalid={errors.email ? 'true' : 'false'}
+                        errors={
+                          errors.email && (
+                            <span className='block text-xs text-red-800'>
+                              {errors.email?.message}
+                            </span>
+                          )
+                        }
+                      />
+                      <div className='flex flex-col gap-y-1'>
+                        <label
+                          htmlFor='phone'
+                          className={clsx(
+                            'text-xs font-medium text-dark-brown',
+                            'dark:text-white-bone'
+                          )}
+                        >
+                          Phone Number
+                        </label>
+                        <PhoneInput
+                          placeholder='Enter phone number'
+                          value={phoneNumber}
+                          onChange={(value) => setPhoneNumber(value as string)}
+                          defaultCountry='ID'
+                          className={clsx(
+                            'w-full rounded bg-white-bone font-medium',
+                            'dark:bg-dark-brown dark:placeholder:text-white-bone',
+                            'placeholder:text-sm focus:ring-0'
+                          )}
+                        />
+                      </div>
+                    </div>
+
+                    <div
+                      className={clsx(
+                        'grid grid-cols-1 gap-4',
+                        'md:grid-cols-2'
+                      )}
+                    >
+                      <Input
+                        title='City'
+                        type='text'
+                        {...register('city', { required: true })}
+                        aria-invalid={errors.city ? 'true' : 'false'}
+                        errors={
+                          errors.city && (
+                            <span className='block text-xs text-red-800'>
+                              {errors.city?.message}
+                            </span>
+                          )
+                        }
+                      />
+                      <Input
+                        title='Post Code/Zip'
+                        type='text'
+                        {...register('postalCode', { required: true })}
+                        aria-invalid={errors.postalCode ? 'true' : 'false'}
+                        errors={
+                          errors.postalCode && (
+                            <span className='block text-xs text-red-800'>
+                              {errors.postalCode?.message}
+                            </span>
+                          )
+                        }
+                      />
+                    </div>
+
                     <Input
-                      title='City'
+                      title='Address'
                       type='text'
-                      {...register('city', { required: true })}
-                      aria-invalid={errors.city ? 'true' : 'false'}
+                      isTextArea
+                      {...register('address', { required: true })}
+                      aria-invalid={errors.address ? 'true' : 'false'}
                       errors={
-                        errors.city && (
+                        errors.address && (
                           <span className='block text-xs text-red-800'>
-                            {errors.city?.message}
+                            {errors.address?.message}
                           </span>
                         )
                       }
                     />
-                    <Input
-                      title='Post Code/Zip'
-                      type='text'
-                      {...register('postalCode', { required: true })}
-                      aria-invalid={errors.postalCode ? 'true' : 'false'}
-                      errors={
-                        errors.postalCode && (
-                          <span className='block text-xs text-red-800'>
-                            {errors.postalCode?.message}
-                          </span>
-                        )
-                      }
-                    />
-                  </div>
-
-                  <Input
-                    title='Address'
-                    type='text'
-                    isTextArea
-                    {...register('address', { required: true })}
-                    aria-invalid={errors.address ? 'true' : 'false'}
-                    errors={
-                      errors.address && (
-                        <span className='block text-xs text-red-800'>
-                          {errors.address?.message}
-                        </span>
-                      )
-                    }
-                  />
-                </form>
+                  </form>
+                  <Payment />
+                </div>
               )}
             </>
           )}
@@ -295,7 +315,7 @@ export default function Checkout() {
             status={orderStatus}
             isSnapShow={snapShow}
           />
-        </div>
+        </section>
       </section>
     </>
   );

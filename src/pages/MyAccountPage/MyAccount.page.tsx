@@ -32,27 +32,26 @@ export default function MyAccount() {
       <Toaster position='top-center' />
       <section
         className={clsx(
-          'flex min-h-[30vh] flex-col items-center justify-center gap-y-4 border-b border-b-dark-brown',
-          'dark:border-b-white-bone',
-          'md:min-h-fit md:py-12'
+          'layout my-6 flex flex-col items-center justify-center gap-y-4',
+          'md:my-16 md:min-h-fit'
         )}
       >
         <h1
           className={clsx(
-            'font-noto text-3xl uppercase',
+            'font-noto text-4xl uppercase',
             'dark:text-white-bone',
-            'md:text-4xl'
+            'md:text-5xl'
           )}
         >
           My Account
         </h1>
         <div
           className={clsx(
-            'flex flex-col items-center justify-center gap-y-1',
+            'flex w-full flex-col items-center justify-center gap-y-1',
             'dark:text-white-bone'
           )}
         >
-          <span className='max-w-md text-lg font-medium uppercase'>
+          <span className='text-lg font-medium uppercase'>
             {user?.first_name && user.last_name
               ? `${user.first_name} ${user.last_name}`
               : user?.email}
@@ -62,7 +61,7 @@ export default function MyAccount() {
           </span>
         </div>
       </section>
-      <section className={clsx('grid grid-cols-1', 'md:grid-cols-12')}>
+      <section className={clsx('layout grid grid-cols-1', 'md:grid-cols-12')}>
         <div
           className={clsx(
             'flex flex-row items-center gap-x-4 p-4',

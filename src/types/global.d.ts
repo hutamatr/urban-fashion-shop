@@ -204,10 +204,12 @@ declare global {
       first_name: string;
       last_name: string;
       email: string;
+      address?: string;
       products: IProductOrder[];
       snap_token: string;
       snap_redirect_url: string;
       payment_method: string;
+      shipping_status: 'PROCESSING' | 'SHIPPING' | 'DELIVERED';
       created_at: string;
     };
   }

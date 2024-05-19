@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError, AxiosResponse } from 'axios';
 
 import { axiosPrivate } from '@utils/axiosInterceptor';
-import { PENDING_PAYMENT } from '@utils/constant';
+import { PENDING_PAYMENT, PROCESSING } from '@utils/constant';
 
 import { RootState } from './store';
 
@@ -12,11 +12,13 @@ interface IOrderState {
   transactionId: string;
   customerFullName: string;
   customerEmail: string;
+  customerAddress: string;
   paymentMethod: string;
   orderDate: string;
   snapToken: string;
   snapRedirectURL: string;
   orderStatus: 'PENDING_PAYMENT' | 'PAID' | 'CANCELED';
+  shippingStatus: 'PROCESSING' | 'SHIPPING' | 'DELIVERED';
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
   errorMessage: string[] | null;
   successMessage: string | null;
@@ -28,11 +30,13 @@ const initialState: IOrderState = {
   transactionId: '',
   customerFullName: '',
   customerEmail: '',
+  customerAddress: '',
   paymentMethod: '',
   orderDate: '',
   snapToken: '',
   snapRedirectURL: '',
   orderStatus: PENDING_PAYMENT,
+  shippingStatus: PROCESSING,
   status: 'idle',
   errorMessage: null,
   successMessage: null,
@@ -166,6 +170,7 @@ export const orderSlice = createSlice({
       .addCase(paymentOrder.fulfilled, (state, action) => {
         state.status = 'fulfilled';
         state.orderStatus = action.payload.transaction.status;
+        state.shippingStatus = action.payload.transaction.shipping_status;
         state.customerFullName = `${action.payload.transaction.first_name} ${action.payload.transaction.last_name}`;
         state.customerEmail = action.payload.transaction.email;
         state.transactionId = action.payload.transaction.id;
@@ -201,8 +206,10 @@ export const orderSlice = createSlice({
     builder.addCase(fetchUserOrder.fulfilled, (state, action) => {
       state.status = 'fulfilled';
       state.orderStatus = action.payload.transaction.status;
+      state.shippingStatus = action.payload.transaction.shipping_status;
       state.customerFullName = `${action.payload.transaction.first_name} ${action.payload.transaction.last_name}`;
       state.customerEmail = action.payload.transaction.email;
+      state.customerAddress = action.payload.transaction.address as string;
       state.transactionId = action.payload.transaction.id;
       state.paymentMethod = action.payload.transaction.payment_method;
       state.orderDate = action.payload.transaction.created_at;

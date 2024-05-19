@@ -1,8 +1,16 @@
 import clsx from 'clsx';
 
+import { useAppSelector } from '@store/store';
+
+import { shippingFlatRate } from '@utils/constant';
+import { formatCurrencyToFixed } from '@utils/formatted';
+
 import ShippingDetail from './ShippingDetail';
 
 export default function ShippingSummary() {
+  const { shippingStatus, customerAddress } = useAppSelector(
+    (state) => state.order
+  );
   return (
     <section>
       <div
@@ -21,7 +29,11 @@ export default function ShippingSummary() {
             Shipping Details
           </h3>
         </div>
-        <ShippingDetail />
+        <ShippingDetail
+          shippingStatus={shippingStatus}
+          shippingCost={formatCurrencyToFixed(shippingFlatRate)}
+          shippingAddress={customerAddress}
+        />
       </div>
     </section>
   );

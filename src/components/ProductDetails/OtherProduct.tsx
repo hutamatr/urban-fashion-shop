@@ -14,12 +14,11 @@ export default function OtherProduct() {
   );
 
   return (
-    <section className='mb-6 flex flex-col gap-y-6 px-6'>
+    <section className='layout mb-6 flex flex-col gap-y-6 px-6'>
       <h1
         className={clsx(
           'p-4 text-center font-noto text-3xl font-semibold',
-          'dark:text-white-bone',
-          'sm:text-left'
+          'dark:text-white-bone'
         )}
       >
         You May Also Like

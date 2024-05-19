@@ -8,7 +8,7 @@ export default function OurPhilosophy() {
   return (
     <section
       className={clsx(
-        'grid min-h-fit grid-cols-1 gap-y-4 p-6',
+        'layout grid min-h-fit grid-cols-1 gap-y-4 p-6',
         'md:grid-cols-2 md:gap-6 md:p-10'
       )}
     >

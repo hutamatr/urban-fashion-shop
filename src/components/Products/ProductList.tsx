@@ -22,10 +22,10 @@ export default function ProductList() {
   const navigate = useNavigate();
 
   return (
-    <section className='mb-16 flex min-w-full flex-col'>
+    <section className='layout mb-16 flex flex-col'>
       <div
         className={clsx(
-          'flex w-full flex-col items-end justify-end gap-x-4',
+          'flex w-full flex-col items-end justify-between gap-x-4',
           'md:flex-row'
         )}
       >

@@ -6,7 +6,12 @@ import LogoImg from '@assets/image/logo/logo-no-background.svg';
 
 export default function BrandFooter() {
   return (
-    <section className='flex min-w-[40%] flex-col items-start gap-y-3 py-6'>
+    <section
+      className={clsx(
+        'flex min-w-[40%] flex-col items-start gap-y-3 py-6',
+        'md:mb-8'
+      )}
+    >
       <Image
         src={LogoImg}
         alt='Urban Fashion'

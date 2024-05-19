@@ -10,13 +10,13 @@ export default function Layout() {
     <>
       <header
         className={clsx(
-          'sticky top-0 z-50 w-full bg-white-bone',
+          'sticky top-0 z-[999] w-full bg-white-bone',
           'dark:bg-dark-brown'
         )}
       >
         <Navigation />
       </header>
-      <main className={clsx('layout flex flex-col', 'dark:bg-dark-brown')}>
+      <main className={clsx('flex flex-col', 'dark:bg-dark-brown')}>
         <Outlet />
       </main>
       <Footer />

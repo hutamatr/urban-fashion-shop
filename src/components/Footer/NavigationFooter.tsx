@@ -18,26 +18,26 @@ export default function NavigationFooter() {
     <section
       className={clsx(
         'flex flex-col items-start gap-y-6 text-left',
-        'md:w-full md:flex-row md:justify-evenly md:p-6 md:text-start'
+        'md:mb-8 md:w-full md:flex-row md:justify-evenly md:p-6 md:text-start'
       )}
     >
       <div className={clsx('flex flex-col gap-y-3 uppercase', 'md:gap-y-2')}>
         <h3
           className={clsx(
-            'font-manrope text-sm font-semibold',
+            'font-manrope text-lg font-bold',
             'dark:text-white-bone'
           )}
         >
           Category
         </h3>
-        <ul className={clsx('flex flex-col gap-y-2', 'md:gap-y-1')}>
+        <ul className={clsx('flex flex-col gap-y-3', 'md:gap-y-1')}>
           {categories?.categories?.map((category) => {
             return (
               <li key={category.id}>
                 <Link
                   to={`/${category.category_name}`}
                   className={clsx(
-                    'font-manrope text-xs',
+                    'font-manrope text-sm',
                     'dark:text-white-bone'
                   )}
                 >
@@ -51,7 +51,7 @@ export default function NavigationFooter() {
       <div className={clsx('flex flex-col gap-y-3 uppercase', 'md:gap-y-2')}>
         <h3
           className={clsx(
-            'font-manrope text-sm font-semibold',
+            'font-manrope text-lg font-bold',
             'dark:text-white-bone'
           )}
         >
@@ -59,24 +59,24 @@ export default function NavigationFooter() {
         </h3>
         <ul
           className={clsx(
-            'flex flex-col gap-y-2',
+            'flex flex-col gap-y-3',
             'dark:text-white-bone',
             'md:gap-y-1'
           )}
         >
           <li>
-            <Link to='/' className='font-manrope text-xs'>
+            <Link to='/' className='font-manrope text-sm'>
               Home
             </Link>
           </li>
           <li>
-            <Link to='/shop' className='font-manrope text-xs'>
+            <Link to='/shop' className='font-manrope text-sm'>
               Shop
             </Link>
           </li>
           {isAuth && (
             <li>
-              <Link to='/account' className='font-manrope text-xs'>
+              <Link to='/account' className='font-manrope text-sm'>
                 My Account
               </Link>
             </li>
@@ -85,7 +85,7 @@ export default function NavigationFooter() {
             <li>
               <Link
                 to='/'
-                className='font-manrope text-xs'
+                className='font-manrope text-sm'
                 onClick={logOutUserHandler}
               >
                 Logout
@@ -93,7 +93,7 @@ export default function NavigationFooter() {
             </li>
           ) : (
             <li>
-              <Link to='/signin' className='font-manrope text-xs'>
+              <Link to='/signin' className='font-manrope text-sm'>
                 Sign In
               </Link>
             </li>

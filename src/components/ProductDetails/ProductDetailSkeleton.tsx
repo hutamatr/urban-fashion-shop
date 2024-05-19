@@ -4,7 +4,7 @@ const ProductDetailSkeleton = () => {
   return (
     <section
       className={clsx(
-        'grid grid-cols-1 border-b border-b-dark-brown',
+        'layout grid grid-cols-1 border-b border-b-dark-brown',
         'dark:border-b-white-bone',
         'md:mt-14 md:grid-cols-2'
       )}
